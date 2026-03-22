@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CrimeWatch — Secure Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:#0a0c10; --surface:#111318; --surface2:#181c24; --surface3:#1e2330;
+  --border:#1e2330; --border2:#252c3a;
+  --accent:#e63946; --accent2:#ff6b6b;
+  --gold:#f4a261; --green:#2ec4b6; --blue:#4895ef;
+  --text:#e8eaf0; --muted:#5a6070; --muted2:#3a4050;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4;}
+header{position:relative;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border);background:rgba(10,12,16,0.95);backdrop-filter:blur(12px);}
+.logo{display:flex;align-items:center;gap:12px;}
+.logo-icon{width:34px;height:34px;background:var(--accent);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-size:15px;animation:pulse-icon 3s ease-in-out infinite;}
+@keyframes pulse-icon{0%,100%{box-shadow:0 0 0 0 rgba(230,57,70,0.4);}50%{box-shadow:0 0 20px 6px rgba(230,57,70,0.15);}}
+.logo-text{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:3px;}
+.logo-text span{color:var(--accent);}
+.header-right{display:flex;align-items:center;gap:16px;}
+.status-bar{display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--green);}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.5s steps(1) infinite;}
+@keyframes blink{50%{opacity:0;}}
+.role-badge{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1.5px;padding:4px 10px;border-radius:2px;display:none;}
+.role-badge.admin{background:rgba(230,57,70,0.15);border:1px solid rgba(230,57,70,0.3);color:var(--accent);}
+.role-badge.view{background:rgba(72,149,239,0.15);border:1px solid rgba(72,149,239,0.3);color:var(--blue);}
+.role-badge.user{background:rgba(46,196,182,0.15);border:1px solid rgba(46,196,182,0.3);color:var(--green);}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:0.2;pointer-events:none;z-index:0;}
+main{flex:1;position:relative;z-index:1;}
+.center-wrap{display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 120px);padding:40px 20px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:2px;width:100%;max-width:500px;position:relative;animation:slideUp 0.45s cubic-bezier(0.16,1,0.3,1);box-shadow:0 0 60px rgba(0,0,0,0.6),0 0 0 1px rgba(255,255,255,0.03);}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
+.card-accent{height:3px;background:linear-gradient(90deg,var(--accent),var(--gold),var(--accent2));border-radius:2px 2px 0 0;}
+.card-accent.blue-bar{background:linear-gradient(90deg,var(--blue),var(--green),var(--blue));}
+.card-accent.green-bar{background:linear-gradient(90deg,var(--green),var(--blue),var(--green));}
+.card-head{padding:24px 30px 18px;border-bottom:1px solid var(--border);}
+.card-tag{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:6px;}
+.card-tag.blue{color:var(--blue);}
+.card-tag.green-tag{color:var(--green);}
+.card-title{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:2px;line-height:1;}
+.card-sub{font-size:12px;color:var(--muted);margin-top:5px;}
+.card-body{padding:26px 30px;}
+.portal-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px;}
+.portal-btn{background:var(--surface2);border:1px solid var(--border);border-radius:2px;padding:20px 12px;cursor:pointer;transition:all 0.2s;text-align:center;}
+.portal-btn:hover{border-color:var(--accent);background:rgba(230,57,70,0.05);}
+.portal-btn.p-blue:hover{border-color:var(--blue);background:rgba(72,149,239,0.05);}
+.portal-btn.p-green:hover{border-color:var(--green);background:rgba(46,196,182,0.05);}
+.portal-icon{font-size:26px;margin-bottom:8px;}
+.portal-label{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text);}
+.portal-desc{font-size:10px;color:var(--muted);margin-top:4px;}
+.field{margin-bottom:18px;}
+label{display:block;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:7px;}
+input[type=text],input[type=password],input[type=tel],select,textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:2px;color:var(--text);font-family:'IBM Plex Sans',sans-serif;font-size:14px;padding:11px 14px;outline:none;transition:border-color 0.2s,box-shadow 0.2s;}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(230,57,70,0.1);}
+textarea{resize:vertical;min-height:80px;}
+select option{background:var(--surface2);}
+.file-label{display:flex;align-items:center;gap:10px;background:var(--surface2);border:1px dashed var(--border2);border-radius:2px;padding:12px 14px;cursor:pointer;transition:border-color 0.2s;font-size:13px;color:var(--muted);}
+.file-label:hover{border-color:var(--accent);color:var(--text);}
+input[type=file]{display:none;}
+.file-name{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--green);margin-top:4px;}
+.btn{width:100%;padding:13px;background:var(--accent);border:none;border-radius:2px;color:#fff;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
+.btn:hover{background:var(--accent2);box-shadow:0 0 20px rgba(230,57,70,0.25);}
+.btn:active{transform:scale(0.98);}
+.btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.btn.blue-btn{background:var(--blue);}
+.btn.blue-btn:hover{background:#60a5d4;box-shadow:0 0 20px rgba(72,149,239,0.25);}
+.btn.green-btn{background:var(--green);}
+.btn.green-btn:hover{background:#26a99e;box-shadow:0 0 20px rgba(46,196,182,0.25);}
+.btn.ghost{background:transparent;border:1px solid var(--border);color:var(--muted);margin-top:10px;}
+.btn.ghost:hover{border-color:var(--text);color:var(--text);box-shadow:none;}
+.btn.sm{width:auto;padding:7px 14px;font-size:10px;margin:0;}
+.btn.approve{background:rgba(46,196,182,0.15);border:1px solid rgba(46,196,182,0.4);color:var(--green);}
+.btn.approve:hover{background:rgba(46,196,182,0.3);}
+.btn.rej{background:rgba(230,57,70,0.15);border:1px solid rgba(230,57,70,0.4);color:var(--accent2);}
+.btn.rej:hover{background:rgba(230,57,70,0.3);}
+.btn.edit-btn{background:rgba(72,149,239,0.15);border:1px solid rgba(72,149,239,0.4);color:var(--blue);}
+.btn.edit-btn:hover{background:rgba(72,149,239,0.3);}
+.alert{padding:9px 14px;border-radius:2px;font-size:11px;font-family:'IBM Plex Mono',monospace;margin-bottom:14px;display:none;}
+.alert.error{background:rgba(230,57,70,0.1);border:1px solid rgba(230,57,70,0.3);color:var(--accent2);}
+.alert.success{background:rgba(46,196,182,0.1);border:1px solid rgba(46,196,182,0.3);color:var(--green);}
+.alert.show{display:block;}
+.tabs{display:flex;border:1px solid var(--border);border-radius:2px;overflow:hidden;margin-bottom:20px;}
+.tab{flex:1;padding:9px;background:transparent;border:none;color:var(--muted);cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;transition:all 0.2s;}
+.tab.active{background:var(--accent);color:#fff;}
+.pin-display{display:flex;gap:10px;justify-content:center;margin:16px 0 20px;}
+.pin-dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--border);transition:all 0.15s;}
+.pin-dot.filled{background:var(--accent);border-color:var(--accent);box-shadow:0 0 8px rgba(230,57,70,0.4);}
+.pin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.pin-btn{background:var(--surface2);border:1px solid var(--border);border-radius:2px;color:var(--text);font-family:'Bebas Neue',sans-serif;font-size:22px;padding:16px 0;cursor:pointer;transition:all 0.15s;}
+.pin-btn:hover{background:var(--surface3);border-color:var(--accent);}
+.pin-btn:active{transform:scale(0.94);}
+.pin-btn.del{font-size:14px;color:var(--muted);}
+.divider{height:1px;background:var(--border);margin:18px 0;}
+.switch-link{text-align:center;margin-top:14px;font-size:12px;color:var(--muted);}
+.switch-link a{color:var(--accent);cursor:pointer;}
+.switch-link a:hover{color:var(--accent2);}
+.dashboard{padding:28px 40px;max-width:1100px;margin:0 auto;width:100%;}
+.dash-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;}
+.dash-title{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;}
+.dash-title span{color:var(--accent);}
+.dash-meta{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:2px;padding:18px 20px;}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:38px;line-height:1;}
+.stat-num.red{color:var(--accent);}
+.stat-num.green{color:var(--green);}
+.stat-num.gold{color:var(--gold);}
+.stat-num.blue{color:var(--blue);}
+.stat-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-top:4px;}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.section-title{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.filter-btn{background:var(--surface2);border:1px solid var(--border);border-radius:2px;padding:6px 14px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:all 0.15s;}
+.filter-btn:hover,.filter-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(230,57,70,0.07);}
+.report-cards{display:flex;flex-direction:column;gap:12px;}
+.rep-card{background:var(--surface);border:1px solid var(--border);border-radius:2px;overflow:hidden;animation:fadeIn 0.3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateX(-6px);}to{opacity:1;transform:none;}}
+.rep-card-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;}
+.rep-card-left{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.rep-card-id{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);}
+.rep-card-type{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text);}
+.rep-card-right{display:flex;align-items:center;gap:10px;}
+.badge{display:inline-block;padding:3px 9px;border-radius:2px;font-size:9px;font-family:'IBM Plex Mono',monospace;letter-spacing:1px;text-transform:uppercase;}
+.badge.pending{background:rgba(244,162,97,0.12);color:var(--gold);border:1px solid rgba(244,162,97,0.3);}
+.badge.approved{background:rgba(46,196,182,0.12);color:var(--green);border:1px solid rgba(46,196,182,0.3);}
+.badge.rejected{background:rgba(230,57,70,0.12);color:var(--accent2);border:1px solid rgba(230,57,70,0.3);}
+.chevron{font-size:12px;color:var(--muted);transition:transform 0.2s;display:inline-block;}
+.chevron.open{transform:rotate(180deg);}
+.rep-detail{display:none;padding:20px 18px;border-top:1px solid var(--border);background:var(--surface2);}
+.rep-detail.open{display:block;}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+.detail-item label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.detail-item p{font-size:13px;color:var(--text);}
+.detail-desc{margin-bottom:14px;}
+.detail-desc label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block;}
+.detail-desc p{font-size:13px;color:var(--text);line-height:1.6;}
+.rep-image{width:100%;max-height:220px;object-fit:cover;border-radius:2px;border:1px solid var(--border);margin-bottom:14px;cursor:zoom-in;}
+.action-row{display:flex;gap:8px;flex-wrap:wrap;}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:500;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:2px;width:100%;max-width:520px;box-shadow:0 0 60px rgba(0,0,0,0.7);animation:slideUp 0.3s cubic-bezier(0.16,1,0.3,1);}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--border);}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;}
+.modal-close{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;}
+.modal-close:hover{color:var(--text);}
+.modal-body{padding:24px;}
+.modal-actions{display:flex;gap:10px;margin-top:6px;}
+.modal-actions .btn{margin:0;}
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:900;align-items:center;justify-content:center;cursor:zoom-out;}
+.lightbox.open{display:flex;}
+.lightbox img{max-width:90vw;max-height:85vh;border-radius:2px;box-shadow:0 0 60px rgba(0,0,0,0.8);}
+.public-cards{display:flex;flex-direction:column;gap:16px;}
+.pub-card{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:2px;padding:20px;animation:fadeIn 0.3s ease;}
+.pub-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.pub-type{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--green);}
+.pub-id{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);}
+.pub-desc{font-size:13px;color:var(--text);line-height:1.6;margin-bottom:10px;}
+.pub-image{width:100%;max-height:200px;object-fit:cover;border-radius:2px;border:1px solid var(--border);margin-bottom:10px;cursor:zoom-in;}
+.pub-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted);}
+.empty-state{text-align:center;padding:50px 20px;color:var(--muted);}
+.empty-icon{font-size:40px;margin-bottom:12px;}
+.empty-text{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:1px;}
+.success-wrap{text-align:center;}
+.success-icon{width:58px;height:58px;border-radius:50%;background:rgba(46,196,182,0.1);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 18px;animation:popIn 0.4s cubic-bezier(0.16,1,0.3,1);}
+@keyframes popIn{from{transform:scale(0);}to{transform:scale(1);}}
+.ref-code{background:var(--surface2);border:1px solid var(--border);border-radius:2px;padding:14px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:22px;letter-spacing:4px;color:var(--green);margin:14px 0;}
+footer{text-align:center;padding:18px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);border-top:1px solid var(--border);position:relative;z-index:1;}
+footer span{color:var(--accent);}
+@keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-8px);}40%{transform:translateX(8px);}60%{transform:translateX(-4px);}80%{transform:translateX(4px);}}
+.shake{animation:shake 0.4s ease;}
+.loading{opacity:0.5;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:1px;text-align:center;padding:20px;}
+@media(max-width:700px){header{padding:14px 20px;}.dashboard{padding:20px;}.stats{grid-template-columns:1fr 1fr;}.detail-grid{grid-template-columns:1fr;}.portal-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">🔺</div>
+    <div class="logo-text">Crime<span>Watch</span></div>
+  </div>
+  <div class="header-right">
+    <div class="role-badge" id="role-badge"></div>
+    <div class="status-bar"><div class="status-dot"></div>SECURE PORTAL</div>
+  </div>
+</header>
+
+<main id="main-area">
+
+<!-- ══ PORTAL SELECT ══ -->
+<div id="pg-portal" class="center-wrap">
+  <div class="card" style="max-width:520px;">
+    <div class="card-accent"></div>
+    <div class="card-head">
+      <div class="card-tag">▸ System Access</div>
+      <div class="card-title">Select Portal</div>
+      <div class="card-sub">Choose your access level to continue</div>
+    </div>
+    <div class="card-body">
+      <div class="portal-grid">
+        <div class="portal-btn" onclick="goPortal('user')">
+          <div class="portal-icon">👤</div>
+          <div class="portal-label">User</div>
+          <div class="portal-desc">File reports</div>
+        </div>
+        <div class="portal-btn p-blue" onclick="goPortal('admin')">
+          <div class="portal-icon">🛡️</div>
+          <div class="portal-label">Admin</div>
+          <div class="portal-desc">Manage reports</div>
+        </div>
+        <div class="portal-btn p-green" onclick="goPortal('view')">
+          <div class="portal-icon">👁️</div>
+          <div class="portal-label">View</div>
+          <div class="portal-desc">Approved reports</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ USER LOGIN ══ -->
+<div id="pg-user-login" class="center-wrap" style="display:none;">
+  <div class="card">
+    <div class="card-accent"></div>
+    <div class="card-head">
+      <div class="card-tag">▸ User Portal</div>
+      <div class="card-title">Sign In</div>
+      <div class="card-sub">Use password or PIN to access your account</div>
+    </div>
+    <div class="card-body">
+      <div class="alert error" id="ul-alert"></div>
+      <div class="tabs">
+        <button class="tab active" id="utab-pass" onclick="uSwitchTab('pass')">Password</button>
+        <button class="tab" id="utab-pin" onclick="uSwitchTab('pin')">PIN</button>
+      </div>
+      <div id="u-pass-form">
+        <div class="field"><label>Username</label><input type="text" id="ul-user" placeholder="username" onkeydown="if(event.key==='Enter')doUserLogin()"/></div>
+        <div class="field"><label>Password</label><input type="password" id="ul-pass" placeholder="Your password" onkeydown="if(event.key==='Enter')doUserLogin()"/></div>
+        <button class="btn" id="ul-btn" onclick="doUserLogin()">SIGN IN</button>
+      </div>
+      <div id="u-pin-form" style="display:none;">
+        <div class="field"><label>Username</label><input type="text" id="ul-pin-user" placeholder="username"/></div>
+        <label style="text-align:center;display:block;margin-bottom:4px;">ENTER 4-DIGIT PIN</label>
+        <div class="pin-display">
+          <div class="pin-dot" id="upd0"></div><div class="pin-dot" id="upd1"></div>
+          <div class="pin-dot" id="upd2"></div><div class="pin-dot" id="upd3"></div>
+        </div>
+        <div class="pin-grid">
+          <button class="pin-btn" onclick="uPin('1')">1</button><button class="pin-btn" onclick="uPin('2')">2</button><button class="pin-btn" onclick="uPin('3')">3</button>
+          <button class="pin-btn" onclick="uPin('4')">4</button><button class="pin-btn" onclick="uPin('5')">5</button><button class="pin-btn" onclick="uPin('6')">6</button>
+          <button class="pin-btn" onclick="uPin('7')">7</button><button class="pin-btn" onclick="uPin('8')">8</button><button class="pin-btn" onclick="uPin('9')">9</button>
+          <button class="pin-btn del" onclick="uPinClr()">CLR</button><button class="pin-btn" onclick="uPin('0')">0</button><button class="pin-btn del" onclick="uPinBack()">⌫</button>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="switch-link">No account? <a onclick="showPage('pg-register')">Register here</a></div>
+      <div class="switch-link" style="margin-top:8px;"><a onclick="showPage('pg-portal')">← Back to portals</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ REGISTER ══ -->
+<div id="pg-register" class="center-wrap" style="display:none;">
+  <div class="card">
+    <div class="card-accent"></div>
+    <div class="card-head">
+      <div class="card-tag">▸ New Account</div>
+      <div class="card-title">Register</div>
+      <div class="card-sub">Create a secure account to file reports</div>
+    </div>
+    <div class="card-body">
+      <div class="alert error" id="reg-alert"></div>
+      <div class="field"><label>Full Name</label><input type="text" id="reg-name" placeholder="John Doe"/></div>
+      <div class="field"><label>Username</label><input type="text" id="reg-user" placeholder="johndoe_99"/></div>
+      <div class="field"><label>Email Address <span style="color:var(--accent);font-size:9px;">★ REQUIRED FOR OTP</span></label><input type="text" id="reg-email" placeholder="you@email.com" required/></div>
+      <div class="field"><label>Password</label><input type="password" id="reg-pass" placeholder="Min. 8 characters"/></div>
+      <div class="field"><label>Confirm Password</label><input type="password" id="reg-pass2" placeholder="Repeat password"/></div>
+      <div class="field"><label>4-Digit Security PIN</label><input type="tel" id="reg-pin" placeholder="e.g. 1234" maxlength="4"/><div style="font-size:10px;color:var(--muted);margin-top:4px;font-family:'IBM Plex Mono',monospace;">Used for quick PIN login</div></div>
+      <button class="btn" id="reg-btn" onclick="doRegister()">CREATE ACCOUNT</button>
+      <div class="switch-link" style="margin-top:12px;">Already have an account? <a onclick="showPage('pg-user-login')">Sign in</a></div>
+      <div class="switch-link" style="margin-top:8px;"><a onclick="showPage('pg-portal')">← Back to portals</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ADMIN LOGIN ══ -->
+<div id="pg-admin-login" class="center-wrap" style="display:none;">
+  <div class="card">
+    <div class="card-accent blue-bar"></div>
+    <div class="card-head">
+      <div class="card-tag blue">▸ Admin Portal</div>
+      <div class="card-title">Admin Access</div>
+      <div class="card-sub">Restricted — Authorised personnel only</div>
+    </div>
+    <div class="card-body">
+      <div class="alert error" id="al-alert"></div>
+      <div class="field"><label>Admin Password</label><input type="password" id="al-pass" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')doAdminLogin()"/></div>
+      <button class="btn blue-btn" id="al-btn" onclick="doAdminLogin()">ACCESS ADMIN PANEL</button>
+      <div class="switch-link" style="margin-top:12px;"><a onclick="showPage('pg-portal')">← Back to portals</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ VIEW LOGIN ══ -->
+<div id="pg-view-login" class="center-wrap" style="display:none;">
+  <div class="card">
+    <div class="card-accent green-bar"></div>
+    <div class="card-head">
+      <div class="card-tag green-tag">▸ View Portal</div>
+      <div class="card-title">Viewer Access</div>
+      <div class="card-sub">See publicly approved crime reports</div>
+    </div>
+    <div class="card-body">
+      <div class="alert error" id="vl-alert"></div>
+      <div class="field"><label>Viewer Password</label><input type="password" id="vl-pass" placeholder="Enter viewer password" onkeydown="if(event.key==='Enter')doViewLogin()"/></div>
+      <button class="btn green-btn" id="vl-btn" onclick="doViewLogin()">ACCESS REPORTS</button>
+      <div class="switch-link" style="margin-top:12px;"><a onclick="showPage('pg-portal')">← Back to portals</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ OTP VERIFY ══ -->
+<div id="pg-otp" class="center-wrap" style="display:none;">
+  <div class="card">
+    <div class="card-accent"></div>
+    <div class="card-head">
+      <div class="card-tag">▸ Security Check</div>
+      <div class="card-title">Verify Your Email</div>
+      <div class="card-sub" id="otp-sub">A 6-digit code has been sent to your email</div>
+    </div>
+    <div class="card-body">
+      <div class="alert error" id="otp-alert"></div>
+      <div class="alert success" id="otp-success"></div>
+      <div style="text-align:center;margin-bottom:20px;">
+        <div style="font-size:40px;margin-bottom:8px;">📧</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:1px;">CHECK YOUR INBOX</div>
+      </div>
+      <div class="field">
+        <label>Enter 6-Digit OTP Code</label>
+        <input type="tel" id="otp-input" placeholder="e.g. 123456" maxlength="6"
+          style="font-size:24px;letter-spacing:8px;text-align:center;font-family:'IBM Plex Mono',monospace;"
+          onkeydown="if(event.key==='Enter')verifyOTP()"/>
+      </div>
+      <button class="btn" id="otp-btn" onclick="verifyOTP()">VERIFY OTP</button>
+      <button class="btn ghost" id="otp-resend-btn" onclick="resendOTP()" style="margin-top:10px;">RESEND CODE</button>
+      <div class="switch-link" style="margin-top:12px;"><a onclick="showPage('pg-user-login')">← Back to login</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ USER DASHBOARD ══ -->
+<div id="pg-user-dash" style="display:none;">
+  <div class="dashboard">
+    <div class="dash-head">
+      <div>
+        <div class="dash-title"><span>Crime</span>Watch</div>
+        <div class="dash-meta" id="user-welcome">USER PORTAL</div>
+      </div>
+      <button class="btn sm ghost" onclick="doLogout()" style="width:auto;">SIGN OUT</button>
+    </div>
+    <div class="tabs">
+      <button class="tab active" id="udtab-file" onclick="uDTab('file')">File Report</button>
+      <button class="tab" id="udtab-hist" onclick="uDTab('hist')">My Reports</button>
+    </div>
+    <div id="ud-file">
+      <div class="alert error" id="rep-alert"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div class="field"><label>Crime Type</label>
+          <select id="crime-type">
+            <option value="">— Select —</option>
+            <option>Theft / Burglary</option><option>Assault / Violence</option>
+            <option>Vandalism</option><option>Drug Activity</option>
+            <option>Fraud / Scam</option><option>Suspicious Activity</option>
+            <option>Traffic Incident</option><option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Date &amp; Time of Incident</label><input type="text" id="crime-date" placeholder="e.g. 2024-06-10, 9:30 PM"/></div>
+      </div>
+      <div class="field"><label>Location</label><input type="text" id="crime-location" placeholder="Street, area or landmark"/></div>
+      <div class="field"><label>Description</label><textarea id="crime-desc" placeholder="Describe what happened in detail..."></textarea></div>
+      <div class="field">
+        <label>Upload Evidence Image (optional)</label>
+        <label class="file-label" for="crime-img">📎 Click to upload image</label>
+        <input type="file" id="crime-img" accept="image/*" onchange="onFileChange(this)"/>
+        <div class="file-name" id="file-name-show"></div>
+      </div>
+      <button class="btn green-btn" id="submit-btn" onclick="submitReport()">SUBMIT REPORT</button>
+    </div>
+    <div id="ud-hist" style="display:none;">
+      <div class="report-cards" id="my-reports-list"></div>
+      <div class="empty-state" id="my-no-rep" style="display:none;"><div class="empty-icon">📋</div><div class="empty-text">No reports filed yet</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ USER SUCCESS ══ -->
+<div id="pg-success" class="center-wrap" style="display:none;">
+  <div class="card">
+    <div class="card-accent green-bar"></div>
+    <div class="card-head"><div class="card-tag green-tag">▸ Report Filed</div><div class="card-title">Submitted!</div></div>
+    <div class="card-body success-wrap">
+      <div class="success-icon">✓</div>
+      <p style="color:var(--muted);font-size:12px;margin-bottom:4px;font-family:'IBM Plex Mono',monospace;">YOUR REFERENCE CODE</p>
+      <div class="ref-code" id="ref-code-show">CW-000000</div>
+      <p style="font-size:11px;color:var(--muted);margin-bottom:20px;font-family:'IBM Plex Mono',monospace;">Save this code. Your report is awaiting admin review.</p>
+      <button class="btn" onclick="showPage('pg-user-dash');uDTab('hist')">VIEW MY REPORTS</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ADMIN DASHBOARD ══ -->
+<div id="pg-admin-dash" style="display:none;">
+  <div class="dashboard">
+    <div class="dash-head">
+      <div>
+        <div class="dash-title">Admin <span>Panel</span></div>
+        <div class="dash-meta">ADMINISTRATOR — FULL ACCESS</div>
+      </div>
+      <button class="btn sm ghost" onclick="doLogout()" style="width:auto;">SIGN OUT</button>
+    </div>
+    <div class="stats" id="admin-stats"></div>
+    <div class="section-head"><div class="section-title">All Reports</div></div>
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="adminFilter('all',this)">All</button>
+      <button class="filter-btn" onclick="adminFilter('Pending',this)">Pending</button>
+      <button class="filter-btn" onclick="adminFilter('Approved',this)">Approved</button>
+      <button class="filter-btn" onclick="adminFilter('Rejected',this)">Rejected</button>
+    </div>
+    <div class="report-cards" id="admin-reports-list"></div>
+    <div class="empty-state" id="admin-no-rep" style="display:none;"><div class="empty-icon">📋</div><div class="empty-text">No reports found</div></div>
+  </div>
+</div>
+
+<!-- ══ VIEW DASHBOARD ══ -->
+<div id="pg-view-dash" style="display:none;">
+  <div class="dashboard">
+    <div class="dash-head">
+      <div>
+        <div class="dash-title">Public <span>Reports</span></div>
+        <div class="dash-meta">VIEWER — APPROVED REPORTS ONLY</div>
+      </div>
+      <button class="btn sm ghost" onclick="doLogout()" style="width:auto;">SIGN OUT</button>
+    </div>
+    <div class="public-cards" id="view-reports-list"></div>
+    <div class="empty-state" id="view-no-rep" style="display:none;"><div class="empty-icon">🔒</div><div class="empty-text">No approved reports available yet</div></div>
+  </div>
+</div>
+
+</main>
+
+<!-- ══ EDIT MODAL ══ -->
+<div class="modal-overlay" id="edit-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Edit Report</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="edit-id"/>
+      <div class="field"><label>Crime Type</label>
+        <select id="edit-type">
+          <option>Theft / Burglary</option><option>Assault / Violence</option>
+          <option>Vandalism</option><option>Drug Activity</option>
+          <option>Fraud / Scam</option><option>Suspicious Activity</option>
+          <option>Traffic Incident</option><option>Other</option>
+        </select>
+      </div>
+      <div class="field"><label>Location</label><input type="text" id="edit-location"/></div>
+      <div class="field"><label>Date &amp; Time</label><input type="text" id="edit-date"/></div>
+      <div class="field"><label>Description</label><textarea id="edit-desc"></textarea></div>
+      <div class="modal-actions">
+        <button class="btn" onclick="saveEdit()">SAVE CHANGES</button>
+        <button class="btn ghost" onclick="closeModal()" style="margin-top:0;">CANCEL</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ LIGHTBOX ══ -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <img id="lb-img" src="" alt="Evidence Image"/>
+</div>
+
+<footer>&copy; 2024 <span>CrimeWatch</span> Secure Reporting System — All transmissions encrypted</footer>
+
+<script>
+// ── CONFIG — change this if your server IP is different ──
+const API = 'https://crimewatch-backend-production.up.railway.app/api';
+
+// ── SESSION ──
+let session = { token: null, role: null, username: null, name: null };
+
+// ── API HELPER ──
+async function api(method, path, body = null, isForm = false) {
+  const headers = {};
+  if (session.token) headers['Authorization'] = 'Bearer ' + session.token;
+  if (body && !isForm) headers['Content-Type'] = 'application/json';
+  const res = await fetch(API + path, {
+    method,
+    headers,
+    body: isForm ? body : (body ? JSON.stringify(body) : null)
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Request failed');
+  return data;
+}
+
+// ── UI HELPERS ──
+function showPage(id) {
+  document.querySelectorAll('#main-area > div').forEach(d => d.style.display = 'none');
+  document.getElementById(id).style.display = id.includes('dash') ? 'block' : 'flex';
+}
+function goPortal(type) {
+  if (type === 'user')  showPage('pg-user-login');
+  if (type === 'admin') showPage('pg-admin-login');
+  if (type === 'view')  showPage('pg-view-login');
+}
+function setRoleBadge(role) {
+  const b = document.getElementById('role-badge');
+  b.className = 'role-badge ' + role;
+  b.textContent = role.toUpperCase();
+  b.style.display = 'block';
+}
+function doLogout() {
+  session = { token: null, role: null, username: null, name: null };
+  document.getElementById('role-badge').style.display = 'none';
+  showPage('pg-portal');
+}
+function showAlert(id, msg, type = 'error') {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.className = 'alert ' + type + ' show';
+  setTimeout(() => el.classList.remove('show'), 4000);
+}
+function shakeActive() {
+  const active = document.querySelector('#main-area > div:not([style*="none"]) .card');
+  if (active) { active.classList.add('shake'); setTimeout(() => active.classList.remove('shake'), 400); }
+}
+function setLoading(btnId, loading) {
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  btn.disabled = loading;
+  btn.textContent = loading ? 'PLEASE WAIT...' : btn.dataset.label || btn.textContent;
+}
+function escH(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── OTP STATE ──
+let otpPendingSession = null;
+let otpEmail = null;
+
+// ── REGISTER ──
+async function doRegister() {
+  const name  = document.getElementById('reg-name').value.trim();
+  const user  = document.getElementById('reg-user').value.trim().toLowerCase();
+  const email = document.getElementById('reg-email').value.trim();
+  const pass  = document.getElementById('reg-pass').value;
+  const pass2 = document.getElementById('reg-pass2').value;
+  const pin   = document.getElementById('reg-pin').value;
+  if (!name || !user || !pass) return showAlert('reg-alert', 'Please fill all required fields.');
+  if (!email) return showAlert('reg-alert', 'Email is required for OTP security.');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showAlert('reg-alert', 'Please enter a valid email address.');
+  if (pass !== pass2) return showAlert('reg-alert', 'Passwords do not match.');
+  if (pass.length < 8) return showAlert('reg-alert', 'Password must be at least 8 characters.');
+  if (pin && !/^\d{4}$/.test(pin)) return showAlert('reg-alert', 'PIN must be exactly 4 digits.');
+  document.getElementById('reg-btn').disabled = true;
+  document.getElementById('reg-btn').textContent = 'CREATING...';
+  try {
+    await api('POST', '/auth/register', { name, username: user, password: pass, pin, email });
+    // Auto login then send OTP
+    const data = await api('POST', '/auth/login', { username: user, password: pass });
+    otpPendingSession = { token: data.token, role: 'user', username: data.username, name: data.name };
+    otpEmail = email;
+    showAlert('reg-alert', 'Account created! Sending OTP to your email...', 'success');
+    await sendOTP(email);
+    setTimeout(() => {
+      document.getElementById('otp-sub').textContent = 'A 6-digit code was sent to ' + maskEmail(email);
+      showPage('pg-otp');
+      document.getElementById('otp-input').value = '';
+      document.getElementById('otp-input').focus();
+    }, 1000);
+  } catch(e) {
+    shakeActive();
+    showAlert('reg-alert', e.message);
+    document.getElementById('reg-btn').disabled = false;
+    document.getElementById('reg-btn').textContent = 'CREATE ACCOUNT';
+  }
+}
+
+// ── USER LOGIN ──
+let uPinVal = '';
+
+function uSwitchTab(t) {
+  document.getElementById('utab-pass').classList.toggle('active', t === 'pass');
+  document.getElementById('utab-pin').classList.toggle('active', t === 'pin');
+  document.getElementById('u-pass-form').style.display = t === 'pass' ? 'block' : 'none';
+  document.getElementById('u-pin-form').style.display  = t === 'pin'  ? 'block' : 'none';
+  uPinVal = ''; updateUPinDots();
+}
+
+async function doUserLogin() {
+  const user = document.getElementById('ul-user').value.trim().toLowerCase();
+  const pass = document.getElementById('ul-pass').value;
+  if (!user || !pass) return showAlert('ul-alert', 'Enter username and password.');
+  document.getElementById('ul-btn').disabled = true;
+  document.getElementById('ul-btn').textContent = 'SIGNING IN...';
+  try {
+    const data = await api('POST', '/auth/login', { username: user, password: pass });
+    // Store session temporarily — pending OTP verification
+    otpPendingSession = { token: data.token, role: 'user', username: data.username, name: data.name };
+    // Try sending OTP if user has email
+    if (data.email) {
+      otpEmail = data.email;
+      await sendOTP(data.email);
+      document.getElementById('otp-sub').textContent = 'A 6-digit code was sent to ' + maskEmail(data.email);
+      showPage('pg-otp');
+      document.getElementById('otp-input').value = '';
+      document.getElementById('otp-input').focus();
+    } else {
+      // No email on account — ask them to update their account
+      shakeActive();
+      showAlert('ul-alert', 'No email on your account. Please re-register with an email for OTP security.');
+      otpPendingSession = null;
+    }
+  } catch(e) {
+    shakeActive();
+    showAlert('ul-alert', e.message);
+  }
+  document.getElementById('ul-btn').disabled = false;
+  document.getElementById('ul-btn').textContent = 'SIGN IN';
+}
+
+function maskEmail(email) {
+  const [user, domain] = email.split('@');
+  return user.slice(0,2) + '***@' + domain;
+}
+
+async function sendOTP(email) {
+  await api('POST', '/auth/send-otp', { email });
+}
+
+async function resendOTP() {
+  if (!otpEmail) return;
+  document.getElementById('otp-resend-btn').disabled = true;
+  document.getElementById('otp-resend-btn').textContent = 'SENDING...';
+  try {
+    await sendOTP(otpEmail);
+    showAlert('otp-success', 'New OTP sent! Check your email.', 'success');
+  } catch(e) {
+    showAlert('otp-alert', 'Failed to resend OTP. Try again.');
+  }
+  document.getElementById('otp-resend-btn').disabled = false;
+  document.getElementById('otp-resend-btn').textContent = 'RESEND CODE';
+}
+
+async function verifyOTP() {
+  const otp = document.getElementById('otp-input').value.trim();
+  if (!otp || otp.length !== 6) return showAlert('otp-alert', 'Please enter the 6-digit OTP code.');
+  document.getElementById('otp-btn').disabled = true;
+  document.getElementById('otp-btn').textContent = 'VERIFYING...';
+  try {
+    await api('POST', '/auth/verify-otp', { email: otpEmail, otp });
+    // OTP verified — complete login
+    session = otpPendingSession;
+    otpPendingSession = null;
+    otpEmail = null;
+    setRoleBadge('user');
+    showPage('pg-user-dash');
+    renderUserDash();
+  } catch(e) {
+    shakeActive();
+    showAlert('otp-alert', e.message || 'Wrong OTP. Try again.');
+    document.getElementById('otp-btn').disabled = false;
+    document.getElementById('otp-btn').textContent = 'VERIFY OTP';
+  }
+}
+
+function uPin(d) {
+  if (uPinVal.length >= 4) return;
+  uPinVal += d; updateUPinDots();
+  if (uPinVal.length === 4) setTimeout(doPinLogin, 200);
+}
+function uPinBack() { uPinVal = uPinVal.slice(0, -1); updateUPinDots(); }
+function uPinClr()  { uPinVal = ''; updateUPinDots(); }
+function updateUPinDots() {
+  for (let i = 0; i < 4; i++)
+    document.getElementById('upd' + i).classList.toggle('filled', i < uPinVal.length);
+}
+async function doPinLogin() {
+  const user = document.getElementById('ul-pin-user').value.trim().toLowerCase();
+  try {
+    const data = await api('POST', '/auth/login-pin', { username: user, pin: uPinVal });
+    // PIN login skips OTP for quick access
+    session = { token: data.token, role: 'user', username: data.username, name: data.name };
+    setRoleBadge('user');
+    showPage('pg-user-dash');
+    renderUserDash();
+  } catch(e) {
+    shakeActive();
+    uPinVal = ''; updateUPinDots();
+    showAlert('ul-alert', e.message);
+  }
+}
+
+// ── ADMIN LOGIN ──
+async function doAdminLogin() {
+  const pass = document.getElementById('al-pass').value;
+  document.getElementById('al-btn').disabled = true;
+  document.getElementById('al-btn').textContent = 'VERIFYING...';
+  try {
+    const data = await api('POST', '/auth/admin-login', { password: pass });
+    session = { token: data.token, role: 'admin' };
+    setRoleBadge('admin');
+    showPage('pg-admin-dash');
+    renderAdminDash('all');
+  } catch(e) {
+    shakeActive();
+    showAlert('al-alert', e.message);
+    document.getElementById('al-btn').disabled = false;
+    document.getElementById('al-btn').textContent = 'ACCESS ADMIN PANEL';
+  }
+}
+
+// ── VIEW LOGIN ──
+async function doViewLogin() {
+  const pass = document.getElementById('vl-pass').value;
+  document.getElementById('vl-btn').disabled = true;
+  document.getElementById('vl-btn').textContent = 'VERIFYING...';
+  try {
+    const data = await api('POST', '/auth/view-login', { password: pass });
+    session = { token: data.token, role: 'view' };
+    setRoleBadge('view');
+    showPage('pg-view-dash');
+    renderViewDash();
+  } catch(e) {
+    shakeActive();
+    showAlert('vl-alert', e.message);
+    document.getElementById('vl-btn').disabled = false;
+    document.getElementById('vl-btn').textContent = 'ACCESS REPORTS';
+  }
+}
+
+// ── FILE INPUT ──
+let uploadedFile = null;
+function onFileChange(input) {
+  const file = input.files[0];
+  if (!file) return;
+  uploadedFile = file;
+  document.getElementById('file-name-show').textContent = file.name;
+}
+
+// ── USER DASH ──
+function renderUserDash() {
+  document.getElementById('user-welcome').textContent = 'SIGNED IN AS: ' + (session.name || session.username).toUpperCase();
+  uDTab('file');
+}
+function uDTab(t) {
+  document.getElementById('udtab-file').classList.toggle('active', t === 'file');
+  document.getElementById('udtab-hist').classList.toggle('active', t === 'hist');
+  document.getElementById('ud-file').style.display  = t === 'file' ? 'block' : 'none';
+  document.getElementById('ud-hist').style.display  = t === 'hist' ? 'block' : 'none';
+  if (t === 'hist') renderMyReports();
+}
+
+// ── SUBMIT REPORT ──
+async function submitReport() {
+  const type = document.getElementById('crime-type').value;
+  const loc  = document.getElementById('crime-location').value.trim();
+  const date = document.getElementById('crime-date').value.trim();
+  const desc = document.getElementById('crime-desc').value.trim();
+  if (!type || !loc || !date || !desc) return showAlert('rep-alert', 'Please fill all required fields.');
+
+  const form = new FormData();
+  form.append('type', type);
+  form.append('location', loc);
+  form.append('date', date);
+  form.append('description', desc);
+  if (uploadedFile) form.append('image', uploadedFile);
+
+  document.getElementById('submit-btn').disabled = true;
+  document.getElementById('submit-btn').textContent = 'SUBMITTING...';
+  try {
+    const data = await api('POST', '/reports', form, true);
+    // reset form
+    document.getElementById('crime-type').value = '';
+    document.getElementById('crime-location').value = '';
+    document.getElementById('crime-date').value = '';
+    document.getElementById('crime-desc').value = '';
+    document.getElementById('file-name-show').textContent = '';
+    document.getElementById('crime-img').value = '';
+    uploadedFile = null;
+    document.getElementById('ref-code-show').textContent = data.id;
+    showPage('pg-success');
+  } catch(e) {
+    showAlert('rep-alert', e.message);
+  }
+  document.getElementById('submit-btn').disabled = false;
+  document.getElementById('submit-btn').textContent = 'SUBMIT REPORT';
+}
+
+async function renderMyReports() {
+  const list  = document.getElementById('my-reports-list');
+  const empty = document.getElementById('my-no-rep');
+  list.innerHTML = '<div class="loading">LOADING...</div>';
+  try {
+    const mine = await api('GET', '/reports/mine');
+    if (!mine.length) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+    list.innerHTML = mine.map(r => `
+      <div class="rep-card">
+        <div class="rep-card-head" style="cursor:default;">
+          <div class="rep-card-left">
+            <span class="rep-card-id">${r.id}</span>
+            <span class="rep-card-type">${escH(r.type)}</span>
+          </div>
+          <span class="badge ${r.status.toLowerCase()}">${r.status}</span>
+        </div>
+        <div style="padding:12px 18px;">
+          <div style="font-size:13px;color:var(--text);margin-bottom:8px;line-height:1.5;">${escH(r.description.length > 140 ? r.description.slice(0,140) + '…' : r.description)}</div>
+          <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted);">
+            <span>📍 ${escH(r.location)}</span><span>📅 ${escH(r.date)}</span><span>🕐 Filed: ${escH(r.submitted)}</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) {
+    list.innerHTML = '<div class="loading">Failed to load reports</div>';
+  }
+}
+
+// ── ADMIN DASH ──
+let adminFilterVal = 'all';
+let adminReports = [];
+
+async function renderAdminDash(filterVal) {
+  if (filterVal !== undefined) adminFilterVal = filterVal;
+  try {
+    const stats = await api('GET', '/reports/stats');
+    document.getElementById('admin-stats').innerHTML = `
+      <div class="stat"><div class="stat-num">${stats.total}</div><div class="stat-label">Total Reports</div></div>
+      <div class="stat"><div class="stat-num gold">${stats.pending}</div><div class="stat-label">Pending</div></div>
+      <div class="stat"><div class="stat-num green">${stats.approved}</div><div class="stat-label">Approved</div></div>
+      <div class="stat"><div class="stat-num red">${stats.rejected}</div><div class="stat-label">Rejected</div></div>
+    `;
+    const reps = await api('GET', '/reports?status=' + adminFilterVal);
+    adminReports = reps;
+    renderAdminList(reps);
+  } catch(e) {
+    document.getElementById('admin-reports-list').innerHTML = '<div class="loading">Failed to load</div>';
+  }
+}
+
+function adminFilter(val, btn) {
+  adminFilterVal = val;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAdminDash(val);
+}
+
+function renderAdminList(reps) {
+  const list  = document.getElementById('admin-reports-list');
+  const empty = document.getElementById('admin-no-rep');
+  if (!reps.length) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  const imgBase = API.replace('/api','');
+  list.innerHTML = reps.map(r => `
+    <div class="rep-card" id="rc-${r.id}">
+      <div class="rep-card-head" onclick="toggleDetail('${r.id}')">
+        <div class="rep-card-left">
+          <span class="rep-card-id">${r.id}</span>
+          <span class="rep-card-type">${escH(r.type)}</span>
+          <span style="font-size:11px;color:var(--muted);">by ${escH(r.user_name || r.username)}</span>
+        </div>
+        <div class="rep-card-right">
+          <span class="badge ${r.status.toLowerCase()}">${r.status}</span>
+          <span class="chevron" id="chev-${r.id}">▼</span>
+        </div>
+      </div>
+      <div class="rep-detail" id="det-${r.id}">
+        <div class="detail-grid">
+          <div class="detail-item"><label>Location</label><p>${escH(r.location)}</p></div>
+          <div class="detail-item"><label>Date &amp; Time</label><p>${escH(r.date)}</p></div>
+          <div class="detail-item"><label>Filed By</label><p>${escH(r.user_name || r.username)}</p></div>
+          <div class="detail-item"><label>Submitted</label><p>${escH(r.submitted)}</p></div>
+        </div>
+        <div class="detail-desc"><label>Description</label><p>${escH(r.description)}</p></div>
+        ${r.image_url
+          ? `<label style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px;">Evidence Image</label>
+             <img class="rep-image" src="${imgBase}${r.image_url}" alt="Evidence" onclick="openLightboxUrl('${imgBase}${r.image_url}')"/>`
+          : `<div style="padding:8px 0 12px;font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace;">No image uploaded</div>`}
+        <div class="action-row">
+          <button class="btn sm approve" onclick="changeStatus('${r.id}','Approved')">✓ APPROVE</button>
+          <button class="btn sm rej"     onclick="changeStatus('${r.id}','Rejected')">✕ REJECT</button>
+          <button class="btn sm edit-btn" onclick="openEdit('${r.id}')">✎ EDIT</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleDetail(id) {
+  document.getElementById('det-' + id).classList.toggle('open');
+  document.getElementById('chev-' + id).classList.toggle('open');
+}
+
+async function changeStatus(id, status) {
+  try {
+    await api('PATCH', '/reports/' + id + '/status', { status });
+    renderAdminDash();
+  } catch(e) { alert('Error: ' + e.message); }
+}
+
+// ── LIGHTBOX ──
+function openLightboxUrl(url) {
+  document.getElementById('lb-img').src = url;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+
+// ── EDIT MODAL ──
+function openEdit(id) {
+  const rep = adminReports.find(r => r.id === id);
+  if (!rep) return;
+  document.getElementById('edit-id').value       = id;
+  document.getElementById('edit-type').value     = rep.type;
+  document.getElementById('edit-location').value = rep.location;
+  document.getElementById('edit-date').value     = rep.date;
+  document.getElementById('edit-desc').value     = rep.description;
+  document.getElementById('edit-modal').classList.add('open');
+}
+function closeModal() { document.getElementById('edit-modal').classList.remove('open'); }
+async function saveEdit() {
+  const id = document.getElementById('edit-id').value;
+  try {
+    await api('PUT', '/reports/' + id, {
+      type:        document.getElementById('edit-type').value,
+      location:    document.getElementById('edit-location').value,
+      date:        document.getElementById('edit-date').value,
+      description: document.getElementById('edit-desc').value
+    });
+    closeModal();
+    renderAdminDash();
+  } catch(e) { alert('Error: ' + e.message); }
+}
+
+// ── VIEW DASH ──
+async function renderViewDash() {
+  const list  = document.getElementById('view-reports-list');
+  const empty = document.getElementById('view-no-rep');
+  list.innerHTML = '<div class="loading">LOADING REPORTS...</div>';
+  const imgBase = API.replace('/api','');
+  try {
+    const approved = await api('GET', '/reports/approved');
+    if (!approved.length) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+    list.innerHTML = approved.map(r => `
+      <div class="pub-card">
+        <div class="pub-card-top">
+          <span class="pub-type">${escH(r.type)}</span>
+          <span class="pub-id">${r.id}</span>
+        </div>
+        <div class="pub-desc">${escH(r.description)}</div>
+        ${r.image_url ? `<img class="pub-image" src="${imgBase}${r.image_url}" alt="Evidence" onclick="openLightboxUrl('${imgBase}${r.image_url}')"/>` : ''}
+        <div class="pub-meta">
+          <span>📍 ${escH(r.location)}</span>
+          <span>📅 ${escH(r.date)}</span>
+          <span>🕐 Filed: ${escH(r.submitted)}</span>
+          <span class="badge approved">Approved</span>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) {
+    list.innerHTML = '<div class="loading">Failed to load reports</div>';
+  }
+}
+
+// ── KEYBOARD ──
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeModal(); closeLightbox(); }
+});
+
+// ── INIT ──
+showPage('pg-portal');
+</script>
+</body>
+</html>
