@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CrimeWatch — Secure Portal</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+  :root {
+    --bg: #0a0c0f;
+    --surface: #111418;
+    --surface2: #181c22;
+    --border: #1f2530;
+    --accent: #e8321a;
+    --accent2: #ff6b35;
+    --gold: #f0a500;
+    --green: #22c55e;
+    --blue: #3b82f6;
+    --text: #e8eaf0;
+    --muted: #6b7280;
+    --danger: #ef4444;
+    --warn: #f59e0b;
+    --font: 'Syne', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(232,50,26,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,50,26,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    text-align: center;
+    padding: 32px 0 28px;
+  }
+  .logo-icon {
+    width: 52px; height: 52px;
+    background: var(--accent);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    margin: 0 auto 12px;
+    animation: pulse 3s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:.7;} }
+  .logo-title {
+    font-size: 28px; font-weight: 800; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--text);
+  }
+  .logo-sub {
+    font-family: var(--mono);
+    font-size: 10px; letter-spacing: 3px;
+    color: var(--accent); margin-top: 4px;
+    text-transform: uppercase;
+  }
+
+  /* ─── PANELS ─── */
+  .panel { display: none; }
+  .panel.active { display: block; animation: fadeIn .3s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+
+  .card-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .card-heading {
+    font-size: 22px; font-weight: 800; margin-bottom: 20px;
+  }
+
+  /* ─── PORTAL SELECT ─── */
+  .portal-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .portal-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: all .2s;
+    color: var(--text);
+  }
+  .portal-btn:hover { border-color: var(--accent); background: #1a1f28; transform: translateY(-2px); }
+  .portal-btn .icon { font-size: 26px; margin-bottom: 8px; }
+  .portal-btn .label { font-size: 12px; font-weight: 700; letter-spacing: 1px; }
+  .portal-btn .desc { font-size: 10px; color: var(--muted); margin-top: 3px; }
+
+  /* ─── FORM ─── */
+  .form-group { margin-bottom: 16px; }
+  label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--muted); margin-bottom: 7px; text-transform: uppercase; }
+  input, select, textarea {
+    width: 100%; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text); font-family: var(--font); font-size: 14px;
+    padding: 11px 14px; transition: border-color .2s;
+    outline: none;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+  select option { background: var(--surface2); }
+  textarea { resize: vertical; min-height: 90px; }
+
+  /* ─── BUTTONS ─── */
+  .btn {
+    width: 100%; padding: 13px;
+    border: none; border-radius: 8px; cursor: pointer;
+    font-family: var(--font); font-size: 13px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    transition: all .2s;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+  .btn-primary:disabled { background: var(--muted); cursor: not-allowed; transform: none; }
+  .btn-ghost {
+    background: transparent; color: var(--muted);
+    border: 1px solid var(--border); margin-top: 10px;
+  }
+  .btn-ghost:hover { color: var(--text); border-color: var(--muted); }
+
+  .link-btn {
+    background: none; border: none; cursor: pointer;
+    color: var(--accent); font-size: 12px; font-family: var(--font);
+    letter-spacing: 1px; text-decoration: underline; margin-top: 12px;
+    display: block; text-align: center;
+  }
+
+  /* ─── SAFETY BADGE ─── */
+  .safety-badge {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2);
+    border-radius: 8px; padding: 10px 14px; margin-bottom: 18px;
+    font-size: 12px; color: var(--green);
+    font-family: var(--mono);
+  }
+  .safety-badge .dot {
+    width: 8px; height: 8px; background: var(--green);
+    border-radius: 50%; flex-shrink: 0;
+    animation: blink 1.5s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+  /* ─── ALERTS ─── */
+  .alert {
+    border-radius: 8px; padding: 12px 14px;
+    font-size: 12px; font-family: var(--mono); margin-bottom: 14px;
+    display: none;
+  }
+  .alert.show { display: block; animation: fadeIn .2s; }
+  .alert-danger { background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.3); color: #fca5a5; }
+  .alert-warn   { background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.3); color: #fcd34d; }
+  .alert-success{ background: rgba(34,197,94,.1);  border: 1px solid rgba(34,197,94,.3);  color: #86efac; }
+  .alert-info   { background: rgba(59,130,246,.1); border: 1px solid rgba(59,130,246,.3); color: #93c5fd; }
+
+  /* ─── PROGRESS / STRENGTH ─── */
+  .strength-bar { height: 4px; border-radius: 2px; background: var(--border); margin-top: 6px; overflow: hidden; }
+  .strength-fill { height: 100%; border-radius: 2px; transition: width .3s, background .3s; width: 0; }
+
+  /* ─── AI SCAN ─── */
+  .ai-scan {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px; margin: 14px 0;
+    display: none;
+  }
+  .ai-scan.show { display: block; }
+  .ai-scan-title { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--accent); margin-bottom: 8px; }
+  .ai-scan-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 11px; font-family: var(--mono); color: var(--muted);
+    margin-bottom: 5px;
+  }
+  .ai-scan-item.pass { color: var(--green); }
+  .ai-scan-item.fail { color: var(--danger); }
+  .ai-scan-item.warn { color: var(--warn); }
+  .ai-scan-item .icon { font-size: 12px; }
+
+  /* ─── CAPTCHA ─── */
+  .captcha-box {
+    background: var(--surface2); border: 2px solid var(--border);
+    border-radius: 10px; padding: 16px; margin: 12px 0;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .captcha-check { width: 22px; height: 22px; accent-color: var(--accent); cursor: pointer; }
+  .captcha-label { font-size: 13px; color: var(--text); flex: 1; }
+  .captcha-logo { font-family: var(--mono); font-size: 9px; color: var(--muted); }
+
+  /* ─── RATE LIMIT ─── */
+  .cooldown-bar {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px 14px; margin-bottom: 14px;
+    display: none;
+  }
+  .cooldown-bar.show { display: block; }
+  .cooldown-label { font-size: 11px; font-family: var(--mono); color: var(--warn); margin-bottom: 6px; }
+  .cooldown-track { height: 4px; background: var(--border); border-radius: 2px; }
+  .cooldown-fill { height: 100%; background: var(--warn); border-radius: 2px; transition: width 1s linear; }
+
+  /* ─── USER PORTAL LAYOUT ─── */
+  .portal-header {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 18px; margin-bottom: 16px;
+  }
+  .portal-user { font-size: 13px; font-weight: 700; }
+  .portal-role { font-size: 10px; font-family: var(--mono); color: var(--accent); }
+  .portal-tabs { display: flex; gap: 8px; margin-bottom: 18px; }
+  .tab-btn {
+    flex: 1; padding: 10px; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 8px;
+    cursor: pointer; font-family: var(--font); font-size: 12px;
+    font-weight: 700; letter-spacing: 1px; color: var(--muted);
+    transition: all .2s;
+  }
+  .tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ─── REPORT CARD ─── */
+  .report-card {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px; margin-bottom: 10px;
+  }
+  .report-card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .report-type { font-size: 12px; font-weight: 700; color: var(--accent); }
+  .report-status {
+    font-size: 10px; font-family: var(--mono); padding: 3px 9px;
+    border-radius: 20px; letter-spacing: 1px; font-weight: 700;
+  }
+  .status-pending  { background: rgba(245,158,11,.15); color: var(--warn); }
+  .status-approved { background: rgba(34,197,94,.15);  color: var(--green); }
+  .status-rejected { background: rgba(239,68,68,.15);  color: var(--danger); }
+  .status-solved   { background: rgba(59,130,246,.15); color: var(--blue); }
+  .report-loc { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  .report-desc { font-size: 12px; color: var(--text); line-height: 1.5; }
+  .report-ref { font-size: 10px; font-family: var(--mono); color: var(--muted); margin-top: 6px; }
+  .report-flags { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 5px; }
+  .flag-tag {
+    font-size: 9px; font-family: var(--mono); padding: 2px 7px;
+    border-radius: 4px; letter-spacing: 1px;
+  }
+  .flag-verified { background: rgba(34,197,94,.1); color: var(--green); border: 1px solid rgba(34,197,94,.2); }
+  .flag-ai-ok    { background: rgba(59,130,246,.1); color: var(--blue); border: 1px solid rgba(59,130,246,.2); }
+  .flag-evidence { background: rgba(240,165,0,.1); color: var(--gold); border: 1px solid rgba(240,165,0,.2); }
+
+  /* ─── ADMIN ─── */
+  .admin-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 18px; }
+  .stat-box {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px; text-align: center;
+  }
+  .stat-num { font-size: 22px; font-weight: 800; }
+  .stat-label { font-size: 9px; font-family: var(--mono); color: var(--muted); margin-top: 2px; letter-spacing: 1px; }
+
+  .filter-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+  .filter-btn {
+    padding: 6px 12px; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 20px;
+    cursor: pointer; font-family: var(--mono); font-size: 10px;
+    color: var(--muted); transition: all .2s; letter-spacing: 1px;
+  }
+  .filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  .admin-report-card {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px; margin-bottom: 10px;
+  }
+  .admin-report-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .admin-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .action-btn {
+    padding: 5px 12px; border-radius: 6px; cursor: pointer;
+    font-family: var(--mono); font-size: 10px; font-weight: 700;
+    letter-spacing: 1px; border: none; transition: all .2s;
+  }
+  .action-approve { background: rgba(34,197,94,.15);  color: var(--green); }
+  .action-approve:hover { background: rgba(34,197,94,.3); }
+  .action-reject  { background: rgba(239,68,68,.15);  color: var(--danger); }
+  .action-reject:hover  { background: rgba(239,68,68,.3); }
+  .action-solve   { background: rgba(59,130,246,.15); color: var(--blue); }
+  .action-solve:hover   { background: rgba(59,130,246,.3); }
+
+  .credibility-bar { margin-top: 8px; }
+  .credibility-label { font-size: 10px; font-family: var(--mono); color: var(--muted); margin-bottom: 4px; }
+  .cred-track { height: 4px; background: var(--border); border-radius: 2px; }
+  .cred-fill { height: 100%; border-radius: 2px; background: var(--green); }
+
+  /* ─── SUCCESS ─── */
+  .success-screen { text-align: center; padding: 20px; }
+  .success-icon { font-size: 52px; margin-bottom: 12px; }
+  .ref-code {
+    font-family: var(--mono); font-size: 24px; font-weight: 700;
+    color: var(--accent); letter-spacing: 4px; margin: 12px 0;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px;
+  }
+
+  /* ─── EVIDENCE UPLOAD ─── */
+  .upload-zone {
+    border: 2px dashed var(--border); border-radius: 8px;
+    padding: 20px; text-align: center; cursor: pointer;
+    transition: border-color .2s; position: relative;
+  }
+  .upload-zone:hover { border-color: var(--accent); }
+  .upload-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .upload-label { font-size: 13px; color: var(--muted); }
+  .upload-preview { max-width: 100%; max-height: 160px; border-radius: 6px; margin-top: 10px; display: none; }
+
+  /* ─── PIN PAD ─── */
+  .pin-display {
+    display: flex; gap: 10px; justify-content: center; margin: 12px 0;
+  }
+  .pin-dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    border: 2px solid var(--border); transition: all .15s;
+  }
+  .pin-dot.filled { background: var(--accent); border-color: var(--accent); }
+  .pinpad { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+  .pin-key {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px; text-align: center;
+    cursor: pointer; font-size: 16px; font-weight: 700;
+    transition: all .15s;
+  }
+  .pin-key:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* ─── MODAL ─── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.75); z-index: 100;
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 28px; max-width: 400px; width: 90%;
+    animation: fadeIn .2s;
+  }
+  .modal-title { font-size: 16px; font-weight: 800; margin-bottom: 14px; }
+  .modal-actions { display: flex; gap: 10px; margin-top: 16px; }
+  .modal-actions .btn { width: auto; flex: 1; }
+
+  /* ─── SECURITY LOG ─── */
+  .security-log {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px; max-height: 220px; overflow-y: auto;
+  }
+  .log-entry {
+    font-family: var(--mono); font-size: 10px; color: var(--muted);
+    padding: 4px 0; border-bottom: 1px solid var(--border);
+    display: flex; gap: 8px;
+  }
+  .log-entry:last-child { border: none; }
+  .log-time { color: var(--accent); flex-shrink: 0; }
+  .log-ok   { color: var(--green); }
+  .log-fail { color: var(--danger); }
+  .log-warn { color: var(--warn); }
+
+  /* ─── PUBLIC VIEWER ─── */
+  .viewer-report {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px; margin-bottom: 10px;
+  }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+  .text-center { text-align: center; }
+  .text-muted { color: var(--muted); font-size: 12px; }
+  .mt-8 { margin-top: 8px; }
+  .mt-12 { margin-top: 12px; }
+
+  .empty-state { text-align: center; padding: 32px; color: var(--muted); font-size: 13px; }
+  .empty-icon { font-size: 32px; margin-bottom: 8px; }
+
+  .sign-out-btn {
+    background: none; border: 1px solid var(--border); border-radius: 6px;
+    padding: 6px 12px; cursor: pointer; font-family: var(--mono);
+    font-size: 10px; color: var(--muted); letter-spacing: 1px;
+    transition: all .2s;
+  }
+  .sign-out-btn:hover { border-color: var(--danger); color: var(--danger); }
+
+  .footer {
+    text-align: center; font-family: var(--mono); font-size: 10px;
+    color: var(--muted); padding: 20px 0; letter-spacing: 2px;
+  }
+
+  /* ─── AI ANALYZING SPINNER ─── */
+  .spinner {
+    display: inline-block; width: 14px; height: 14px;
+    border: 2px solid var(--border); border-top-color: var(--accent);
+    border-radius: 50%; animation: spin .6s linear infinite;
+    vertical-align: middle; margin-right: 6px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-icon"></div>
+    <div class="logo-title">CrimeWatch</div>
+    <div class="logo-sub">Secure Reporting Portal</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- PANEL: SELECT PORTAL                       -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="panel-select" class="panel active">
+    <div class="card">
+      <div class="card-title">▸ System Access</div>
+      <div class="card-heading">Select Portal</div>
+      <div class="safety-badge">
+        <div class="dot"></div>
+        MAXIMUM SECURITY MODE — AI FRAUD DETECTION ACTIVE
+      </div>
+      <div class="portal-grid">
+        <div class="portal-btn" onclick="showPanel('panel-user-login')">
+          <div class="icon">👤</div>
+          <div class="label">User</div>
+          <div class="desc">File reports</div>
+        </div>
+        <div class="portal-btn" onclick="showPanel('panel-admin-login')">
+          <div class="icon">🛡️</div>
+          <div class="label">Admin</div>
+          <div class="desc">Manage</div>
+        </div>
+        <div class="portal-btn" onclick="showPanel('panel-viewer-login')">
+          <div class="icon">👁️</div>
+          <div class="label">View</div>
+          <div class="desc">Public reports</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- PANEL: USER LOGIN                          -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="panel-user-login" class="panel">
+    <div class="card">
+      <div class="card-title">▸ User Portal</div>
+      <div class="card-heading">Sign In</div>
+
+      <div id="login-alert" class="alert alert-danger"></div>
+      <div id="lockout-alert" class="alert alert-warn"></div>
+
+      <div class="form-group">
+        <label>Username</label>
+        <input id="login-user" type="text" placeholder="Enter username" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input id="login-pass" type="password" placeholder="Enter password">
+      </div>
+
+      <!-- CAPTCHA -->
+      <div class="captcha-box">
+        <input type="checkbox" class="captcha-check" id="captcha-login" onchange="checkCaptcha('captcha-login', 'btn-login')">
+        <div class="captcha-label">I am a real person filing a genuine report</div>
+        <div class="captcha-logo">🔒 VERIFY</div>
+      </div>
+
+      <button class="btn btn-primary" id="btn-login" onclick="doLogin()" disabled>SIGN IN</button>
+      <button class="link-btn" onclick="showPanel('panel-register')">No account? Register here</button>
+      <button class="btn btn-ghost" onclick="showPanel('panel-select')">← Back</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- PANEL: REGISTER                            -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="panel-register" class="panel">
+    <div class="card">
+      <div class="card-title">▸ New Account</div>
+      <div class="card-heading">Register</div>
+
+      <div id="reg-alert" class="alert alert-danger"></div>
+
+      <div class="alert alert-info show" style="margin-bottom:14px">
+        ℹ️ Your email will be verified before you can file reports. Phone verification is also required for identity confirmation.
+      </div>
+
+      <div class="form-group">
+        <label>Full Name</label>
+        <input id="reg-name" type="text" placeholder="Your real name">
+      </div>
+      <div class="form-group">
+        <label>Username</label>
+        <input id="reg-user" type="text" placeholder="Choose a username">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input id="reg-email" type="email" placeholder="your@email.com">
+      </div>
+      <div class="form-group">
+        <label>Phone Number (for SMS verification)</label>
+        <input id="reg-phone" type="tel" placeholder="+1 555 000 0000">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input id="reg-pass" type="password" placeholder="Min 8 chars, uppercase + number" oninput="checkPwStrength(this.value)">
+        <div class="strength-bar"><div class="strength-fill" id="pw-strength"></div></div>
+        <div id="pw-strength-label" class="text-muted mt-8"></div>
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input id="reg-pass2" type="password" placeholder="Repeat password">
+      </div>
+      <div class="form-group">
+        <label>4-Digit PIN (optional)</label>
+        <input id="reg-pin" type="text" maxlength="4" placeholder="Quick access PIN">
+      </div>
+
+      <div class="captcha-box">
+        <input type="checkbox" class="captcha-check" id="captcha-reg" onchange="checkCaptcha('captcha-reg', 'btn-register')">
+        <div class="captcha-label">I agree to only file accurate, truthful reports</div>
+        <div class="captcha-logo">🔒 VERIFY</div>
+      </div>
+
+      <button class="btn btn-primary" id="btn-register" onclick="doRegister()" disabled>CREATE ACCOUNT</button>
+      <button class="link-btn" onclick="showPanel('panel-user-login')">Already have an account? Sign in</button>
+      <button class="btn btn-ghost" onclick="showPanel('panel-select')">← Back</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- PANEL: EMAIL VERIFY                        -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="panel-verify-email" class="panel">
+    <div class="card">
+      <div class="card-title">▸ Verification</div>
+      <div class="card-heading">Verify Email</div>
+      <div class="alert alert-success show">✉️ A 6-digit code has been sent to your email.</div>
+      <div class="form-group">
+        <label>Email OTP Code</label>
+        <input id="email-otp" type="text" maxlength="6" placeholder="123456" style="letter-spacing:6px;font-size:20px;text-align:center;">
+      </div>
+      <div id="email-otp-alert" class="alert alert-danger"></div>
+      <button class="btn btn-primary" onclick="verifyEmailOtp()">VERIFY EMAIL</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- PANEL: PHONE VERIFY                        -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="panel-verify-phone" class="panel">
+    <div class="card">
+      <div class="card-title">▸ Verification</div>
+      <div class="card-heading">Verify Phone</div>
+      <div class="alert alert-success show">📱 An SMS code has been sent to your phone number.</div>
+      <div class="form-group">
+        <label>SMS OTP Code</label>
+        <input id="phone-otp" type="text" maxlength="6" placeholder="123456" style="letter-spacing:6px;font-size:20px;text-align:center;">
+      </div>
+      <div id="phone-otp-alert" class="alert alert-danger"></div>
+      <button class="btn btn-primary" onclick="verifyPhoneOtp()">VERIFY PHONE</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- PANEL: USER PORTAL                         -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="panel-user-portal" class="panel">
+    <div class="portal-header">
+      <div>
+        <div class="portal-user" id="portal-username">—</div>
+        <div class="portal-role">🟢 VERIFIED USER</div>
+      </div>
+      <button class="sign-out-btn" onclick="signOut()">SIGN OUT</button>
+    </div>
+
+    <div class="portal-tabs">
+      <button class="tab-btn active" onclick="switchTab('tab-file', this)">📋 File Report</button>
+      <button class="tab-btn" onclick="switchTab('tab-my-reports', this)">📁 My Reports</button>
+    </div>
+
+    <!-- TAB: FILE REPORT -->
+    <div id="tab-file" class="tab-content active">
+
+      <div id="rate-limit-bar" class="cooldown-bar">
+        <div class="cooldown-label">⏱ COOLDOWN ACTIVE — <span id="cooldown-txt">0s</span> remaining before next report</div>
+        <div class="cooldown-track"><div class="cooldown-fill" id="cooldown-fill" style="width:100%"></div></div>
+      </div>
+
+      <div id="daily-limit-warn" class="alert alert-warn">
+        ⚠️ Daily limit: You have used <span id="daily-used">0</span>/3 reports today.
+      </div>
+
+      <div id="submit-alert" class="alert alert-danger"></div>
+
+      <div class="card">
+        <div class="card-title">▸ New Report</div>
+        <div class="card-heading">File a Crime Report</div>
+
+        <div class="form-group">
+          <label>Crime Type *</label>
+          <select id="crime-type">
+            <option value="">— Select —</option>
+            <option>Theft / Burglary</option>
+            <option>Assault / Violence</option>
+            <option>Vandalism</option>
+            <option>Drug Activity</option>
+            <option>Fraud / Scam</option>
+            <option>Suspicious Activity</option>
+            <option>Traffic Incident</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Date & Time of Incident *</label>
+          <input id="crime-date" type="datetime-local">
+        </div>
+
+        <div class="form-group">
+          <label>Location (be specific: street, landmark) *</label>
+          <input id="crime-loc" type="text" placeholder="e.g. Corner of Main St & 5th Ave">
+        </div>
+
+        <div class="form-group">
+          <label>Description (min 30 characters) *</label>
+          <textarea id="crime-desc" placeholder="Describe exactly what happened, who was involved, and what you witnessed..."></textarea>
+          <div id="desc-count" class="text-muted mt-8">0 / 30 min characters</div>
+        </div>
+
+        <div class="form-group">
+          <label>Evidence Image (strongly recommended)</label>
+          <div class="upload-zone" onclick="document.getElementById('evidence-file').click()">
+            <input type="file" id="evidence-file" accept="image/*" onchange="handleEvidenceUpload(this)" style="display:none">
+            <div class="upload-label" id="upload-label">📎 Click to upload photo evidence</div>
+            <img class="upload-preview" id="upload-preview">
+          </div>
+        </div>
+
+        <!-- AI SCAN RESULTS -->
+        <div class="ai-scan" id="ai-scan-box">
+          <div class="ai-scan-title">🤖 AI FRAUD DETECTION SCAN</div>
+          <div id="ai-scan-results"></div>
+        </div>
+
+        <div class="captcha-box">
+          <input type="checkbox" class="captcha-check" id="captcha-report" onchange="checkCaptcha('captcha-report', 'btn-submit')">
+          <div class="captcha-label">I confirm this report is truthful and accurate</div>
+          <div class="captcha-logo">🔒 VERIFY</div>
+        </div>
+
+        <button class="btn btn-primary" id="btn-submit" onclick="submitReport()" disabled>SUBMIT REPORT</button>
+
+        <div class="alert alert-warn show mt-12" style="font-size:11px">
+          ⚠️ Filing a false report is a criminal offence. All submissions are AI-screened, IP-logged, and reviewed by human moderators.
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: MY REPORTS -->
+    <div id="tab-my-reports" class="tab-content">
+      <div id="my-reports-list">
+        <div class="empty-state">
+          <div class="empty-icon">📋</div>
+          No reports filed yet
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- PANEL: SUBMIT SUCCESS                      -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="panel-success" class="panel">
+    <div class="card">
+      <div class="success-screen">
+        <div class="success-icon">✅</div>
+        <div class="card-title">Report Filed</div>
+        <div class="card-heading">Submitted!</div>
+        <div class="text-muted">Your Reference Code</div>
+        <div class="ref-code" id="ref-code">CW-000000</div>
+        <div class="text-muted">Save this code. Your report is pending AI screening and admin review.</div>
+        <div class="ai-scan show mt-12" id="submit-scan-summary"></div>
+      </div>
+      <button class="btn btn-primary mt-12" onclick="showPanel('panel-user-portal'); switchTab('tab-my-reports', null)">VIEW MY REPORTS</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- PANEL: ADMIN LOGIN                         -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="panel-admin-login" class="panel">
+    <div class="card">
+      <div class="card-title">▸ Admin Portal</div>
+      <div class="card-heading">Admin Access</div>
+      <div class="alert alert-warn show">🔒 Restricted — Authorised personnel only</div>
+      <div id="admin-login-alert" class="alert alert-danger"></div>
+      <div class="form-group">
+        <label>Admin Password</label>
+        <input id="admin-pass" type="password" placeholder="Admin password">
+      </div>
+      <div class="captcha-box">
+        <input type="checkbox" class="captcha-check" id="captcha-admin" onchange="checkCaptcha('captcha-admin', 'btn-admin-login')">
+        <div class="captcha-label">I am an authorised administrator</div>
+        <div class="captcha-logo">🔒 VERIFY</div>
+      </div>
+      <button class="btn btn-primary" id="btn-admin-login" onclick="doAdminLogin()" disabled>ACCESS ADMIN PANEL</button>
+      <button class="btn btn-ghost" onclick="showPanel('panel-select')">← Back</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- PANEL: ADMIN PORTAL                        -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="panel-admin-portal" class="panel">
+    <div class="portal-header">
+      <div>
+        <div class="portal-user">Admin Panel</div>
+        <div class="portal-role">🛡️ ADMINISTRATOR — FULL ACCESS</div>
+      </div>
+      <button class="sign-out-btn" onclick="signOut()">SIGN OUT</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="admin-stats">
+      <div class="stat-box">
+        <div class="stat-num" id="stat-total" style="color:var(--accent)">0</div>
+        <div class="stat-label">TOTAL</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="stat-pending" style="color:var(--warn)">0</div>
+        <div class="stat-label">PENDING</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="stat-approved" style="color:var(--green)">0</div>
+        <div class="stat-label">APPROVED</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="stat-flagged" style="color:var(--danger)">0</div>
+        <div class="stat-label">FLAGGED</div>
+      </div>
+    </div>
+
+    <div class="filter-tabs">
+      <button class="filter-btn active" onclick="filterReports('all', this)">All</button>
+      <button class="filter-btn" onclick="filterReports('pending', this)">Pending</button>
+      <button class="filter-btn" onclick="filterReports('approved', this)">Approved</button>
+      <button class="filter-btn" onclick="filterReports('rejected', this)">Rejected</button>
+      <button class="filter-btn" onclick="filterReports('solved', this)">Solved</button>
+      <button class="filter-btn" onclick="filterReports('flagged', this)" style="color:var(--danger);border-color:rgba(239,68,68,.3)">🚩 Flagged</button>
+    </div>
+
+    <div id="admin-reports-list">
+      <div class="empty-state"><div class="empty-icon">📋</div>No reports found</div>
+    </div>
+
+    <!-- Security Log -->
+    <div class="card mt-12">
+      <div class="card-title">▸ Security Log</div>
+      <div class="security-log" id="security-log">
+        <div class="log-entry"><span class="log-time">--:--:--</span><span>System ready</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- PANEL: VIEWER LOGIN                        -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="panel-viewer-login" class="panel">
+    <div class="card">
+      <div class="card-title">▸ View Portal</div>
+      <div class="card-heading">Viewer Access</div>
+      <div class="form-group">
+        <label>Viewer Password</label>
+        <input id="viewer-pass" type="password" placeholder="Viewer password">
+      </div>
+      <div class="captcha-box">
+        <input type="checkbox" class="captcha-check" id="captcha-viewer" onchange="checkCaptcha('captcha-viewer', 'btn-viewer-login')">
+        <div class="captcha-label">I am not a robot</div>
+        <div class="captcha-logo">🔒 VERIFY</div>
+      </div>
+      <button class="btn btn-primary" id="btn-viewer-login" onclick="doViewerLogin()" disabled>ACCESS REPORTS</button>
+      <button class="btn btn-ghost" onclick="showPanel('panel-select')">← Back</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- PANEL: VIEWER PORTAL                       -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="panel-viewer-portal" class="panel">
+    <div class="portal-header">
+      <div>
+        <div class="portal-user">Public Reports</div>
+        <div class="portal-role">👁️ VIEWER — APPROVED ONLY</div>
+      </div>
+      <button class="sign-out-btn" onclick="signOut()">SIGN OUT</button>
+    </div>
+    <div id="viewer-reports-list">
+      <div class="empty-state"><div class="empty-icon">🔒</div>No approved reports yet</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">© 2024 CrimeWatch — Maximum Security Mode — All transmissions encrypted</div>
+
+</div><!-- /wrap -->
+
+<!-- ══════════════════════════════════════════ -->
+<!-- REJECTION MODAL                           -->
+<!-- ══════════════════════════════════════════ -->
+<div class="modal-overlay" id="reject-modal">
+  <div class="modal">
+    <div class="modal-title">Reject Report</div>
+    <div class="form-group">
+      <label>Reason for Rejection</label>
+      <select id="reject-reason">
+        <option>Insufficient evidence</option>
+        <option>Vague description</option>
+        <option>Duplicate report</option>
+        <option>Suspected false report</option>
+        <option>Incorrect location</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Admin Notes (sent to user)</label>
+      <textarea id="reject-notes" placeholder="Explain why this was rejected..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="confirmReject()" style="background:var(--danger)">REJECT</button>
+      <button class="btn btn-ghost" onclick="closeModal()">CANCEL</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SCRIPT                                    -->
+<!-- ══════════════════════════════════════════ -->
+<script>
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+const DB = {
+  users: [],
+  reports: [],
+  securityLog: []
+};
+
+let currentUser = null;
+let currentPortal = null;
+let rejectingId = null;
+let cooldownTimer = null;
+
+const ADMIN_PASS = 'admin123';
+const VIEWER_PASS = 'viewer123';
+const MAX_DAILY_REPORTS = 3;
+const COOLDOWN_SECONDS = 60; // 1 min cooldown between reports
+const MAX_LOGIN_ATTEMPTS = 5;
+const LOCKOUT_MINUTES = 15;
+
+const loginAttempts = {}; // username → {count, lockedUntil}
+
+// ─────────────────────────────────────────────
+// PANEL NAVIGATION
+// ─────────────────────────────────────────────
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'tab-my-reports') renderMyReports();
+}
+
+// ─────────────────────────────────────────────
+// CAPTCHA
+// ─────────────────────────────────────────────
+function checkCaptcha(checkId, btnId) {
+  const checked = document.getElementById(checkId).checked;
+  const btn = document.getElementById(btnId);
+  if (btn) btn.disabled = !checked;
+}
+
+// ─────────────────────────────────────────────
+// PASSWORD STRENGTH
+// ─────────────────────────────────────────────
+function checkPwStrength(pw) {
+  let score = 0;
+  if (pw.length >= 8) score++;
+  if (/[A-Z]/.test(pw)) score++;
+  if (/[0-9]/.test(pw)) score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+  if (pw.length >= 12) score++;
+
+  const bar = document.getElementById('pw-strength');
+  const label = document.getElementById('pw-strength-label');
+  const colors = ['#ef4444','#f59e0b','#eab308','#22c55e','#16a34a'];
+  const labels = ['Very Weak','Weak','Fair','Strong','Very Strong'];
+  bar.style.width = (score * 20) + '%';
+  bar.style.background = colors[score - 1] || '#ef4444';
+  label.textContent = labels[score - 1] || 'Too short';
+}
+
+// ─────────────────────────────────────────────
+// SECURITY LOG
+// ─────────────────────────────────────────────
+function addLog(type, msg) {
+  const time = new Date().toLocaleTimeString();
+  DB.securityLog.unshift({ time, type, msg });
+  const log = document.getElementById('security-log');
+  if (log) {
+    const entry = document.createElement('div');
+    entry.className = `log-entry log-${type}`;
+    entry.innerHTML = `<span class="log-time">${time}</span><span>${msg}</span>`;
+    log.prepend(entry);
+  }
+}
+
+// ─────────────────────────────────────────────
+// REGISTER
+// ─────────────────────────────────────────────
+function doRegister() {
+  const name  = document.getElementById('reg-name').value.trim();
+  const user  = document.getElementById('reg-user').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const phone = document.getElementById('reg-phone').value.trim();
+  const pass  = document.getElementById('reg-pass').value;
+  const pass2 = document.getElementById('reg-pass2').value;
+  const pin   = document.getElementById('reg-pin').value;
+  const alert = document.getElementById('reg-alert');
+
+  const showErr = m => { alert.textContent = m; alert.classList.add('show'); };
+  alert.classList.remove('show');
+
+  if (!name || !user || !email || !phone || !pass) return showErr('All fields except PIN are required.');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showErr('Invalid email format.');
+  if (!/^\+?[\d\s\-]{7,15}$/.test(phone)) return showErr('Invalid phone number format.');
+  if (pass.length < 8) return showErr('Password must be at least 8 characters.');
+  if (!/[A-Z]/.test(pass)) return showErr('Password must contain at least one uppercase letter.');
+  if (!/[0-9]/.test(pass)) return showErr('Password must contain a number.');
+  if (pass !== pass2) return showErr('Passwords do not match.');
+  if (pin && !/^\d{4}$/.test(pin)) return showErr('PIN must be exactly 4 digits.');
+  if (DB.users.find(u => u.username === user)) return showErr('Username already taken.');
+  if (DB.users.find(u => u.email === email)) return showErr('Email already registered.');
+
+  // Simulate OTP send
+  window._pendingReg = { name, username: user, email, phone, password: pass, pin,
+    emailOtp: String(Math.floor(100000 + Math.random() * 900000)),
+    phoneOtp: String(Math.floor(100000 + Math.random() * 900000)),
+    emailVerified: false, phoneVerified: false
+  };
+
+  addLog('ok', `REG INIT: ${user} — email OTP sent`);
+  showPanel('panel-verify-email');
+}
+
+// ─────────────────────────────────────────────
+// EMAIL OTP VERIFY
+// ─────────────────────────────────────────────
+function verifyEmailOtp() {
+  const val = document.getElementById('email-otp').value.trim();
+  const alert = document.getElementById('email-otp-alert');
+  alert.classList.remove('show');
+
+  if (!window._pendingReg) return;
+
+  // Demo: accept the shown OTP or "000000"
+  if (val === window._pendingReg.emailOtp || val === '000000') {
+    window._pendingReg.emailVerified = true;
+    addLog('ok', `EMAIL VERIFIED: ${window._pendingReg.username}`);
+    showPanel('panel-verify-phone');
+  } else {
+    alert.textContent = `Invalid code. (Demo: use ${window._pendingReg.emailOtp})`;
+    alert.classList.add('show');
+    addLog('fail', `EMAIL OTP FAIL: ${window._pendingReg.username}`);
+  }
+}
+
+// ─────────────────────────────────────────────
+// PHONE OTP VERIFY
+// ─────────────────────────────────────────────
+function verifyPhoneOtp() {
+  const val = document.getElementById('phone-otp').value.trim();
+  const alert = document.getElementById('phone-otp-alert');
+  alert.classList.remove('show');
+
+  if (!window._pendingReg) return;
+
+  if (val === window._pendingReg.phoneOtp || val === '000000') {
+    window._pendingReg.phoneVerified = true;
+    const reg = window._pendingReg;
+
+    DB.users.push({
+      name: reg.name, username: reg.username,
+      email: reg.email, phone: reg.phone,
+      password: reg.password, pin: reg.pin,
+      emailVerified: true, phoneVerified: true,
+      credibility: 100, reportsTotal: 0,
+      reportsApproved: 0, reportsRejected: 0,
+      banned: false, registeredAt: new Date().toISOString(),
+      dailyReports: {}, lastReportTime: null
+    });
+
+    window._pendingReg = null;
+    addLog('ok', `ACCOUNT CREATED: ${reg.username} — fully verified`);
+    showPanel('panel-user-login');
+
+    const a = document.getElementById('login-alert');
+    a.className = 'alert alert-success show';
+    a.textContent = '✅ Account created! Email and phone verified. You can now sign in.';
+  } else {
+    alert.textContent = `Invalid code. (Demo: use ${window._pendingReg.phoneOtp})`;
+    alert.classList.add('show');
+    addLog('fail', `PHONE OTP FAIL: ${window._pendingReg.username}`);
+  }
+}
+
+// ─────────────────────────────────────────────
+// LOGIN
+// ─────────────────────────────────────────────
+function doLogin() {
+  const user = document.getElementById('login-user').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  const loginAlert = document.getElementById('login-alert');
+  const lockAlert  = document.getElementById('lockout-alert');
+  loginAlert.classList.remove('show');
+  lockAlert.classList.remove('show');
+
+  // Lockout check
+  if (!loginAttempts[user]) loginAttempts[user] = { count: 0, lockedUntil: null };
+  const att = loginAttempts[user];
+  if (att.lockedUntil && new Date() < new Date(att.lockedUntil)) {
+    const mins = Math.ceil((new Date(att.lockedUntil) - new Date()) / 60000);
+    lockAlert.textContent = `🔒 Account locked due to too many attempts. Try again in ${mins} minute(s).`;
+    lockAlert.classList.add('show');
+    addLog('fail', `LOCKOUT: ${user}`);
+    return;
+  }
+
+  const found = DB.users.find(u => u.username === user && u.password === pass);
+  if (!found) {
+    att.count++;
+    const rem = MAX_LOGIN_ATTEMPTS - att.count;
+    if (att.count >= MAX_LOGIN_ATTEMPTS) {
+      att.lockedUntil = new Date(Date.now() + LOCKOUT_MINUTES * 60000).toISOString();
+      loginAlert.textContent = `❌ Too many failed attempts. Account locked for ${LOCKOUT_MINUTES} minutes.`;
+      addLog('fail', `LOCKED: ${user} — ${MAX_LOGIN_ATTEMPTS} failed attempts`);
+    } else {
+      loginAlert.textContent = `❌ Invalid credentials. ${rem} attempt(s) remaining before lockout.`;
+      addLog('fail', `LOGIN FAIL: ${user} (${att.count}/${MAX_LOGIN_ATTEMPTS})`);
+    }
+    loginAlert.classList.add('show');
+    return;
+  }
+
+  if (found.banned) {
+    loginAlert.textContent = '🚫 Your account has been suspended for filing false reports.';
+    loginAlert.classList.add('show');
+    addLog('fail', `LOGIN BLOCKED: ${user} — account banned`);
+    return;
+  }
+
+  att.count = 0;
+  att.lockedUntil = null;
+  currentUser = found;
+  currentPortal = 'user';
+
+  document.getElementById('portal-username').textContent = found.name;
+  addLog('ok', `LOGIN: ${user}`);
+  updateDailyLimitUI();
+  showPanel('panel-user-portal');
+}
+
+// ─────────────────────────────────────────────
+// ADMIN LOGIN
+// ─────────────────────────────────────────────
+function doAdminLogin() {
+  const pass = document.getElementById('admin-pass').value;
+  const alert = document.getElementById('admin-login-alert');
+  if (pass === ADMIN_PASS) {
+    currentPortal = 'admin';
+    addLog('ok', 'ADMIN LOGIN');
+    renderAdminReports('all');
+    updateAdminStats();
+    showPanel('panel-admin-portal');
+  } else {
+    alert.textContent = '❌ Invalid admin password.';
+    alert.classList.add('show');
+    addLog('fail', 'ADMIN LOGIN FAIL');
+  }
+}
+
+// ─────────────────────────────────────────────
+// VIEWER LOGIN
+// ─────────────────────────────────────────────
+function doViewerLogin() {
+  const pass = document.getElementById('viewer-pass').value;
+  if (pass === VIEWER_PASS) {
+    currentPortal = 'viewer';
+    renderViewerReports();
+    showPanel('panel-viewer-portal');
+  } else {
+    alert('❌ Invalid viewer password.');
+  }
+}
+
+function signOut() {
+  currentUser = null;
+  currentPortal = null;
+  showPanel('panel-select');
+}
+
+// ─────────────────────────────────────────────
+// AI FRAUD SCAN
+// ─────────────────────────────────────────────
+async function runAIScan(crimeType, location, desc, hasEvidence) {
+  // Build checks locally (no API key needed — rule-based)
+  const results = [];
+
+  // 1. Description length
+  if (desc.length < 30) {
+    results.push({ icon: '✗', cls: 'fail', text: 'Description too vague (< 30 chars)' });
+  } else if (desc.length < 80) {
+    results.push({ icon: '⚠', cls: 'warn', text: 'Description is brief — more detail recommended' });
+  } else {
+    results.push({ icon: '✓', cls: 'pass', text: 'Description has sufficient detail' });
+  }
+
+  // 2. Future date
+  const incidentDate = new Date(document.getElementById('crime-date').value);
+  const now = new Date();
+  if (incidentDate > now) {
+    results.push({ icon: '✗', cls: 'fail', text: 'Date is in the future — invalid' });
+  } else {
+    results.push({ icon: '✓', cls: 'pass', text: 'Incident date is valid' });
+  }
+
+  // 3. Location vagueness
+  if (location.length < 8 || /^(here|there|somewhere|idk|unknown)$/i.test(location.trim())) {
+    results.push({ icon: '✗', cls: 'fail', text: 'Location is too vague or invalid' });
+  } else {
+    results.push({ icon: '✓', cls: 'pass', text: 'Location appears specific' });
+  }
+
+  // 4. Evidence
+  if (!hasEvidence) {
+    results.push({ icon: '⚠', cls: 'warn', text: 'No evidence uploaded — credibility reduced' });
+  } else {
+    results.push({ icon: '✓', cls: 'pass', text: 'Evidence image attached' });
+  }
+
+  // 5. Spam keywords
+  const spamWords = ['test', 'testing', 'hello', 'lol', 'fake', 'asdf', 'qwerty', 'nothing'];
+  const hasSpam = spamWords.some(w => desc.toLowerCase().includes(w) || location.toLowerCase().includes(w));
+  if (hasSpam) {
+    results.push({ icon: '✗', cls: 'fail', text: 'Suspicious keywords detected in report' });
+  } else {
+    results.push({ icon: '✓', cls: 'pass', text: 'No spam keywords detected' });
+  }
+
+  // 6. Duplicate check (same user, same type + location in last 24h)
+  if (currentUser) {
+    const todayStr = new Date().toDateString();
+    const dups = DB.reports.filter(r =>
+      r.filedBy === currentUser.username &&
+      r.crimeType === crimeType &&
+      r.location.toLowerCase() === location.toLowerCase() &&
+      new Date(r.submittedAt).toDateString() === todayStr
+    );
+    if (dups.length > 0) {
+      results.push({ icon: '✗', cls: 'fail', text: 'Possible duplicate report detected' });
+    } else {
+      results.push({ icon: '✓', cls: 'pass', text: 'No duplicate reports found' });
+    }
+  }
+
+  // 7. User credibility
+  if (currentUser) {
+    if (currentUser.credibility < 50) {
+      results.push({ icon: '⚠', cls: 'warn', text: `User credibility low (${currentUser.credibility}%) — flagged for review` });
+    } else {
+      results.push({ icon: '✓', cls: 'pass', text: `User credibility: ${currentUser.credibility}%` });
+    }
+  }
+
+  return results;
+}
+
+// ─────────────────────────────────────────────
+// EVIDENCE UPLOAD
+// ─────────────────────────────────────────────
+function handleEvidenceUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const preview = document.getElementById('upload-preview');
+    preview.src = e.target.result;
+    preview.style.display = 'block';
+    document.getElementById('upload-label').textContent = '✅ ' + file.name;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ─────────────────────────────────────────────
+// RATE LIMITING / DAILY LIMIT
+// ─────────────────────────────────────────────
+function getDailyUsed() {
+  if (!currentUser) return 0;
+  const today = new Date().toDateString();
+  return (currentUser.dailyReports[today] || 0);
+}
+
+function updateDailyLimitUI() {
+  const used = getDailyUsed();
+  document.getElementById('daily-used').textContent = used;
+  const warn = document.getElementById('daily-limit-warn');
+  if (used >= MAX_DAILY_REPORTS) {
+    warn.className = 'alert alert-danger show';
+    warn.innerHTML = `🚫 Daily limit reached (${used}/${MAX_DAILY_REPORTS}). You cannot file more reports today.`;
+    document.getElementById('btn-submit').disabled = true;
+  } else {
+    warn.className = 'alert alert-warn show';
+    warn.innerHTML = `⚠️ Daily limit: You have used <span id="daily-used">${used}</span>/${MAX_DAILY_REPORTS} reports today.`;
+  }
+}
+
+function startCooldown() {
+  let secs = COOLDOWN_SECONDS;
+  const bar = document.getElementById('rate-limit-bar');
+  const fill = document.getElementById('cooldown-fill');
+  const txt = document.getElementById('cooldown-txt');
+  bar.classList.add('show');
+  document.getElementById('btn-submit').disabled = true;
+
+  const interval = setInterval(() => {
+    secs--;
+    txt.textContent = secs + 's';
+    fill.style.width = ((secs / COOLDOWN_SECONDS) * 100) + '%';
+    if (secs <= 0) {
+      clearInterval(interval);
+      bar.classList.remove('show');
+      if (getDailyUsed() < MAX_DAILY_REPORTS) {
+        document.getElementById('btn-submit').disabled =
+          !document.getElementById('captcha-report').checked;
+      }
+    }
+  }, 1000);
+}
+
+// ─────────────────────────────────────────────
+// SUBMIT REPORT
+// ─────────────────────────────────────────────
+async function submitReport() {
+  const crimeType = document.getElementById('crime-type').value;
+  const date      = document.getElementById('crime-date').value;
+  const location  = document.getElementById('crime-loc').value.trim();
+  const desc      = document.getElementById('crime-desc').value.trim();
+  const evidence  = document.getElementById('upload-preview').src;
+  const hasEvidence = document.getElementById('upload-preview').style.display === 'block';
+  const submitAlert = document.getElementById('submit-alert');
+  submitAlert.classList.remove('show');
+
+  if (!crimeType) return showAlert(submitAlert, '❌ Please select a crime type.');
+  if (!date)      return showAlert(submitAlert, '❌ Please enter the date and time.');
+  if (!location)  return showAlert(submitAlert, '❌ Please enter the location.');
+  if (desc.length < 30) return showAlert(submitAlert, `❌ Description must be at least 30 characters (${desc.length}/30).`);
+  if (getDailyUsed() >= MAX_DAILY_REPORTS) return showAlert(submitAlert, '🚫 Daily report limit reached.');
+
+  // Show AI scan box
+  const scanBox = document.getElementById('ai-scan-box');
+  const scanResults = document.getElementById('ai-scan-results');
+  scanBox.classList.add('show');
+  scanResults.innerHTML = `<div class="ai-scan-item"><span class="spinner"></span> Analyzing report...</div>`;
+
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.textContent = '🔍 AI SCANNING...';
+
+  await new Promise(r => setTimeout(r, 1400)); // simulate delay
+
+  const results = await runAIScan(crimeType, location, desc, hasEvidence);
+  const failCount = results.filter(r => r.cls === 'fail').length;
+  const warnCount = results.filter(r => r.cls === 'warn').length;
+
+  scanResults.innerHTML = results.map(r =>
+    `<div class="ai-scan-item ${r.cls}"><span class="icon">${r.icon}</span>${r.text}</div>`
+  ).join('');
+
+  if (failCount > 0) {
+    btn.textContent = 'SUBMIT REPORT';
+    btn.disabled = false;
+    showAlert(submitAlert, `🤖 AI scan found ${failCount} issue(s). Please fix them before submitting.`);
+    return;
+  }
+
+  // Determine if flagged for extra review
+  const flagged = warnCount >= 2 || currentUser.credibility < 50;
+
+  // Create report
+  const refCode = 'CW-' + String(Math.floor(Math.random() * 999999)).padStart(6, '0');
+  const report = {
+    id: refCode,
+    crimeType, location, date, description: desc,
+    evidence: hasEvidence ? evidence : null,
+    filedBy: currentUser.username,
+    filedByName: currentUser.name,
+    status: 'pending',
+    flagged,
+    aiScanFails: failCount,
+    aiScanWarns: warnCount,
+    submittedAt: new Date().toISOString(),
+    adminNotes: null
+  };
+  DB.reports.push(report);
+
+  // Update user
+  currentUser.reportsTotal++;
+  const today = new Date().toDateString();
+  currentUser.dailyReports[today] = (currentUser.dailyReports[today] || 0) + 1;
+  currentUser.lastReportTime = Date.now();
+
+  addLog('ok', `REPORT FILED: ${refCode} by ${currentUser.username}${flagged ? ' [FLAGGED]' : ''}`);
+  if (flagged) addLog('warn', `FLAGGED FOR REVIEW: ${refCode} — low credibility or warnings`);
+
+  // Show summary
+  document.getElementById('ref-code').textContent = refCode;
+  const summary = document.getElementById('submit-scan-summary');
+  summary.innerHTML = `<div class="ai-scan-title">🤖 AI SCAN SUMMARY</div>` +
+    results.map(r => `<div class="ai-scan-item ${r.cls}"><span class="icon">${r.icon}</span>${r.text}</div>`).join('') +
+    `<div class="ai-scan-item ${flagged ? 'warn' : 'pass'}"><span class="icon">${flagged ? '⚠' : '✓'}</span>${flagged ? 'Flagged for extra admin review' : 'Report queued for standard review'}</div>`;
+
+  updateDailyLimitUI();
+  startCooldown();
+  resetReportForm();
+  showPanel('panel-success');
+}
+
+function resetReportForm() {
+  document.getElementById('crime-type').value = '';
+  document.getElementById('crime-date').value = '';
+  document.getElementById('crime-loc').value = '';
+  document.getElementById('crime-desc').value = '';
+  document.getElementById('upload-preview').style.display = 'none';
+  document.getElementById('upload-label').textContent = '📎 Click to upload photo evidence';
+  document.getElementById('ai-scan-box').classList.remove('show');
+  document.getElementById('captcha-report').checked = false;
+  document.getElementById('btn-submit').textContent = 'SUBMIT REPORT';
+}
+
+// ─────────────────────────────────────────────
+// DESCRIPTION CHAR COUNT
+// ─────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const desc = document.getElementById('crime-desc');
+  if (desc) {
+    desc.addEventListener('input', () => {
+      const len = desc.value.length;
+      const el = document.getElementById('desc-count');
+      el.textContent = `${len} / 30 min characters`;
+      el.style.color = len >= 30 ? 'var(--green)' : 'var(--danger)';
+    });
+  }
+});
+
+// ─────────────────────────────────────────────
+// MY REPORTS
+// ─────────────────────────────────────────────
+function renderMyReports() {
+  const container = document.getElementById('my-reports-list');
+  const mine = DB.reports.filter(r => r.filedBy === currentUser?.username);
+  if (!mine.length) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div>No reports filed yet</div>`;
+    return;
+  }
+  container.innerHTML = mine.reverse().map(r => `
+    <div class="report-card">
+      <div class="report-card-head">
+        <div class="report-type">${r.crimeType}</div>
+        <div class="report-status status-${r.status}">${r.status.toUpperCase()}</div>
+      </div>
+      <div class="report-loc">📍 ${r.location}</div>
+      <div class="report-desc">${r.description.slice(0, 120)}${r.description.length > 120 ? '...' : ''}</div>
+      ${r.adminNotes ? `<div class="alert alert-warn show mt-8" style="font-size:11px">Admin note: ${r.adminNotes}</div>` : ''}
+      <div class="report-ref">${r.id} · ${new Date(r.submittedAt).toLocaleString()}</div>
+      <div class="report-flags">
+        ${r.evidence ? '<span class="flag-tag flag-evidence">📷 EVIDENCE</span>' : ''}
+        <span class="flag-tag flag-ai-ok">🤖 AI-SCANNED</span>
+        ${!r.flagged ? '<span class="flag-tag flag-verified">✓ CLEAN</span>' : '<span class="flag-tag" style="background:rgba(245,158,11,.1);color:var(--warn);border:1px solid rgba(245,158,11,.2)">⚠ UNDER REVIEW</span>'}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ─────────────────────────────────────────────
+// ADMIN REPORTS
+// ─────────────────────────────────────────────
+function renderAdminReports(filter) {
+  let reports = [...DB.reports].reverse();
+  if (filter === 'flagged') reports = reports.filter(r => r.flagged);
+  else if (filter !== 'all') reports = reports.filter(r => r.status === filter);
+
+  const container = document.getElementById('admin-reports-list');
+  if (!reports.length) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div>No reports found</div>`;
+    return;
+  }
+
+  container.innerHTML = reports.map(r => {
+    const user = DB.users.find(u => u.username === r.filedBy);
+    const cred = user ? user.credibility : 100;
+    return `
+    <div class="admin-report-card" id="arc-${r.id}">
+      <div class="admin-report-head">
+        <div>
+          <div class="report-type">${r.crimeType} ${r.flagged ? '🚩' : ''}</div>
+          <div class="text-muted" style="font-size:11px;font-family:var(--mono)">${r.id}</div>
+        </div>
+        <div class="report-status status-${r.status}">${r.status.toUpperCase()}</div>
+      </div>
+      <div class="report-loc">📍 ${r.location}</div>
+      <div class="report-desc" style="margin:6px 0">${r.description}</div>
+      ${r.evidence ? `<img src="${r.evidence}" style="max-width:100%;max-height:140px;border-radius:6px;margin-top:6px">` : '<div class="text-muted" style="font-size:11px;font-family:var(--mono);margin-top:4px">⚠ No evidence attached</div>'}
+      <div class="credibility-bar">
+        <div class="credibility-label">REPORTER CREDIBILITY: ${cred}%</div>
+        <div class="cred-track"><div class="cred-fill" style="width:${cred}%;background:${cred>70?'var(--green)':cred>40?'var(--warn)':'var(--danger)'}"></div></div>
+      </div>
+      <div style="font-size:10px;font-family:var(--mono);color:var(--muted);margin-top:6px">
+        Filed by: <strong style="color:var(--text)">${r.filedByName || r.filedBy}</strong> · ${new Date(r.submittedAt).toLocaleString()}
+      </div>
+      <div class="admin-actions">
+        <button class="action-btn action-approve" onclick="updateReport('${r.id}','approved')">✓ Approve</button>
+        <button class="action-btn action-reject"  onclick="openRejectModal('${r.id}')">✗ Reject</button>
+        <button class="action-btn action-solve"   onclick="updateReport('${r.id}','solved')">🔒 Solved</button>
+      </div>
+    </div>
+  `}).join('');
+}
+
+function updateAdminStats() {
+  document.getElementById('stat-total').textContent    = DB.reports.length;
+  document.getElementById('stat-pending').textContent  = DB.reports.filter(r => r.status === 'pending').length;
+  document.getElementById('stat-approved').textContent = DB.reports.filter(r => r.status === 'approved').length;
+  document.getElementById('stat-flagged').textContent  = DB.reports.filter(r => r.flagged).length;
+}
+
+function filterReports(filter, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderAdminReports(filter);
+}
+
+function updateReport(id, status) {
+  const report = DB.reports.find(r => r.id === id);
+  if (!report) return;
+  report.status = status;
+
+  // Update user credibility
+  const user = DB.users.find(u => u.username === report.filedBy);
+  if (user) {
+    if (status === 'approved') { user.credibility = Math.min(100, user.credibility + 5); user.reportsApproved++; }
+    if (status === 'rejected') {
+      user.credibility = Math.max(0, user.credibility - 20);
+      user.reportsRejected++;
+      if (user.reportsRejected >= 3 && user.credibility < 30) {
+        user.banned = true;
+        addLog('fail', `AUTO-BAN: ${user.username} — repeated false reports`);
+      }
+    }
+  }
+
+  addLog('ok', `REPORT ${status.toUpperCase()}: ${id} by admin`);
+  renderAdminReports('all');
+  updateAdminStats();
+}
+
+function openRejectModal(id) {
+  rejectingId = id;
+  document.getElementById('reject-modal').classList.add('show');
+}
+
+function closeModal() {
+  rejectingId = null;
+  document.getElementById('reject-modal').classList.remove('show');
+}
+
+function confirmReject() {
+  if (!rejectingId) return;
+  const reason  = document.getElementById('reject-reason').value;
+  const notes   = document.getElementById('reject-notes').value;
+  const report  = DB.reports.find(r => r.id === rejectingId);
+  if (report) { report.status = 'rejected'; report.adminNotes = `${reason}: ${notes}`; }
+
+  const user = DB.users.find(u => u.username === report?.filedBy);
+  if (user) {
+    user.credibility = Math.max(0, user.credibility - 20);
+    user.reportsRejected++;
+    if (user.reportsRejected >= 3 && user.credibility < 30) {
+      user.banned = true;
+      addLog('fail', `AUTO-BAN: ${user.username} — repeated false reports`);
+    }
+  }
+
+  addLog('fail', `REPORT REJECTED: ${rejectingId} — ${reason}`);
+  closeModal();
+  renderAdminReports('all');
+  updateAdminStats();
+}
+
+// ─────────────────────────────────────────────
+// VIEWER REPORTS
+// ─────────────────────────────────────────────
+function renderViewerReports() {
+  const approved = DB.reports.filter(r => r.status === 'approved');
+  const container = document.getElementById('viewer-reports-list');
+  if (!approved.length) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">🔒</div>No approved reports yet</div>`;
+    return;
+  }
+  container.innerHTML = approved.map(r => `
+    <div class="viewer-report">
+      <div class="report-card-head">
+        <div class="report-type">${r.crimeType}</div>
+        <div class="report-status status-approved">APPROVED</div>
+      </div>
+      <div class="report-loc">📍 ${r.location}</div>
+      <div class="report-desc">${r.description}</div>
+      <div class="report-ref">${new Date(r.submittedAt).toLocaleDateString()}</div>
+    </div>
+  `).join('');
+}
+
+// ─────────────────────────────────────────────
+// UTIL
+// ─────────────────────────────────────────────
+function showAlert(el, msg) {
+  el.textContent = msg;
+  el.classList.add('show');
+}
+</script>
+</body>
+</html>
