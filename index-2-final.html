@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CrimeWatch — Secure Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:#07080d;
+  --surface:rgba(12,14,22,0.85);
+  --surface2:rgba(16,19,30,0.7);
+  --surface3:rgba(20,24,38,0.6);
+  --border:rgba(255,255,255,0.07);
+  --border2:rgba(255,255,255,0.12);
+  --accent:#e63946;
+  --accent2:#ff6b6b;
+  --gold:#f4a261;
+  --green:#2ec4b6;
+  --blue:#4895ef;
+  --purple:#a855f7;
+  --violet:#7c3aed;
+  --text:#e8eaf0;
+  --muted:#5a6070;
+  --card-glow-red: 0 0 80px rgba(230,57,70,0.12), 0 32px 64px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+  --card-glow-teal: 0 0 80px rgba(46,196,182,0.1), 0 32px 64px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+  --card-glow-purple: 0 0 80px rgba(168,85,247,0.12), 0 32px 64px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+  --card-glow-blue: 0 0 80px rgba(72,149,239,0.1), 0 32px 64px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+  --card-glow-orange: 0 0 80px rgba(220,38,38,0.14), 0 32px 64px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body {
+  color:var(--text);
+  font-family:'IBM Plex Sans',sans-serif;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  overflow-x:hidden;
+  background:var(--bg);
+}
+
+body::before {
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9000;opacity:0.5;
+}
+
+header {
+  position:fixed;top:0;left:0;right:0;
+  z-index:500;
+  height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;
+  background:rgba(7,8,13,0.75);
+  backdrop-filter:blur(20px) saturate(1.8);
+  -webkit-backdrop-filter:blur(20px) saturate(1.8);
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.logo{display:flex;align-items:center;gap:11px;}
+.logo-icon{
+  width:30px;height:30px;
+  background:linear-gradient(135deg,#e63946,#c1121f);
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display:flex;align-items:center;justify-content:center;font-size:12px;
+  box-shadow:0 0 16px rgba(230,57,70,0.5);
+  animation:hexPulse 3s ease-in-out infinite;
+}
+@keyframes hexPulse{0%,100%{box-shadow:0 0 10px rgba(230,57,70,0.4);}50%{box-shadow:0 0 28px rgba(230,57,70,0.7);}}
+.logo-text{font-family:'Bebas Neue',sans-serif;font-size:23px;letter-spacing:3px;}
+.logo-text span{color:var(--accent);}
+.header-right{display:flex;align-items:center;gap:14px;}
+.status-bar{display:flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--green);letter-spacing:2px;}
+.status-dot{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:blink 1.5s steps(1) infinite;}
+@keyframes blink{50%{opacity:0;}}
+.role-badge{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;padding:4px 10px;border-radius:2px;display:none;text-transform:uppercase;}
+.role-badge.admin{background:rgba(230,57,70,0.1);border:1px solid rgba(230,57,70,0.3);color:var(--accent);}
+.role-badge.view{background:rgba(72,149,239,0.1);border:1px solid rgba(72,149,239,0.3);color:var(--blue);}
+.role-badge.user{background:rgba(46,196,182,0.1);border:1px solid rgba(46,196,182,0.3);color:var(--green);}
+
+main{flex:1;padding-top:60px;}
+
+.module-page {
+  display:none;
+  min-height:calc(100vh - 60px);
+  width:100%;
+  position:relative;
+  overflow:hidden;
+}
+.module-page.center-layout {
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:40px 20px;
+}
+.module-page.center-layout.active { display:flex; }
+.module-page.dash-layout { display:none; }
+.module-page.dash-layout.active { display:block; }
+
+#pg-portal {
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(220,38,38,0.35) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 60% at 0% 100%, rgba(159,18,57,0.2) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 100% 80%, rgba(239,68,68,0.1) 0%, transparent 45%),
+    radial-gradient(ellipse 100% 40% at 50% 100%, rgba(30,10,10,0.8) 0%, transparent 60%),
+    linear-gradient(180deg, #0d0608 0%, #07080d 100%);
+}
+#pg-user-login {
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(20,184,166,0.32) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 60% at 0% 100%, rgba(6,182,212,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 100% 70%, rgba(46,196,182,0.1) 0%, transparent 45%),
+    radial-gradient(ellipse 100% 40% at 50% 100%, rgba(5,15,15,0.9) 0%, transparent 60%),
+    linear-gradient(180deg, #040d0d 0%, #07080d 100%);
+}
+#pg-register {
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(139,92,246,0.35) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 60% at 100% 100%, rgba(168,85,247,0.18) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 0% 60%, rgba(124,58,237,0.12) 0%, transparent 45%),
+    radial-gradient(ellipse 100% 40% at 50% 100%, rgba(15,5,30,0.9) 0%, transparent 60%),
+    linear-gradient(180deg, #0a0610 0%, #07080d 100%);
+}
+#pg-admin-login {
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(239,68,68,0.3) 0%, transparent 50%),
+    radial-gradient(ellipse 90% 60% at 100% 0%, rgba(249,115,22,0.2) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 60% at 0% 100%, rgba(220,38,38,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(30,5,5,0.9) 0%, transparent 55%),
+    linear-gradient(160deg, #0e0404 0%, #07080d 60%, #0a0404 100%);
+}
+#pg-view-login {
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(59,130,246,0.32) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 60% at 0% 100%, rgba(99,102,241,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 100% 70%, rgba(72,149,239,0.1) 0%, transparent 45%),
+    radial-gradient(ellipse 100% 40% at 50% 100%, rgba(5,8,20,0.9) 0%, transparent 60%),
+    linear-gradient(180deg, #040710 0%, #07080d 100%);
+}
+#pg-user-dash {
+  background:
+    radial-gradient(ellipse 100% 50% at 50% -5%, rgba(20,184,166,0.2) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 0% 50%, rgba(6,182,212,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 60% at 100% 100%, rgba(46,196,182,0.06) 0%, transparent 45%),
+    linear-gradient(180deg, #040d0d 0%, #07080d 100%);
+}
+#pg-success {
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(20,184,166,0.28) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 0% 100%, rgba(6,182,212,0.12) 0%, transparent 50%),
+    linear-gradient(180deg, #040d0d 0%, #07080d 100%);
+}
+#pg-admin-dash {
+  background:
+    radial-gradient(ellipse 100% 50% at 50% -5%, rgba(239,68,68,0.18) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 40% at 100% 0%, rgba(249,115,22,0.1) 0%, transparent 45%),
+    radial-gradient(ellipse 50% 60% at 0% 100%, rgba(220,38,38,0.08) 0%, transparent 45%),
+    linear-gradient(180deg, #0e0404 0%, #07080d 100%);
+}
+#pg-view-dash {
+  background:
+    radial-gradient(ellipse 100% 50% at 50% -5%, rgba(59,130,246,0.18) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 0% 50%, rgba(99,102,241,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 60% at 100% 100%, rgba(72,149,239,0.06) 0%, transparent 45%),
+    linear-gradient(180deg, #040710 0%, #07080d 100%);
+}
+
+.module-page::after {
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 100% 100% at 50% 50%, transparent 40%, rgba(0,0,0,0.5) 100%);
+  pointer-events:none;
+  z-index:0;
+}
+
+.card {
+  background:rgba(10,12,20,0.75);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:8px;
+  width:100%;max-width:480px;
+  position:relative;z-index:2;
+  animation:slideUp 0.5s cubic-bezier(0.16,1,0.3,1) both;
+  backdrop-filter:blur(24px) saturate(1.5);
+  -webkit-backdrop-filter:blur(24px) saturate(1.5);
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:none;}}
+
+#pg-portal .card           { box-shadow:var(--card-glow-red); }
+#pg-user-login .card       { box-shadow:var(--card-glow-teal); }
+#pg-register .card         { box-shadow:var(--card-glow-purple); }
+#pg-admin-login .card      { box-shadow:var(--card-glow-orange); }
+#pg-view-login .card       { box-shadow:var(--card-glow-blue); }
+#pg-success .card          { box-shadow:var(--card-glow-teal); }
+
+.card-accent { height:2px; border-radius:8px 8px 0 0; }
+.card-accent.bar-red    { background:linear-gradient(90deg, #e63946 0%, #ff6b6b 50%, #f4a261 100%); }
+.card-accent.bar-teal   { background:linear-gradient(90deg, #2ec4b6 0%, #06b6d4 50%, #2ec4b6 100%); }
+.card-accent.bar-purple { background:linear-gradient(90deg, #7c3aed 0%, #a855f7 50%, #c084fc 100%); }
+.card-accent.bar-orange { background:linear-gradient(90deg, #dc2626 0%, #f97316 50%, #ef4444 100%); }
+.card-accent.bar-blue   { background:linear-gradient(90deg, #4895ef 0%, #6366f1 50%, #4895ef 100%); }
+.bar-animated { background-size:200% 100%; animation:barShift 3s linear infinite; }
+@keyframes barShift{0%{background-position:0% 0%;}100%{background-position:200% 0%;}}
+
+.card-head { padding:26px 28px 20px; border-bottom:1px solid rgba(255,255,255,0.05); }
+.card-tag {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;letter-spacing:3px;
+  text-transform:uppercase;margin-bottom:8px;
+  display:flex;align-items:center;gap:8px;
+}
+.card-tag::before{content:'';width:14px;height:1px;background:currentColor;opacity:0.6;}
+.card-tag.c-red{color:var(--accent);}
+.card-tag.c-teal{color:var(--green);}
+.card-tag.c-purple{color:#a855f7;}
+.card-tag.c-orange{color:#f97316;}
+.card-tag.c-blue{color:var(--blue);}
+.card-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;line-height:1;}
+.card-sub{font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:0.3px;}
+.card-body{padding:26px 28px;}
+
+.portal-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.portal-btn {
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:6px;
+  padding:22px 12px;
+  cursor:pointer;
+  transition:all 0.3s cubic-bezier(0.16,1,0.3,1);
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.portal-btn::before {
+  content:'';position:absolute;inset:0;opacity:0;
+  transition:opacity 0.3s;border-radius:6px;
+}
+.portal-btn.p-red::before  { background:radial-gradient(ellipse at 50% 120%, rgba(230,57,70,0.25) 0%, transparent 70%); }
+.portal-btn.p-orange::before { background:radial-gradient(ellipse at 50% 120%, rgba(239,68,68,0.2) 0%, transparent 70%); }
+.portal-btn.p-blue::before { background:radial-gradient(ellipse at 50% 120%, rgba(72,149,239,0.25) 0%, transparent 70%); }
+.portal-btn.p-green::before{ background:radial-gradient(ellipse at 50% 120%, rgba(46,196,182,0.25) 0%, transparent 70%); }
+.portal-btn:hover::before{opacity:1;}
+.portal-btn.p-red:hover  { border-color:rgba(230,57,70,0.4); transform:translateY(-3px); box-shadow:0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(230,57,70,0.15); }
+.portal-btn.p-blue:hover { border-color:rgba(72,149,239,0.4); transform:translateY(-3px); box-shadow:0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(72,149,239,0.15); }
+.portal-btn.p-green:hover{ border-color:rgba(46,196,182,0.4); transform:translateY(-3px); box-shadow:0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(46,196,182,0.15); }
+.portal-btn.p-orange:hover{ border-color:rgba(239,68,68,0.4); transform:translateY(-3px); box-shadow:0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(239,68,68,0.15); }
+.portal-icon{font-size:26px;margin-bottom:10px;}
+.portal-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text);}
+.portal-desc{font-size:10px;color:var(--muted);margin-top:5px;}
+
+.field{margin-bottom:17px;}
+label{display:block;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:7px;}
+input[type=text],input[type=password],input[type=tel],select,textarea {
+  width:100%;
+  background:rgba(7,8,13,0.6);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:5px;
+  color:var(--text);
+  font-family:'IBM Plex Sans',sans-serif;
+  font-size:14px;
+  padding:11px 14px;
+  outline:none;
+  transition:border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+input:focus,select:focus,textarea:focus {
+  border-color:rgba(255,255,255,0.2);
+  box-shadow:0 0 0 3px rgba(255,255,255,0.04);
+  background:rgba(10,12,20,0.8);
+}
+textarea{resize:vertical;min-height:82px;line-height:1.6;}
+select option{background:#0d0f18;}
+
+.file-label {
+  display:flex;align-items:center;gap:10px;
+  background:rgba(7,8,13,0.6);
+  border:1px dashed rgba(255,255,255,0.1);
+  border-radius:5px;
+  padding:12px 14px;
+  cursor:pointer;transition:all 0.2s;
+  font-size:11px;color:var(--muted);
+  font-family:'IBM Plex Mono',monospace;letter-spacing:0.5px;
+}
+.file-label:hover{border-color:rgba(255,255,255,0.22);color:var(--text);}
+input[type=file]{display:none;}
+.file-name{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--green);margin-top:5px;letter-spacing:0.5px;}
+
+.btn {
+  width:100%;padding:13px;
+  background:var(--accent);
+  border:none;border-radius:5px;
+  color:#fff;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;letter-spacing:2.5px;text-transform:uppercase;
+  cursor:pointer;transition:all 0.2s;
+}
+.btn:hover{filter:brightness(1.15);box-shadow:0 8px 32px rgba(230,57,70,0.3);}
+.btn:active{transform:scale(0.98);}
+.btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;filter:none;box-shadow:none;}
+.btn.blue-btn{background:#4895ef;}
+.btn.blue-btn:hover{filter:brightness(1.15);box-shadow:0 8px 32px rgba(72,149,239,0.3);}
+.btn.green-btn{background:#2ec4b6;}
+.btn.green-btn:hover{filter:brightness(1.15);box-shadow:0 8px 32px rgba(46,196,182,0.3);}
+.btn.purple-btn{background:#7c3aed;}
+.btn.purple-btn:hover{filter:brightness(1.15);box-shadow:0 8px 32px rgba(124,58,237,0.3);}
+.btn.orange-btn{background:#dc2626;}
+.btn.orange-btn:hover{filter:brightness(1.15);box-shadow:0 8px 32px rgba(220,38,38,0.3);}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.1);color:var(--muted);margin-top:10px;}
+.btn.ghost:hover{border-color:rgba(255,255,255,0.25);color:var(--text);box-shadow:none;filter:none;}
+.btn.sm{width:auto;padding:7px 13px;font-size:9px;margin:0;letter-spacing:1.5px;}
+.btn.approve{background:rgba(46,196,182,0.1);border:1px solid rgba(46,196,182,0.3);color:var(--green);}
+.btn.approve:hover{background:rgba(46,196,182,0.2);box-shadow:0 0 20px rgba(46,196,182,0.15);filter:none;}
+.btn.rej{background:rgba(230,57,70,0.1);border:1px solid rgba(230,57,70,0.3);color:var(--accent2);}
+.btn.rej:hover{background:rgba(230,57,70,0.2);box-shadow:0 0 20px rgba(230,57,70,0.15);filter:none;}
+.btn.edit-btn{background:rgba(72,149,239,0.1);border:1px solid rgba(72,149,239,0.3);color:var(--blue);}
+.btn.edit-btn:hover{background:rgba(72,149,239,0.2);filter:none;}
+.btn.solve-btn{background:rgba(72,149,239,0.1);border:1px solid rgba(72,149,239,0.3);color:var(--blue);}
+.btn.solve-btn:hover{background:rgba(72,149,239,0.2);filter:none;}
+
+.alert{padding:10px 14px;border-radius:5px;font-size:10px;font-family:'IBM Plex Mono',monospace;margin-bottom:16px;display:none;letter-spacing:0.5px;line-height:1.5;}
+.alert.error{background:rgba(230,57,70,0.08);border:1px solid rgba(230,57,70,0.25);color:#ff8080;}
+.alert.success{background:rgba(46,196,182,0.08);border:1px solid rgba(46,196,182,0.25);color:var(--green);}
+.alert.show{display:block;}
+
+.tabs{display:flex;border:1px solid rgba(255,255,255,0.07);border-radius:5px;overflow:hidden;margin-bottom:20px;background:rgba(7,8,13,0.5);}
+.tab{flex:1;padding:10px;background:transparent;border:none;color:var(--muted);cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;transition:all 0.2s;}
+.tab.active{background:var(--accent);color:#fff;}
+
+.pin-display{display:flex;gap:12px;justify-content:center;margin:16px 0 20px;}
+.pin-dot{width:11px;height:11px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.15);transition:all 0.15s;}
+.pin-dot.filled{background:var(--accent);border-color:var(--accent);box-shadow:0 0 10px rgba(230,57,70,0.5);}
+.pin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.pin-btn{background:rgba(10,12,20,0.8);border:1px solid rgba(255,255,255,0.08);border-radius:5px;color:var(--text);font-family:'Bebas Neue',sans-serif;font-size:22px;padding:15px 0;cursor:pointer;transition:all 0.15s;}
+.pin-btn:hover{background:rgba(20,24,38,0.9);border-color:rgba(255,255,255,0.18);}
+.pin-btn:active{transform:scale(0.93);}
+.pin-btn.del{font-size:12px;color:var(--muted);font-family:'IBM Plex Mono',monospace;}
+/* BUG FIX 4: disabled state for pin buttons */
+.pin-btn:disabled{opacity:0.35;cursor:not-allowed;transform:none;}
+
+.divider{height:1px;background:rgba(255,255,255,0.06);margin:18px 0;}
+.switch-link{text-align:center;margin-top:12px;font-size:11px;color:var(--muted);}
+.switch-link a{color:var(--accent);cursor:pointer;transition:color 0.2s;}
+.switch-link a:hover{color:var(--accent2);}
+
+.dashboard{padding:32px 44px;max-width:1100px;margin:0 auto;width:100%;position:relative;z-index:2;}
+.dash-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;}
+.dash-title{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;}
+.dash-title span{color:var(--accent);}
+.dash-meta{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;margin-top:4px;}
+
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:28px;}
+.stat{
+  background:rgba(10,12,20,0.7);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:6px;
+  padding:18px 20px;
+  backdrop-filter:blur(12px);
+  position:relative;
+  transition:border-color 0.2s;
+}
+.stat:hover{border-color:rgba(255,255,255,0.12);}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:38px;line-height:1;}
+.stat-num.red{color:var(--accent);}
+.stat-num.green{color:var(--green);}
+.stat-num.gold{color:var(--gold);}
+.stat-num.blue{color:var(--blue);}
+.stat-label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:5px;}
+
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.section-title{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);}
+
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.filter-btn{
+  background:rgba(10,12,20,0.7);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:4px;
+  padding:6px 14px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--muted);cursor:pointer;transition:all 0.15s;
+}
+.filter-btn:hover,.filter-btn.active{border-color:rgba(230,57,70,0.4);color:var(--accent);background:rgba(230,57,70,0.07);}
+
+.report-cards{display:flex;flex-direction:column;gap:10px;}
+.rep-card{
+  background:rgba(10,12,20,0.7);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:6px;overflow:hidden;
+  animation:fadeIn 0.3s ease both;
+  backdrop-filter:blur(10px);
+  transition:border-color 0.2s;
+}
+.rep-card:hover{border-color:rgba(255,255,255,0.1);}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+.rep-card-head{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;cursor:pointer;user-select:none;transition:background 0.2s;}
+.rep-card-head:hover{background:rgba(255,255,255,0.02);}
+.rep-card-left{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.rep-card-id{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);}
+.rep-card-type{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text);}
+.rep-card-right{display:flex;align-items:center;gap:10px;}
+
+.badge{display:inline-block;padding:3px 9px;border-radius:3px;font-size:8px;font-family:'IBM Plex Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;}
+.badge.pending{background:rgba(244,162,97,0.1);color:var(--gold);border:1px solid rgba(244,162,97,0.25);}
+.badge.approved{background:rgba(46,196,182,0.1);color:var(--green);border:1px solid rgba(46,196,182,0.25);}
+.badge.solved{background:rgba(72,149,239,0.1);color:var(--blue);border:1px solid rgba(72,149,239,0.25);}
+.badge.rejected{background:rgba(230,57,70,0.1);color:var(--accent2);border:1px solid rgba(230,57,70,0.25);}
+
+.chevron{font-size:10px;color:var(--muted);transition:transform 0.2s;}
+.chevron.open{transform:rotate(180deg);}
+.rep-detail{display:none;padding:18px;border-top:1px solid rgba(255,255,255,0.05);background:rgba(7,8,13,0.4);}
+.rep-detail.open{display:block;}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.detail-item label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.detail-item p{font-size:13px;color:var(--text);}
+.detail-desc{margin-bottom:14px;}
+.detail-desc label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block;}
+.detail-desc p{font-size:13px;color:var(--text);line-height:1.65;}
+.rep-image{width:100%;max-height:200px;object-fit:cover;border-radius:5px;border:1px solid rgba(255,255,255,0.06);margin-bottom:14px;cursor:zoom-in;transition:opacity 0.2s;}
+.rep-image:hover{opacity:0.88;}
+.action-row{display:flex;gap:8px;flex-wrap:wrap;}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);backdrop-filter:blur(12px);z-index:600;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:rgba(10,12,20,0.97);border:1px solid rgba(255,255,255,0.08);border-radius:8px;width:100%;max-width:500px;box-shadow:0 40px 100px rgba(0,0,0,0.95);animation:slideUp 0.3s cubic-bezier(0.16,1,0.3,1) both;}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;}
+.modal-close{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;transition:color 0.2s;}
+.modal-close:hover{color:var(--text);}
+.modal-body{padding:24px;}
+.modal-actions{display:flex;gap:10px;margin-top:6px;}
+.modal-actions .btn{margin:0;}
+
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.96);z-index:900;align-items:center;justify-content:center;cursor:zoom-out;}
+.lightbox.open{display:flex;}
+.lightbox img{max-width:90vw;max-height:85vh;border-radius:6px;}
+
+.public-cards{display:flex;flex-direction:column;gap:14px;}
+.pub-card{
+  background:rgba(10,12,20,0.7);
+  border:1px solid rgba(255,255,255,0.06);
+  border-left:2px solid var(--green);
+  border-radius:6px;padding:20px;
+  animation:fadeIn 0.3s ease both;
+  backdrop-filter:blur(10px);
+}
+.pub-card.solved-card{border-left-color:var(--blue);}
+.pub-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.pub-type{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);}
+.pub-id{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);}
+.pub-desc{font-size:13px;color:var(--text);line-height:1.65;margin-bottom:10px;}
+.pub-image{width:100%;max-height:180px;object-fit:cover;border-radius:5px;border:1px solid rgba(255,255,255,0.06);margin-bottom:10px;cursor:zoom-in;}
+.pub-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;}
+
+.empty-state{text-align:center;padding:60px 20px;color:var(--muted);}
+.empty-icon{font-size:36px;margin-bottom:12px;}
+.empty-text{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2.5px;}
+
+.success-wrap{text-align:center;}
+.success-icon{width:60px;height:60px;border-radius:50%;background:rgba(46,196,182,0.07);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 18px;animation:popIn 0.4s cubic-bezier(0.16,1,0.3,1) both;box-shadow:0 0 40px rgba(46,196,182,0.18);}
+@keyframes popIn{from{transform:scale(0);}to{transform:scale(1);}}
+.ref-code{background:rgba(7,8,13,0.8);border:1px solid rgba(46,196,182,0.2);border-radius:5px;padding:15px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:22px;letter-spacing:5px;color:var(--green);margin:14px 0;}
+
+.form-2col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+footer{text-align:center;padding:18px;font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(90,96,112,0.6);border-top:1px solid rgba(255,255,255,0.04);background:rgba(7,8,13,0.9);letter-spacing:1.5px;}
+footer span{color:var(--accent);}
+
+@keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-8px);}40%{transform:translateX(8px);}60%{transform:translateX(-4px);}80%{transform:translateX(4px);}}
+.shake{animation:shake 0.4s ease;}
+.loading{opacity:0.35;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2.5px;text-align:center;padding:36px;}
+
+@media(max-width:700px){
+  header{padding:0 18px;}
+  .dashboard{padding:20px 16px;}
+  .stats{grid-template-columns:1fr 1fr;}
+  .detail-grid,.form-2col{grid-template-columns:1fr;}
+  .portal-grid{grid-template-columns:1fr;}
+  .card-body,.card-head{padding:20px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">🔺</div>
+    <div class="logo-text">Crime<span>Watch</span></div>
+  </div>
+  <div class="header-right">
+    <div class="role-badge" id="role-badge"></div>
+    <div class="status-bar"><div class="status-dot"></div>SECURE PORTAL</div>
+  </div>
+</header>
+
+<main id="main-area">
+
+<!-- ═══ PORTAL ═══ -->
+<div id="pg-portal" class="module-page center-layout">
+  <div class="card" style="max-width:500px;">
+    <div class="card-accent bar-red bar-animated"></div>
+    <div class="card-head">
+      <div class="card-tag c-red">System Access</div>
+      <div class="card-title">Select Portal</div>
+      <div class="card-sub">Choose your access level to continue</div>
+    </div>
+    <div class="card-body">
+      <div class="portal-grid">
+        <div class="portal-btn p-red" onclick="goPortal('user')"><div class="portal-icon">👤</div><div class="portal-label">User</div><div class="portal-desc">File reports</div></div>
+        <div class="portal-btn p-orange" onclick="goPortal('admin')"><div class="portal-icon">🛡️</div><div class="portal-label">Admin</div><div class="portal-desc">Manage reports</div></div>
+        <div class="portal-btn p-blue" onclick="goPortal('view')"><div class="portal-icon">👁️</div><div class="portal-label">View</div><div class="portal-desc">Approved reports</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ USER LOGIN ═══ -->
+<div id="pg-user-login" class="module-page center-layout">
+  <div class="card">
+    <div class="card-accent bar-teal bar-animated"></div>
+    <div class="card-head">
+      <div class="card-tag c-teal">User Portal</div>
+      <div class="card-title">Sign In</div>
+      <div class="card-sub">Use password or PIN to access your account</div>
+    </div>
+    <div class="card-body">
+      <div class="alert error" id="ul-alert"></div>
+      <div class="tabs">
+        <button class="tab active" id="utab-pass" onclick="uSwitchTab('pass')">Password</button>
+        <button class="tab" id="utab-pin" onclick="uSwitchTab('pin')">PIN</button>
+      </div>
+      <div id="u-pass-form">
+        <div class="field"><label>Username</label><input type="text" id="ul-user" placeholder="username" onkeydown="if(event.key==='Enter')doUserLogin()"/></div>
+        <div class="field"><label>Password</label><input type="password" id="ul-pass" placeholder="Your password" onkeydown="if(event.key==='Enter')doUserLogin()"/></div>
+        <button class="btn green-btn" id="ul-btn" onclick="doUserLogin()">SIGN IN</button>
+      </div>
+      <div id="u-pin-form" style="display:none;">
+        <div class="field"><label>Username</label><input type="text" id="ul-pin-user" placeholder="username"/></div>
+        <label style="text-align:center;display:block;margin-bottom:4px;">ENTER 4-DIGIT PIN</label>
+        <div class="pin-display">
+          <div class="pin-dot" id="upd0"></div><div class="pin-dot" id="upd1"></div>
+          <div class="pin-dot" id="upd2"></div><div class="pin-dot" id="upd3"></div>
+        </div>
+        <!-- BUG FIX 4: Added loading state indicator for PIN -->
+        <div id="pin-loading" style="display:none;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:10px;">VERIFYING...</div>
+        <div class="pin-grid" id="pin-grid">
+          <button class="pin-btn" onclick="uPin('1')">1</button><button class="pin-btn" onclick="uPin('2')">2</button><button class="pin-btn" onclick="uPin('3')">3</button>
+          <button class="pin-btn" onclick="uPin('4')">4</button><button class="pin-btn" onclick="uPin('5')">5</button><button class="pin-btn" onclick="uPin('6')">6</button>
+          <button class="pin-btn" onclick="uPin('7')">7</button><button class="pin-btn" onclick="uPin('8')">8</button><button class="pin-btn" onclick="uPin('9')">9</button>
+          <button class="pin-btn del" onclick="uPinClr()">CLR</button><button class="pin-btn" onclick="uPin('0')">0</button><button class="pin-btn del" onclick="uPinBack()">⌫</button>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="switch-link">No account? <a onclick="showPage('pg-register')">Register here</a></div>
+      <div class="switch-link" style="margin-top:8px;"><a onclick="showPage('pg-portal')">← Back</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ REGISTER ═══ -->
+<div id="pg-register" class="module-page center-layout">
+  <div class="card">
+    <div class="card-accent bar-purple bar-animated"></div>
+    <div class="card-head">
+      <div class="card-tag c-purple">New Account</div>
+      <div class="card-title">Register</div>
+      <div class="card-sub">Create a secure account to file reports</div>
+    </div>
+    <div class="card-body">
+      <div class="alert error" id="reg-alert"></div>
+      <div class="field"><label>Full Name</label><input type="text" id="reg-name" placeholder="John Doe"/></div>
+      <div class="field"><label>Username</label><input type="text" id="reg-user" placeholder="johndoe_99"/></div>
+      <div class="field"><label>Email</label><input type="text" id="reg-email" placeholder="you@email.com"/></div>
+      <div class="form-2col">
+        <div class="field"><label>Password</label><input type="password" id="reg-pass" placeholder="Min. 8 chars"/></div>
+        <div class="field"><label>Confirm</label><input type="password" id="reg-pass2" placeholder="Repeat password"/></div>
+      </div>
+      <div class="field"><label>4-Digit PIN (optional)</label><input type="tel" id="reg-pin" placeholder="e.g. 1234" maxlength="4"/></div>
+      <button class="btn purple-btn" id="reg-btn" onclick="doRegister()">CREATE ACCOUNT</button>
+      <div class="switch-link" style="margin-top:12px;">Already have an account? <a onclick="showPage('pg-user-login')">Sign in</a></div>
+      <div class="switch-link" style="margin-top:8px;"><a onclick="showPage('pg-portal')">← Back</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ADMIN LOGIN ═══ -->
+<div id="pg-admin-login" class="module-page center-layout">
+  <div class="card">
+    <div class="card-accent bar-orange bar-animated"></div>
+    <div class="card-head">
+      <div class="card-tag c-orange">Admin Portal</div>
+      <div class="card-title">Admin Access</div>
+      <div class="card-sub">Restricted — Authorised personnel only</div>
+    </div>
+    <div class="card-body">
+      <div class="alert error" id="al-alert"></div>
+      <div class="field"><label>Admin Password</label><input type="password" id="al-pass" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')doAdminLogin()"/></div>
+      <button class="btn orange-btn" id="al-btn" onclick="doAdminLogin()">ACCESS ADMIN PANEL</button>
+      <div class="switch-link" style="margin-top:12px;"><a onclick="showPage('pg-portal')">← Back</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ VIEW LOGIN ═══ -->
+<div id="pg-view-login" class="module-page center-layout">
+  <div class="card">
+    <div class="card-accent bar-blue bar-animated"></div>
+    <div class="card-head">
+      <div class="card-tag c-blue">View Portal</div>
+      <div class="card-title">Viewer Access</div>
+      <div class="card-sub">See publicly approved crime reports</div>
+    </div>
+    <div class="card-body">
+      <div class="alert error" id="vl-alert"></div>
+      <div class="field"><label>Viewer Password</label><input type="password" id="vl-pass" placeholder="Enter viewer password" onkeydown="if(event.key==='Enter')doViewLogin()"/></div>
+      <button class="btn blue-btn" id="vl-btn" onclick="doViewLogin()">ACCESS REPORTS</button>
+      <div class="switch-link" style="margin-top:12px;"><a onclick="showPage('pg-portal')">← Back</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ USER DASH ═══ -->
+<div id="pg-user-dash" class="module-page dash-layout">
+  <div class="dashboard">
+    <div class="dash-head">
+      <div><div class="dash-title"><span>Crime</span>Watch</div><div class="dash-meta" id="user-welcome">USER PORTAL</div></div>
+      <button class="btn sm ghost" onclick="doLogout()" style="width:auto;">SIGN OUT</button>
+    </div>
+    <div class="tabs">
+      <button class="tab active" id="udtab-file" onclick="uDTab('file')">File Report</button>
+      <button class="tab" id="udtab-hist" onclick="uDTab('hist')">My Reports</button>
+    </div>
+    <div id="ud-file">
+      <div class="alert error" id="rep-alert"></div>
+      <div class="form-2col">
+        <div class="field"><label>Crime Type</label>
+          <select id="crime-type">
+            <option value="">— Select —</option>
+            <option>Theft / Burglary</option><option>Assault / Violence</option>
+            <option>Vandalism</option><option>Drug Activity</option>
+            <option>Fraud / Scam</option><option>Suspicious Activity</option>
+            <option>Traffic Incident</option><option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Date &amp; Time</label><input type="text" id="crime-date" placeholder="e.g. 2024-06-10 9:30 PM"/></div>
+      </div>
+      <div class="field"><label>Location</label><input type="text" id="crime-location" placeholder="Street, area or landmark"/></div>
+      <div class="field"><label>Description</label><textarea id="crime-desc" placeholder="Describe what happened..."></textarea></div>
+      <div class="field">
+        <label>Evidence Image (optional)</label>
+        <label class="file-label" for="crime-img">📎 Click to upload image</label>
+        <input type="file" id="crime-img" accept="image/*" onchange="onFileChange(this)"/>
+        <div class="file-name" id="file-name-show"></div>
+      </div>
+      <button class="btn green-btn" id="submit-btn" onclick="submitReport()">SUBMIT REPORT</button>
+    </div>
+    <div id="ud-hist" style="display:none;">
+      <div class="report-cards" id="my-reports-list"></div>
+      <div class="empty-state" id="my-no-rep" style="display:none;"><div class="empty-icon">📋</div><div class="empty-text">NO REPORTS FILED YET</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SUCCESS ═══ -->
+<div id="pg-success" class="module-page center-layout">
+  <div class="card">
+    <div class="card-accent bar-teal bar-animated"></div>
+    <div class="card-head"><div class="card-tag c-teal">Report Filed</div><div class="card-title">Submitted!</div></div>
+    <div class="card-body success-wrap">
+      <div class="success-icon">✓</div>
+      <p style="color:var(--muted);font-size:9px;margin-bottom:4px;font-family:'IBM Plex Mono',monospace;letter-spacing:2.5px;">YOUR REFERENCE CODE</p>
+      <div class="ref-code" id="ref-code-show">—</div>
+      <p style="font-size:10px;color:var(--muted);margin-bottom:22px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.5px;line-height:1.6;">Save this code. Your report is awaiting admin review.</p>
+      <button class="btn green-btn" onclick="showPage('pg-user-dash');uDTab('hist')">VIEW MY REPORTS</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ADMIN DASH ═══ -->
+<div id="pg-admin-dash" class="module-page dash-layout">
+  <div class="dashboard">
+    <div class="dash-head">
+      <div><div class="dash-title">Admin <span>Panel</span></div><div class="dash-meta">ADMINISTRATOR — FULL ACCESS</div></div>
+      <button class="btn sm ghost" onclick="doLogout()" style="width:auto;">SIGN OUT</button>
+    </div>
+    <div class="stats" id="admin-stats"></div>
+    <div class="section-head"><div class="section-title">All Reports</div></div>
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="adminFilter('all',this)">All</button>
+      <button class="filter-btn" onclick="adminFilter('Pending',this)">Pending</button>
+      <button class="filter-btn" onclick="adminFilter('Approved',this)">Approved</button>
+      <button class="filter-btn" onclick="adminFilter('Rejected',this)">Rejected</button>
+      <button class="filter-btn" onclick="adminFilter('Solved',this)">Solved</button>
+    </div>
+    <div class="report-cards" id="admin-reports-list"></div>
+    <div class="empty-state" id="admin-no-rep" style="display:none;"><div class="empty-icon">📋</div><div class="empty-text">NO REPORTS FOUND</div></div>
+  </div>
+</div>
+
+<!-- ═══ VIEW DASH ═══ -->
+<div id="pg-view-dash" class="module-page dash-layout">
+  <div class="dashboard">
+    <div class="dash-head">
+      <div><div class="dash-title">Public <span>Reports</span></div><div class="dash-meta">VIEWER — APPROVED REPORTS ONLY</div></div>
+      <button class="btn sm ghost" onclick="doLogout()" style="width:auto;">SIGN OUT</button>
+    </div>
+    <div class="public-cards" id="view-reports-list"></div>
+    <div class="empty-state" id="view-no-rep" style="display:none;"><div class="empty-icon">🔒</div><div class="empty-text">NO APPROVED REPORTS YET</div></div>
+  </div>
+</div>
+
+</main>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="edit-modal">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">Edit Report</div><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="edit-id"/>
+      <div class="field"><label>Crime Type</label>
+        <select id="edit-type">
+          <option>Theft / Burglary</option><option>Assault / Violence</option>
+          <option>Vandalism</option><option>Drug Activity</option>
+          <option>Fraud / Scam</option><option>Suspicious Activity</option>
+          <option>Traffic Incident</option><option>Other</option>
+        </select>
+      </div>
+      <div class="field"><label>Location</label><input type="text" id="edit-location"/></div>
+      <div class="field"><label>Date &amp; Time</label><input type="text" id="edit-date"/></div>
+      <div class="field"><label>Description</label><textarea id="edit-desc"></textarea></div>
+      <div class="modal-actions">
+        <button class="btn" onclick="saveEdit()">SAVE CHANGES</button>
+        <button class="btn ghost" onclick="closeModal()" style="margin-top:0;">CANCEL</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <img id="lb-img" src="" alt="Evidence"/>
+</div>
+
+<footer>&copy; 2024 <span>CrimeWatch</span> — Secure Reporting System — All transmissions encrypted</footer>
+
+<script>
+const API = 'https://crimewatch-backend-production.up.railway.app/api';
+let session = { token:null, role:null, username:null, name:null };
+
+async function api(method, path, body=null, isForm=false) {
+  const headers = {};
+  if (session.token) headers['Authorization'] = 'Bearer ' + session.token;
+  if (body && !isForm) headers['Content-Type'] = 'application/json';
+  const res = await fetch(API + path, {
+    method, headers,
+    body: isForm ? body : (body ? JSON.stringify(body) : null)
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Request failed');
+  return data;
+}
+
+// BUG FIX 2: showPage uses classList.contains reliably, no inline style matching
+function showPage(id) {
+  document.querySelectorAll('.module-page').forEach(el => {
+    el.classList.remove('active');
+    el.style.display = 'none';
+  });
+  const pg = document.getElementById(id);
+  if (!pg) return;
+  if (pg.classList.contains('dash-layout')) {
+    pg.style.display = 'block';
+    pg.classList.add('active');
+  } else {
+    pg.style.display = 'flex';
+    pg.classList.add('active');
+  }
+}
+
+function goPortal(type) {
+  if (type==='user')  showPage('pg-user-login');
+  if (type==='admin') showPage('pg-admin-login');
+  if (type==='view')  showPage('pg-view-login');
+}
+
+function setRoleBadge(role) {
+  const b = document.getElementById('role-badge');
+  b.className = 'role-badge ' + role;
+  b.textContent = role.toUpperCase();
+  b.style.display = 'block';
+}
+
+function doLogout() {
+  session = {token:null,role:null,username:null,name:null};
+  document.getElementById('role-badge').style.display = 'none';
+  showPage('pg-portal');
+}
+
+function showAlert(id, msg, type='error') {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg;
+  el.className = 'alert ' + type + ' show';
+  setTimeout(() => el.classList.remove('show'), 4500);
+}
+
+// BUG FIX 5: shakeCard now reliably targets the active card using .active class
+function shakeCard() {
+  const activeCard = document.querySelector('.module-page.active .card');
+  if (activeCard) {
+    activeCard.classList.add('shake');
+    setTimeout(() => activeCard.classList.remove('shake'), 400);
+  }
+}
+
+function escH(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── REGISTER ──
+async function doRegister() {
+  const name  = document.getElementById('reg-name').value.trim();
+  const user  = document.getElementById('reg-user').value.trim().toLowerCase();
+  const email = document.getElementById('reg-email').value.trim();
+  const pass  = document.getElementById('reg-pass').value;
+  const pass2 = document.getElementById('reg-pass2').value;
+  const pin   = document.getElementById('reg-pin').value;
+  if (!name||!user||!pass) return showAlert('reg-alert','Please fill all required fields.');
+  if (!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showAlert('reg-alert','Please enter a valid email address.');
+  if (pass!==pass2) return showAlert('reg-alert','Passwords do not match.');
+  if (pass.length<8) return showAlert('reg-alert','Password must be at least 8 characters.');
+  if (pin&&!/^\d{4}$/.test(pin)) return showAlert('reg-alert','PIN must be exactly 4 digits.');
+  const btn = document.getElementById('reg-btn');
+  btn.disabled=true; btn.textContent='CREATING...';
+  try {
+    await api('POST','/auth/register',{name,username:user,password:pass,pin,email});
+    const data = await api('POST','/auth/login',{username:user,password:pass});
+    session = {token:data.token,role:'user',username:data.username,name:data.name};
+    showAlert('reg-alert','Account created! Welcome.','success');
+    setTimeout(()=>{ setRoleBadge('user'); showPage('pg-user-dash'); renderUserDash(); },800);
+  } catch(e) {
+    shakeCard(); showAlert('reg-alert',e.message);
+    btn.disabled=false; btn.textContent='CREATE ACCOUNT';
+  }
+}
+
+// ── USER LOGIN ──
+let uPinVal='';
+let pinBusy=false;
+
+function uSwitchTab(t) {
+  document.getElementById('utab-pass').classList.toggle('active',t==='pass');
+  document.getElementById('utab-pin').classList.toggle('active',t==='pin');
+  document.getElementById('u-pass-form').style.display = t==='pass'?'block':'none';
+  document.getElementById('u-pin-form').style.display  = t==='pin' ?'block':'none';
+  uPinVal=''; pinBusy=false; updateUPinDots(); setPinBtnsDisabled(false);
+}
+
+async function doUserLogin() {
+  const user=document.getElementById('ul-user').value.trim().toLowerCase();
+  const pass=document.getElementById('ul-pass').value;
+  if (!user||!pass) return showAlert('ul-alert','Enter username and password.');
+  const btn=document.getElementById('ul-btn');
+  btn.disabled=true; btn.textContent='SIGNING IN...';
+  try {
+    const data=await api('POST','/auth/login',{username:user,password:pass});
+    session={token:data.token,role:'user',username:data.username,name:data.name};
+    setRoleBadge('user'); showPage('pg-user-dash'); renderUserDash();
+  } catch(e) { shakeCard(); showAlert('ul-alert',e.message); }
+  btn.disabled=false; btn.textContent='SIGN IN';
+}
+
+// BUG FIX 4: PIN login has loading state + debounce to prevent spamming
+function setPinBtnsDisabled(disabled) {
+  document.querySelectorAll('#pin-grid .pin-btn').forEach(b => b.disabled = disabled);
+  document.getElementById('pin-loading').style.display = disabled ? 'block' : 'none';
+}
+
+function uPin(d){
+  if(pinBusy || uPinVal.length>=4) return;
+  uPinVal+=d;
+  updateUPinDots();
+  if(uPinVal.length===4) setTimeout(doPinLogin, 200);
+}
+function uPinBack(){ if(pinBusy) return; uPinVal=uPinVal.slice(0,-1); updateUPinDots(); }
+function uPinClr(){ if(pinBusy) return; uPinVal=''; updateUPinDots(); }
+function updateUPinDots(){ for(let i=0;i<4;i++) document.getElementById('upd'+i).classList.toggle('filled',i<uPinVal.length); }
+
+async function doPinLogin(){
+  const user=document.getElementById('ul-pin-user').value.trim().toLowerCase();
+  if(!user) { showAlert('ul-alert','Enter your username first.'); uPinVal=''; updateUPinDots(); return; }
+  pinBusy=true;
+  setPinBtnsDisabled(true);
+  try {
+    const data=await api('POST','/auth/login-pin',{username:user,pin:uPinVal});
+    session={token:data.token,role:'user',username:data.username,name:data.name};
+    setRoleBadge('user'); showPage('pg-user-dash'); renderUserDash();
+  } catch(e){
+    shakeCard();
+    uPinVal=''; updateUPinDots();
+    showAlert('ul-alert',e.message);
+  } finally {
+    pinBusy=false;
+    setPinBtnsDisabled(false);
+  }
+}
+
+// ── ADMIN LOGIN ──
+async function doAdminLogin(){
+  const pass=document.getElementById('al-pass').value;
+  const btn=document.getElementById('al-btn');
+  btn.disabled=true; btn.textContent='VERIFYING...';
+  try {
+    const data=await api('POST','/auth/admin-login',{password:pass});
+    session={token:data.token,role:'admin'};
+    setRoleBadge('admin'); showPage('pg-admin-dash'); renderAdminDash('all');
+  } catch(e){
+    shakeCard(); showAlert('al-alert',e.message);
+    btn.disabled=false; btn.textContent='ACCESS ADMIN PANEL';
+  }
+}
+
+// ── VIEW LOGIN ──
+async function doViewLogin(){
+  const pass=document.getElementById('vl-pass').value;
+  const btn=document.getElementById('vl-btn');
+  btn.disabled=true; btn.textContent='VERIFYING...';
+  try {
+    const data=await api('POST','/auth/view-login',{password:pass});
+    session={token:data.token,role:'view'};
+    setRoleBadge('view'); showPage('pg-view-dash'); renderViewDash();
+  } catch(e){
+    shakeCard(); showAlert('vl-alert',e.message);
+    btn.disabled=false; btn.textContent='ACCESS REPORTS';
+  }
+}
+
+// ── FILE ──
+let uploadedFile=null;
+function onFileChange(input){
+  const file=input.files[0]; if(!file)return;
+  uploadedFile=file;
+  document.getElementById('file-name-show').textContent='✓ '+file.name;
+}
+
+// ── USER DASH ──
+function renderUserDash(){
+  document.getElementById('user-welcome').textContent='SIGNED IN AS: '+(session.name||session.username).toUpperCase();
+  uDTab('file');
+}
+function uDTab(t){
+  document.getElementById('udtab-file').classList.toggle('active',t==='file');
+  document.getElementById('udtab-hist').classList.toggle('active',t==='hist');
+  document.getElementById('ud-file').style.display  = t==='file'?'block':'none';
+  document.getElementById('ud-hist').style.display  = t==='hist'?'block':'none';
+  if(t==='hist') renderMyReports();
+}
+
+async function submitReport(){
+  const type=document.getElementById('crime-type').value;
+  const loc =document.getElementById('crime-location').value.trim();
+  const date=document.getElementById('crime-date').value.trim();
+  const desc=document.getElementById('crime-desc').value.trim();
+  if(!type||!loc||!date||!desc) return showAlert('rep-alert','Please fill all required fields.');
+  const form=new FormData();
+  form.append('type',type); form.append('location',loc);
+  form.append('date',date); form.append('description',desc);
+  if(uploadedFile) form.append('image',uploadedFile);
+  const btn=document.getElementById('submit-btn');
+  btn.disabled=true; btn.textContent='SUBMITTING...';
+  try {
+    const data=await api('POST','/reports',form,true);
+
+    // BUG FIX 1: Safely extract the reference code from whatever field the backend returns
+    const refCode = data.id || data.report_id || data.reference || data.ref || '—';
+    document.getElementById('ref-code-show').textContent = refCode;
+
+    ['crime-type','crime-location','crime-date','crime-desc'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('file-name-show').textContent='';
+    document.getElementById('crime-img').value='';
+    uploadedFile=null;
+    showPage('pg-success');
+  } catch(e){ showAlert('rep-alert',e.message); }
+  btn.disabled=false; btn.textContent='SUBMIT REPORT';
+}
+
+async function renderMyReports(){
+  const list=document.getElementById('my-reports-list');
+  const empty=document.getElementById('my-no-rep');
+  list.innerHTML='<div class="loading">LOADING...</div>';
+  try {
+    const mine=await api('GET','/reports/mine');
+    if(!mine.length){ list.innerHTML=''; empty.style.display='block'; return; }
+    empty.style.display='none';
+    list.innerHTML=mine.map(r=>`
+      <div class="rep-card">
+        <div class="rep-card-head" style="cursor:default;">
+          <div class="rep-card-left"><span class="rep-card-id">${r.id}</span><span class="rep-card-type">${escH(r.type)}</span></div>
+          <span class="badge ${r.status.toLowerCase()}">${r.status}</span>
+        </div>
+        <div style="padding:10px 18px 14px;">
+          <div style="font-size:13px;color:var(--text);margin-bottom:8px;line-height:1.6;">${escH(r.description.length>140?r.description.slice(0,140)+'…':r.description)}</div>
+          <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:9px;color:var(--muted);font-family:'IBM Plex Mono',monospace;letter-spacing:0.5px;">
+            <span>📍 ${escH(r.location)}</span><span>📅 ${escH(r.date)}</span><span>🕐 ${escH(r.submitted)}</span>
+          </div>
+        </div>
+      </div>`).join('');
+  } catch(e){ list.innerHTML='<div class="loading">FAILED TO LOAD</div>'; }
+}
+
+// ── ADMIN DASH ──
+// BUG FIX 2: 'all' filter sends no status param so backend returns everything
+let adminFilterVal='all', adminReports=[];
+async function renderAdminDash(filterVal){
+  if(filterVal!==undefined) adminFilterVal=filterVal;
+  try {
+    const stats=await api('GET','/reports/stats');
+    document.getElementById('admin-stats').innerHTML=`
+      <div class="stat"><div class="stat-num">${stats.total}</div><div class="stat-label">Total</div></div>
+      <div class="stat"><div class="stat-num gold">${stats.pending}</div><div class="stat-label">Pending</div></div>
+      <div class="stat"><div class="stat-num green">${stats.approved}</div><div class="stat-label">Approved</div></div>
+      <div class="stat"><div class="stat-num red">${stats.rejected}</div><div class="stat-label">Rejected</div></div>
+      <div class="stat"><div class="stat-num blue">${stats.solved||0}</div><div class="stat-label">Solved</div></div>`;
+
+    // BUG FIX 2: Only append ?status= when a specific filter is chosen, not for 'all'
+    const statusParam = adminFilterVal !== 'all' ? '?status=' + adminFilterVal : '';
+    const reps=await api('GET','/reports' + statusParam);
+    adminReports=reps; renderAdminList(reps);
+  } catch(e){ document.getElementById('admin-reports-list').innerHTML='<div class="loading">FAILED TO LOAD</div>'; }
+}
+
+function adminFilter(val,btn){
+  adminFilterVal=val;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAdminDash(val);
+}
+
+function renderAdminList(reps){
+  const list=document.getElementById('admin-reports-list');
+  const empty=document.getElementById('admin-no-rep');
+  if(!reps.length){ list.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  const imgBase=API.replace('/api','');
+  list.innerHTML=reps.map(r=>`
+    <div class="rep-card" id="rc-${r.id}">
+      <div class="rep-card-head" onclick="toggleDetail('${r.id}')">
+        <div class="rep-card-left">
+          <span class="rep-card-id">${r.id}</span>
+          <span class="rep-card-type">${escH(r.type)}</span>
+          <span style="font-size:9px;color:var(--muted);font-family:'IBM Plex Mono',monospace;">by ${escH(r.user_name||r.username)}</span>
+        </div>
+        <div class="rep-card-right">
+          <span class="badge ${r.status.toLowerCase()}">${r.status}</span>
+          <span class="chevron" id="chev-${r.id}">▼</span>
+        </div>
+      </div>
+      <div class="rep-detail" id="det-${r.id}">
+        <div class="detail-grid">
+          <div class="detail-item"><label>Location</label><p>${escH(r.location)}</p></div>
+          <div class="detail-item"><label>Date &amp; Time</label><p>${escH(r.date)}</p></div>
+          <div class="detail-item"><label>Filed By</label><p>${escH(r.user_name||r.username)}</p></div>
+          <div class="detail-item"><label>Submitted</label><p>${escH(r.submitted)}</p></div>
+        </div>
+        <div class="detail-desc"><label>Description</label><p>${escH(r.description)}</p></div>
+        ${r.image_url
+          ?`<label style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:7px;">Evidence Image</label>
+            <img class="rep-image" src="${imgBase}${r.image_url}" alt="Evidence" onclick="openLightboxUrl('${imgBase}${r.image_url}')"/>`
+          :`<div style="padding:4px 0 14px;font-size:9px;color:var(--muted);font-family:'IBM Plex Mono',monospace;letter-spacing:1px;">NO IMAGE UPLOADED</div>`}
+        <div class="action-row">
+          <button class="btn sm approve" onclick="changeStatus('${r.id}','Approved')">✓ APPROVE</button>
+          <button class="btn sm rej" onclick="changeStatus('${r.id}','Rejected')">✕ REJECT</button>
+          <button class="btn sm solve-btn" onclick="changeStatus('${r.id}','Solved')">★ SOLVED</button>
+          <button class="btn sm edit-btn" onclick="openEdit('${r.id}')">✎ EDIT</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleDetail(id){
+  document.getElementById('det-'+id).classList.toggle('open');
+  document.getElementById('chev-'+id).classList.toggle('open');
+}
+async function changeStatus(id,status){
+  try{ await api('PATCH','/reports/'+id+'/status',{status}); renderAdminDash(); }
+  catch(e){ alert('Error: '+e.message); }
+}
+function openLightboxUrl(url){ document.getElementById('lb-img').src=url; document.getElementById('lightbox').classList.add('open'); }
+function closeLightbox(){ document.getElementById('lightbox').classList.remove('open'); }
+function openEdit(id){
+  const rep=adminReports.find(r=>r.id===id); if(!rep)return;
+  document.getElementById('edit-id').value=id;
+  document.getElementById('edit-type').value=rep.type;
+  document.getElementById('edit-location').value=rep.location;
+  document.getElementById('edit-date').value=rep.date;
+  document.getElementById('edit-desc').value=rep.description;
+  document.getElementById('edit-modal').classList.add('open');
+}
+function closeModal(){ document.getElementById('edit-modal').classList.remove('open'); }
+async function saveEdit(){
+  const id=document.getElementById('edit-id').value;
+  try {
+    await api('PUT','/reports/'+id,{
+      type:document.getElementById('edit-type').value,
+      location:document.getElementById('edit-location').value,
+      date:document.getElementById('edit-date').value,
+      description:document.getElementById('edit-desc').value
+    });
+    closeModal(); renderAdminDash();
+  } catch(e){ alert('Error: '+e.message); }
+}
+
+// ── VIEW DASH ──
+// BUG FIX 3: Removed markSolved button from viewer — viewers should not change report status
+async function renderViewDash(){
+  const list=document.getElementById('view-reports-list');
+  const empty=document.getElementById('view-no-rep');
+  list.innerHTML='<div class="loading">LOADING REPORTS...</div>';
+  const imgBase=API.replace('/api','');
+  try {
+    const reports=await api('GET','/reports/approved');
+    if(!reports.length){ list.innerHTML=''; empty.style.display='block'; return; }
+    empty.style.display='none';
+    list.innerHTML=reports.map(r=>`
+      <div class="pub-card ${r.status==='Solved'?'solved-card':''}" id="pub-${r.id}">
+        <div class="pub-card-top">
+          <span class="pub-type">${escH(r.type)}</span>
+          <span class="pub-id">${r.id}</span>
+        </div>
+        <div class="pub-desc">${escH(r.description)}</div>
+        ${r.image_url?`<img class="pub-image" src="${imgBase}${r.image_url}" alt="Evidence" onclick="openLightboxUrl('${imgBase}${r.image_url}')"/>`:''}
+        <div class="pub-meta">
+          <span>📍 ${escH(r.location)}</span>
+          <span>📅 ${escH(r.date)}</span>
+          <span>🕐 ${escH(r.submitted)}</span>
+          ${r.status==='Solved'?'<span class="badge solved">★ Solved</span>':'<span class="badge approved">Approved</span>'}
+        </div>
+      </div>`).join('');
+  } catch(e){ list.innerHTML='<div class="loading">FAILED TO LOAD</div>'; }
+}
+
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeModal(); closeLightbox(); } });
+
+showPage('pg-portal');
+</script>
+</body>
+</html>
