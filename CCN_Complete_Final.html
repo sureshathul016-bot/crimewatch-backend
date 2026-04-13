@@ -1,0 +1,2610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCN Complete Study Material + Diagrams — TED 21-4132</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --card: #162032;
+    --border: #1e3a5f;
+    --accent1: #00d4ff;
+    --accent2: #7c3aed;
+    --accent3: #f59e0b;
+    --accent4: #10b981;
+    --accent5: #ef4444;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --glow: 0 0 20px rgba(0,212,255,0.15);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Sora', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #0a0e1a 0%, #0f1f3d 50%, #0a0e1a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 24px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(0,212,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.3);
+    color: var(--accent1);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 4px 14px;
+    border-radius: 2px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 800;
+    background: linear-gradient(90deg, #00d4ff, #7c3aed, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+  .hero p { color: var(--muted); font-size: 14px; }
+
+  /* Nav */
+  .nav {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 20px 16px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 7px 16px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover, .nav-btn.active {
+    border-color: var(--accent1);
+    color: var(--accent1);
+    background: rgba(0,212,255,0.05);
+  }
+
+  /* Sections */
+  .section { display: none; padding: 32px 16px; max-width: 1100px; margin: 0 auto; }
+  .section.active { display: block; }
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent1);
+    border-left: 4px solid var(--accent1);
+    padding-left: 14px;
+    margin-bottom: 28px;
+  }
+
+  /* Diagram Cards */
+  .diagram-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+  .dcard {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .dcard:hover { border-color: var(--accent1); box-shadow: var(--glow); }
+  .dcard-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    color: var(--accent3);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .dcard-title::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent3);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  /* OSI Layers */
+  .osi-layer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+    border-radius: 4px;
+    overflow: hidden;
+    animation: slideIn 0.4s ease both;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .osi-num {
+    width: 36px;
+    min-width: 36px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: #000;
+  }
+  .osi-body {
+    flex: 1;
+    padding: 0 14px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .osi-name { font-weight: 600; font-size: 14px; }
+  .osi-pdu {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    opacity: 0.7;
+  }
+  .osi-device { font-size: 11px; opacity: 0.6; }
+
+  /* TCP/IP Stack */
+  .tcpip-layer {
+    padding: 12px 18px;
+    margin-bottom: 4px;
+    border-radius: 4px;
+    border-left: 3px solid;
+  }
+  .tcpip-name { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  .tcpip-protos {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .proto-tag {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+  }
+
+  /* Topology */
+  .topo-svg-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  svg text { font-family: 'Sora', sans-serif; }
+
+  /* Comparison Table */
+  .ctable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .ctable th {
+    background: rgba(0,212,255,0.1);
+    color: var(--accent1);
+    padding: 10px 12px;
+    text-align: left;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    border-bottom: 2px solid var(--border);
+  }
+  .ctable td {
+    padding: 9px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: var(--text);
+    vertical-align: top;
+  }
+  .ctable tr:hover td { background: rgba(255,255,255,0.02); }
+  .ctable td:first-child { color: var(--muted); font-size: 12px; font-weight: 600; }
+
+  /* Flow diagram */
+  .flow-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 12px 0;
+  }
+  .flow-node {
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.3);
+    border-radius: 6px;
+    padding: 10px 16px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 80px;
+  }
+  .flow-arrow {
+    color: var(--accent1);
+    font-size: 20px;
+    padding: 0 4px;
+    opacity: 0.6;
+  }
+  .flow-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    display: block;
+    margin-top: 4px;
+  }
+
+  /* Stop-and-wait */
+  .sw-diagram { width: 100%; }
+  .sw-col { display: flex; flex-direction: column; align-items: center; }
+  .sw-entity {
+    background: var(--accent2);
+    color: white;
+    padding: 8px 24px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 0;
+  }
+  .sw-timeline {
+    width: 2px;
+    height: 280px;
+    background: rgba(255,255,255,0.15);
+    position: relative;
+  }
+  .sw-wrap {
+    display: flex;
+    gap: 80px;
+    justify-content: center;
+    position: relative;
+    padding: 0 20px;
+  }
+  .sw-arrows { position: absolute; top: 40px; left: 0; right: 0; height: 280px; }
+
+  /* Badge */
+  .hot-badge {
+    display: inline-block;
+    background: var(--accent5);
+    color: white;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  /* Full-width card */
+  .dcard-full {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .dcard-full:hover { border-color: var(--accent1); box-shadow: var(--glow); }
+
+  /* IPv4 Header */
+  .hdr-grid {
+    display: grid;
+    grid-template-columns: repeat(32, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+  }
+  .hdr-cell {
+    background: var(--card);
+    padding: 7px 2px;
+    text-align: center;
+    color: var(--muted);
+  }
+  .hdr-field {
+    background: var(--surface);
+    padding: 10px 6px;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 600;
+    border: none;
+    color: var(--text);
+  }
+
+  /* Routing visual */
+  .route-node {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 2px solid;
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  /* Legend */
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 10px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  /* SSH Components */
+  .ssh-stack {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .ssh-layer {
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .ssh-layer:last-child { border-bottom: none; }
+  .ssh-icon { font-size: 18px; }
+  .ssh-layer-name { font-weight: 600; font-size: 14px; }
+  .ssh-layer-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* FTP Model */
+  .ftp-wrap {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+  .ftp-box {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    min-width: 160px;
+    text-align: center;
+  }
+  .ftp-header {
+    padding: 10px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+  .ftp-component {
+    padding: 10px 14px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .ftp-conn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding: 10px;
+  }
+  .ftp-port-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+  }
+  .port-tag {
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 10px;
+  }
+  .conn-line {
+    height: 2px;
+    width: 80px;
+    margin: 0 4px;
+  }
+
+  /* DNS Flow */
+  .dns-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 14px;
+    padding: 12px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 6px;
+    border-left: 3px solid var(--border);
+    transition: border-color 0.2s;
+  }
+  .dns-step:hover { border-left-color: var(--accent4); }
+  .dns-num {
+    width: 28px; height: 28px;
+    min-width: 28px;
+    background: var(--accent4);
+    color: #000;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 12px;
+    font-family: 'Space Mono', monospace;
+  }
+  .dns-text { font-size: 13px; }
+  .dns-text strong { color: var(--accent4); }
+
+  /* ALOHA Timeline */
+  .aloha-wrap {
+    background: rgba(0,0,0,0.3);
+    border-radius: 6px;
+    padding: 16px;
+  }
+  .aloha-row { display: flex; align-items: center; margin-bottom: 8px; gap: 8px; }
+  .aloha-label { font-size: 11px; color: var(--muted); width: 60px; min-width: 60px; text-align: right; }
+  .aloha-timeline { flex: 1; height: 28px; background: rgba(255,255,255,0.03); border-radius: 3px; position: relative; display: flex; align-items: center; }
+  .aloha-frame {
+    position: absolute;
+    height: 20px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    color: #000;
+  }
+  .collision-zone {
+    position: absolute;
+    height: 28px;
+    background: rgba(239,68,68,0.15);
+    border: 1px dashed rgba(239,68,68,0.4);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    color: var(--accent5);
+  }
+
+  /* Port table */
+  .port-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+  }
+  .port-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .port-card:hover { border-color: var(--accent3); transform: translateY(-2px); }
+  .port-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent3);
+    display: block;
+  }
+  .port-name { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .diagram-grid { grid-template-columns: 1fr; }
+    .sw-wrap { gap: 40px; }
+    .ftp-wrap { flex-direction: column; align-items: center; }
+  }
+
+
+  /* ===== ENHANCED STUDY MATERIAL STYLES ===== */
+  .topic-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  .topic-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .topic-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent1);
+    letter-spacing: 1px;
+    flex: 1;
+  }
+  .mark-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    border: 1px solid;
+  }
+  .mark-1 { color: var(--accent4); border-color: var(--accent4); background: rgba(16,185,129,0.08); }
+  .mark-3 { color: var(--accent3); border-color: var(--accent3); background: rgba(245,158,11,0.08); }
+  .mark-7 { color: var(--accent5); border-color: var(--accent5); background: rgba(239,68,68,0.08); }
+  .hot-pill {
+    background: rgba(239,68,68,0.15);
+    color: #ef4444;
+    border: 1px solid rgba(239,68,68,0.3);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .topic-body {
+    padding: 24px;
+  }
+  .definition-box {
+    background: rgba(0,212,255,0.05);
+    border-left: 3px solid var(--accent1);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 18px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .definition-box strong { color: var(--accent1); }
+
+  /* Tables */
+  .study-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 16px 0;
+  }
+  .study-table th {
+    background: rgba(0,212,255,0.1);
+    color: var(--accent1);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 10px 14px;
+    text-align: left;
+    border: 1px solid var(--border);
+  }
+  .study-table td {
+    padding: 9px 14px;
+    border: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+    line-height: 1.6;
+  }
+  .study-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+  .study-table tr:hover td { background: rgba(0,212,255,0.04); }
+
+  /* Lists */
+  .study-list {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0;
+  }
+  .study-list li {
+    padding: 8px 0 8px 22px;
+    position: relative;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .study-list li:last-child { border-bottom: none; }
+  .study-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent1);
+    font-size: 12px;
+    top: 10px;
+  }
+  .study-list li strong { color: var(--accent3); }
+
+  /* Sub-section headings */
+  .sub-heading {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent3);
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 1px;
+    margin: 20px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(245,158,11,0.2);
+  }
+
+  /* Expected Questions */
+  .eq-box {
+    background: rgba(124,58,237,0.06);
+    border: 1px solid rgba(124,58,237,0.25);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 20px;
+  }
+  .eq-title {
+    color: var(--accent2);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .eq-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 6px 0;
+    font-size: 13px;
+    color: var(--text);
+    border-bottom: 1px solid rgba(124,58,237,0.1);
+  }
+  .eq-item:last-child { border-bottom: none; }
+  .eq-mark {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 2px;
+    white-space: nowrap;
+    min-width: 24px;
+    text-align: center;
+  }
+  .eq-mark.m1 { background: #10b981; }
+  .eq-mark.m3 { background: #f59e0b; }
+  .eq-mark.m7 { background: #ef4444; }
+
+  /* Diagram inject section */
+  .diagram-section {
+    background: rgba(0,212,255,0.03);
+    border-top: 1px solid var(--border);
+    border-radius: 0 0 10px 10px;
+    padding: 20px 24px;
+  }
+  .diagram-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .diagram-label::before {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .diagram-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Module header */
+  .mod-header {
+    background: linear-gradient(135deg, rgba(0,212,255,0.08) 0%, rgba(124,58,237,0.08) 100%);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 28px;
+  }
+  .mod-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent1);
+    letter-spacing: 3px;
+    margin-bottom: 6px;
+  }
+  .mod-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .mod-topics {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .mod-topics span {
+    display: inline-block;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    padding: 2px 10px;
+    border-radius: 2px;
+    margin: 2px 3px 2px 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+  }
+
+  /* note / warning box */
+  .note-box {
+    background: rgba(245,158,11,0.07);
+    border-left: 3px solid var(--accent3);
+    padding: 12px 16px;
+    font-size: 13px;
+    border-radius: 0 6px 6px 0;
+    margin: 12px 0;
+    color: var(--text);
+  }
+  .note-box strong { color: var(--accent3); }
+
+  /* dcard-full inside topic */
+  .diagram-section .dcard-full {
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+
+  .hot-badge {
+    background: rgba(239,68,68,0.15);
+    color: #ef4444;
+    border: 1px solid rgba(239,68,68,0.3);
+    font-size: 9px;
+    padding: 2px 7px;
+    border-radius: 2px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* Code / pre-formatted */
+  .code-block {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    line-height: 1.8;
+    color: #e2e8f0;
+    overflow-x: auto;
+    white-space: pre;
+    margin: 12px 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">TED (21) 4132 · REVISION 2021</div>
+  <h1>Computer Communication &amp; Networks</h1>
+  <p>Complete Study Material + Visual Diagrams · All 4 Modules · PYQ Mapped 2023–2025 · 75 Marks Exam</p>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nav-btn active" onclick="showSection('m1',this)">Module 1 — Basics</button>
+  <button class="nav-btn" onclick="showSection('m2',this)">Module 2 — Physical &amp; DLL</button>
+  <button class="nav-btn" onclick="showSection('m3',this)">Module 3 — Network &amp; Transport</button>
+  <button class="nav-btn" onclick="showSection('m4',this)">Module 4 — Application Layer</button>
+  <button class="nav-btn" onclick="showSection('qref',this)">⚡ Quick Ref — 1M</button>
+</div>
+
+<!-- ===== MODULE 1 ===== -->
+<div class="section active" id="m1">
+  <div class="mod-header">
+    <div class="mod-num">MODULE 01</div>
+    <div class="mod-title">Data Communication &amp; Network Basics</div>
+    <div class="mod-topics">
+      <span>OSI Model</span><span>TCP/IP</span><span>LAN/WAN</span><span>Topologies</span><span>Data Flow</span>
+    </div>
+  </div>
+
+  <!-- Data Communication -->
+  <div class="topic-block">
+    <div class="topic-header">
+      <div class="topic-title">📡 Data Communication — Definition &amp; Components</div>
+      <span class="mark-badge mark-1">1M</span>
+      <span class="mark-badge mark-3">3M</span>
+    </div>
+    <div class="topic-body">
+      <div class="definition-box">
+        <strong>Definition:</strong> Data communication is the exchange of data between two devices via some form of transmission medium (such as a wire or cable). The communicating devices must be part of a communication system made up of hardware and software.
+      </div>
+      <div class="sub-heading">5 Components of a Data Communication System</div>
+      <ul class="study-list">
+        <li><strong>Message</strong> — The information to be communicated (text, numbers, images, audio, video)</li>
+        <li><strong>Sender</strong> — The device that sends the data (computer, phone, camera)</li>
+        <li><strong>Receiver</strong> — The device that receives the message (computer, TV, phone)</li>
+        <li><strong>Transmission Medium</strong> — The physical path (twisted-pair wire, coaxial cable, fiber-optic, radio waves)</li>
+        <li><strong>Protocol</strong> — A set of rules that govern data communications. Without a protocol, two devices may be connected but not communicating.</li>
+      </ul>
+      <div class="sub-heading">4 Characteristics of Effective Data Communication</div>
+      <ul class="study-list">
+        <li><strong>Delivery</strong> — Data must reach the correct destination only</li>
+        <li><strong>Accuracy</strong> — Data must be delivered without alteration</li>
+        <li><strong>Timeliness</strong> — Data must be delivered on time (real-time for audio/video)</li>
+        <li><strong>Jitter</strong> — Variation in packet arrival time; uneven delay in audio/video packets</li>
+      </ul>
+      <div class="eq-box">
+        <div class="eq-title">⭐ EXPECTED QUESTIONS</div>
+        <div class="eq-item"><span class="eq-mark m1">1M</span> Define protocol</div>
+        <div class="eq-item"><span class="eq-mark m1">1M</span> List the components in a data communication system</div>
+        <div class="eq-item"><span class="eq-mark m3">3M</span> Define data communication and list its elements</div>
+        <div class="eq-item"><span class="eq-mark m3">3M</span> List different data representation forms</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Flow -->
+  <div class="topic-block">
+    <div class="topic-header">
+      <div class="topic-title">↔️ Data Flow — Simplex, Half-Duplex, Full-Duplex</div>
+      <span class="hot-pill">HOT</span>
+      <span class="mark-badge mark-7">7M</span>
+    </div>
+    <div class="topic-body">
+      <table class="study-table">
+        <tr><th>Mode</th><th>Direction</th><th>Same Time?</th><th>Example</th></tr>
+        <tr><td><strong>Simplex</strong></td><td>One direction only</td><td>—</td><td>Keyboard→Monitor, Radio broadcast</td></tr>
+        <tr><td><strong>Half-Duplex</strong></td><td>Both directions</td><td>❌ No</td><td>Walkie-talkie, CB radio</td></tr>
+        <tr><td><strong>Full-Duplex</strong></td><td>Both directions</td><td>✅ Yes</td><td>Telephone, Mobile phone</td></tr>
+      </table>
+      <ul class="study-list">
+        <li><strong>Simplex</strong> — Communication is unidirectional. Only one device can transmit; the other can only receive. Uses entire channel capacity for one direction.</li>
+        <li><strong>Half-Duplex</strong> — Each station can transmit AND receive, but NOT at the same time. When one device is sending, the other can only receive.</li>
+        <li><strong>Full-Duplex (Duplex)</strong> — Both stations can transmit and receive simultaneously. Channel capacity divided between both directions.</li>
+      </ul>
+      <div class="eq-box">
+        <div class="eq-title">⭐ EXPECTED QUESTIONS</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Distinguish between simplex, half-duplex, and full-duplex communication with examples and diagrams</div>
+        <div class="eq-item"><span class="eq-mark m3">3M</span> Write different data flow methods with examples</div>
+      </div>
+    </div>
+    <div class="diagram-section">
+      <div class="diagram-label">VISUAL DIAGRAM</div>
+      <div class="dcard-full">
+<div class="dcard-title">Data Flow Modes — Simplex · Half-Duplex · Full-Duplex <span class="hot-badge">HOT</span></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;">
+<div style="border:1px solid #1e3a5f;border-radius:6px;padding:16px;">
+<div style="color:#f59e0b;font-weight:700;margin-bottom:8px;font-size:13px;">① SIMPLEX</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;margin:12px 0;">
+<div class="flow-node" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.4);">Sender</div>
+<div style="color:#f59e0b;font-size:22px;">⟶</div>
+<div class="flow-node" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.4);">Receiver</div>
+</div>
+<div style="font-size:11px;color:var(--muted);text-align:center;">One direction only<br/>e.g. Keyboard → Monitor</div>
+</div>
+<div style="border:1px solid #1e3a5f;border-radius:6px;padding:16px;">
+<div style="color:#00d4ff;font-weight:700;margin-bottom:8px;font-size:13px;">② HALF-DUPLEX</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;margin:12px 0;flex-direction:column;">
+<div style="display:flex;align-items:center;gap:8px;">
+<div class="flow-node" style="font-size:11px;">Device A</div>
+<div style="color:#00d4ff;font-size:18px;">⟶</div>
+<div class="flow-node" style="font-size:11px;">Device B</div>
+</div>
+<div style="color:var(--muted);font-size:10px;">— NOT at same time —</div>
+<div style="display:flex;align-items:center;gap:8px;">
+<div class="flow-node" style="font-size:11px;">Device A</div>
+<div style="color:#00d4ff;font-size:18px;">⟵</div>
+<div class="flow-node" style="font-size:11px;">Device B</div>
+</div>
+</div>
+<div style="font-size:11px;color:var(--muted);text-align:center;">e.g. Walkie-talkie</div>
+</div>
+<div style="border:1px solid #1e3a5f;border-radius:6px;padding:16px;">
+<div style="color:#10b981;font-weight:700;margin-bottom:8px;font-size:13px;">③ FULL-DUPLEX</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;margin:12px 0;">
+<div class="flow-node" style="font-size:11px;">Device A</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+<div style="color:#10b981;font-size:16px;">⟶</div>
+<div style="color:#10b981;font-size:16px;">⟵</div>
+</div>
+<div class="flow-node" style="font-size:11px;">Device B</div>
+</div>
+<div style="font-size:11px;color:var(--muted);text-align:center;">Simultaneously both directions<br/>e.g. Telephone</div>
+</div>
+</div>
+</div>
+    </div>
+  </div>
+
+  <!-- OSI Model -->
+  <div class="topic-block">
+    <div class="topic-header">
+      <div class="topic-title">🏛️ OSI Model — 7 Layers</div>
+      <span class="hot-pill">HOT</span>
+      <span class="mark-badge mark-7">7M</span>
+      <span class="mark-badge mark-3">3M</span>
+    </div>
+    <div class="topic-body">
+      <div class="definition-box">
+        <strong>OSI</strong> = Open Systems Interconnection. Developed by ISO. A layered framework for designing network systems that allows communication between all types of computer systems. It is <strong>NOT a protocol</strong> — it is a <strong>MODEL</strong> for understanding network architecture. Has 7 layers.
+      </div>
+      <div class="note-box">🧠 <strong>Memory Aid (Bottom → Top):</strong> "Please Do Not Throw Sausage Pizza Away" — Physical · Data Link · Network · Transport · Session · Presentation · Application</div>
+      <table class="study-table">
+        <tr><th>#</th><th>Layer</th><th>Function</th><th>Device / PDU</th></tr>
+        <tr><td>7</td><td><strong>Application</strong></td><td>User interface to network services. Protocols: HTTP, FTP, SMTP, DNS</td><td>— / Message</td></tr>
+        <tr><td>6</td><td><strong>Presentation</strong></td><td>Translation, Encryption/Decryption, Compression</td><td>— / Message</td></tr>
+        <tr><td>5</td><td><strong>Session</strong></td><td>Establishes, controls, maintains user sessions. Dialog control, synchronization</td><td>— / Message</td></tr>
+        <tr><td>4</td><td><strong>Transport</strong></td><td>Process-to-process delivery. Port addressing, segmentation, flow &amp; error control. TCP, UDP</td><td>— / Segment</td></tr>
+        <tr><td>3</td><td><strong>Network</strong></td><td>Source-to-destination delivery. Logical (IP) addressing, routing, packetization</td><td>Router / Packet</td></tr>
+        <tr><td>2</td><td><strong>Data Link</strong></td><td>Node-to-node delivery. Framing, physical (MAC) addressing, flow control, error control. LLC + MAC sublayers</td><td>Switch / Frame</td></tr>
+        <tr><td>1</td><td><strong>Physical</strong></td><td>Bit transmission over medium. Data rate, synchronization, topology, transmission mode</td><td>Hub / Bit</td></tr>
+      </table>
+      <div class="eq-box">
+        <div class="eq-title">⭐ EXPECTED QUESTIONS</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Describe the layered concept of OSI model with a neat diagram (define each layer)</div>
+        <div class="eq-item"><span class="eq-mark m3">3M</span> List the layers in ISO OSI networking model</div>
+        <div class="eq-item"><span class="eq-mark m1">1M</span> OSI stands for ___</div>
+        <div class="eq-item"><span class="eq-mark m3">3M</span> Write advantages of layered approach model in network designing</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TCP/IP -->
+  <div class="topic-block">
+    <div class="topic-header">
+      <div class="topic-title">🌐 TCP/IP Protocol Suite &amp; Comparison with OSI</div>
+      <span class="hot-pill">HOT</span>
+      <span class="mark-badge mark-7">7M</span>
+    </div>
+    <div class="topic-body">
+      <div class="definition-box">
+        <strong>TCP/IP</strong> is a protocol suite (a set of protocols organized in layers) used in the Internet today. It is a hierarchical protocol — each upper-level protocol is supported by services of lower-level protocols. Today it is considered a <strong>5-layer model</strong>.
+      </div>
+      <div class="sub-heading">TCP/IP vs OSI Comparison (7 Mark Answer)</div>
+      <table class="study-table">
+        <tr><th>Property</th><th>OSI Model</th><th>TCP/IP Model</th></tr>
+        <tr><td>Layers</td><td>7 layers</td><td>4 or 5 layers</td></tr>
+        <tr><td>Full Form</td><td>Open Systems Interconnection</td><td>Transmission Control Protocol/IP</td></tr>
+        <tr><td>Developed By</td><td>ISO</td><td>ARPANET / US Dept. of Defense</td></tr>
+        <tr><td>Approach</td><td>Vertical</td><td>Horizontal</td></tr>
+        <tr><td>Transport Layer</td><td>Connection-oriented only</td><td>Both TCP (oriented) &amp; UDP (connectionless)</td></tr>
+        <tr><td>Session &amp; Presentation</td><td>Separate layers</td><td>Merged into Application layer</td></tr>
+        <tr><td>Protocol Dependency</td><td>Protocol independent</td><td>Protocol dependent</td></tr>
+        <tr><td>Usage</td><td>Reference model only</td><td>Used in actual Internet</td></tr>
+      </table>
+      <div class="eq-box">
+        <div class="eq-title">⭐ EXPECTED QUESTIONS</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Compare TCP/IP and OSI models (draw diagram + table)</div>
+        <div class="eq-item"><span class="eq-mark m3">3M</span> Draw the TCP/IP protocol suite with protocols in each layer</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Summarize protocols in TCP/IP protocol suite</div>
+      </div>
+    </div>
+    <div class="diagram-section">
+      <div class="diagram-label">VISUAL DIAGRAM</div>
+      <div class="dcard-full">
+<div class="dcard-title">OSI vs TCP/IP — Comparison <span class="hot-badge">HOT 7M</span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+<div>
+<div style="text-align:center;font-weight:700;color:#06b6d4;margin-bottom:8px;font-size:13px;">OSI Model (7 Layers)</div>
+<div style="border:1px dashed rgba(6,182,212,0.3);border-radius:6px;overflow:hidden;">
+<div style="background:rgba(239,68,68,0.1);padding:6px 12px;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.05);">7. Application</div>
+<div style="background:rgba(249,115,22,0.1);padding:6px 12px;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.05);">6. Presentation</div>
+<div style="background:rgba(245,158,11,0.1);padding:6px 12px;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.05);">5. Session</div>
+<div style="background:rgba(34,197,94,0.1);padding:6px 12px;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.05);">4. Transport</div>
+<div style="background:rgba(6,182,212,0.1);padding:6px 12px;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.05);">3. Network</div>
+<div style="background:rgba(59,130,246,0.1);padding:6px 12px;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.05);">2. Data Link</div>
+<div style="background:rgba(124,58,237,0.1);padding:6px 12px;font-size:12px;">1. Physical</div>
+</div>
+</div>
+<div>
+<div style="text-align:center;font-weight:700;color:#f59e0b;margin-bottom:8px;font-size:13px;">TCP/IP Model (5 Layers)</div>
+<div style="border:1px dashed rgba(245,158,11,0.3);border-radius:6px;overflow:hidden;">
+<div style="background:rgba(239,68,68,0.1);padding:18px 12px;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.05);text-align:center;">Application<br/><span style="font-size:10px;color:var(--muted)">(merges 7+6+5)</span></div>
+<div style="background:rgba(34,197,94,0.1);padding:6px 12px;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.05);">Transport</div>
+<div style="background:rgba(6,182,212,0.1);padding:6px 12px;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.05);">Internet (Network)</div>
+<div style="background:rgba(59,130,246,0.1);padding:6px 12px;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.05);">Data Link</div>
+<div style="background:rgba(124,58,237,0.1);padding:6px 12px;font-size:12px;">Physical</div>
+</div>
+</div>
+</div>
+<table class="ctable">
+<tr><th>Property</th><th>OSI</th><th>TCP/IP</th></tr>
+<tr><td>Layers</td><td>7</td><td>4 or 5</td></tr>
+<tr><td>Developed by</td><td>ISO</td><td>ARPANET / US DoD</td></tr>
+<tr><td>Transport</td><td>Connection-oriented only</td><td>TCP + UDP (both)</td></tr>
+<tr><td>Usage</td><td>Reference model only</td><td>Used in real Internet</td></tr>
+<tr><td>Protocol dependency</td><td>Protocol independent</td><td>Protocol dependent</td></tr>
+</table>
+</div>
+    </div>
+  </div>
+
+  <!-- LAN/WAN/Topologies -->
+  <div class="topic-block">
+    <div class="topic-header">
+      <div class="topic-title">🗺️ LAN, WAN &amp; Network Topologies</div>
+      <span class="hot-pill">HOT</span>
+      <span class="mark-badge mark-7">7M</span>
+      <span class="mark-badge mark-3">3M</span>
+    </div>
+    <div class="topic-body">
+      <div class="sub-heading">LAN vs WAN (3 Mark Answer)</div>
+      <table class="study-table">
+        <tr><th>Property</th><th>LAN</th><th>WAN</th></tr>
+        <tr><td>Full Form</td><td>Local Area Network</td><td>Wide Area Network</td></tr>
+        <tr><td>Area</td><td>Small — office, building, campus</td><td>Large — city, country, world</td></tr>
+        <tr><td>Ownership</td><td>Privately owned</td><td>Owned by communication companies</td></tr>
+        <tr><td>Connects</td><td>Hosts (computers)</td><td>Switches, routers, modems</td></tr>
+        <tr><td>Cost</td><td>Low</td><td>High (leased lines)</td></tr>
+        <tr><td>Speed</td><td>High speed</td><td>Lower speed</td></tr>
+      </table>
+      <div class="sub-heading">4 Network Topologies (7 Mark Answer)</div>
+      <ul class="study-list">
+        <li><strong>Mesh</strong> — Every device has dedicated point-to-point link to every other device. Links needed = n(n-1)/2. Advantages: Robust, private, easy fault isolation. Disadvantages: Very expensive, difficult installation.</li>
+        <li><strong>Star</strong> — Each device connects only to a central hub. No direct device-to-device links. Advantages: Less expensive, easy install, if one link fails only that link affected. Disadvantages: If hub fails, entire network fails.</li>
+        <li><strong>Bus</strong> — One long backbone cable connects all devices via drop lines and taps. Multipoint topology. Advantages: Easy installation, less cabling. Disadvantages: Difficult fault isolation, hard to add new devices.</li>
+        <li><strong>Ring</strong> — Each device connects to only two adjacent devices. Signal passes in one direction. Each device has a repeater. Advantages: Easy to install/reconfigure. Disadvantages: Break in ring disables entire network.</li>
+      </ul>
+      <div class="eq-box">
+        <div class="eq-title">⭐ EXPECTED QUESTIONS</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> List the different networking topologies. Describe features of any two with diagrams.</div>
+        <div class="eq-item"><span class="eq-mark m3">3M</span> Compare LAN and WAN</div>
+        <div class="eq-item"><span class="eq-mark m3">3M</span> Compare LAN and MAN</div>
+        <div class="eq-item"><span class="eq-mark m1">1M</span> What is a multipoint connection?</div>
+      </div>
+    </div>
+    <div class="diagram-section">
+      <div class="diagram-label">VISUAL DIAGRAM</div>
+      <div class="dcard-full">
+<div class="dcard-title">Network Topologies <span class="hot-badge">HOT 7M</span></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+<!-- Mesh -->
+<div style="background:rgba(255,255,255,0.02);border-radius:8px;padding:16px;text-align:center;">
+<div style="font-weight:700;color:#00d4ff;margin-bottom:12px;">MESH</div>
+<svg height="100" viewbox="0 0 120 100" width="120">
+<line opacity="0.5" stroke="#00d4ff" stroke-width="1.5" x1="20" x2="100" y1="20" y2="20"></line>
+<line opacity="0.5" stroke="#00d4ff" stroke-width="1.5" x1="20" x2="60" y1="20" y2="85"></line>
+<line opacity="0.5" stroke="#00d4ff" stroke-width="1.5" x1="20" x2="100" y1="20" y2="60"></line>
+<line opacity="0.5" stroke="#00d4ff" stroke-width="1.5" x1="100" x2="60" y1="20" y2="85"></line>
+<line opacity="0.5" stroke="#00d4ff" stroke-width="1.5" x1="100" x2="100" y1="20" y2="60"></line>
+<line opacity="0.5" stroke="#00d4ff" stroke-width="1.5" x1="60" x2="100" y1="85" y2="60"></line>
+<circle cx="20" cy="20" fill="#0a0e1a" r="8" stroke="#00d4ff" stroke-width="2"></circle>
+<circle cx="100" cy="20" fill="#0a0e1a" r="8" stroke="#00d4ff" stroke-width="2"></circle>
+<circle cx="60" cy="85" fill="#0a0e1a" r="8" stroke="#00d4ff" stroke-width="2"></circle>
+<circle cx="100" cy="60" fill="#0a0e1a" r="8" stroke="#00d4ff" stroke-width="2"></circle>
+<text fill="#00d4ff" font-size="8" text-anchor="middle" x="20" y="24">A</text>
+<text fill="#00d4ff" font-size="8" text-anchor="middle" x="100" y="24">B</text>
+<text fill="#00d4ff" font-size="8" text-anchor="middle" x="60" y="89">C</text>
+<text fill="#00d4ff" font-size="8" text-anchor="middle" x="100" y="64">D</text>
+</svg>
+<div style="font-size:11px;color:var(--muted);">n(n-1)/2 links<br/>Dedicated connections</div>
+</div>
+<!-- Star -->
+<div style="background:rgba(255,255,255,0.02);border-radius:8px;padding:16px;text-align:center;">
+<div style="font-weight:700;color:#f59e0b;margin-bottom:12px;">STAR</div>
+<svg height="100" viewbox="0 0 120 100" width="120">
+<line opacity="0.5" stroke="#f59e0b" stroke-width="1.5" x1="60" x2="20" y1="50" y2="15"></line>
+<line opacity="0.5" stroke="#f59e0b" stroke-width="1.5" x1="60" x2="100" y1="50" y2="15"></line>
+<line opacity="0.5" stroke="#f59e0b" stroke-width="1.5" x1="60" x2="10" y1="50" y2="55"></line>
+<line opacity="0.5" stroke="#f59e0b" stroke-width="1.5" x1="60" x2="110" y1="50" y2="55"></line>
+<line opacity="0.5" stroke="#f59e0b" stroke-width="1.5" x1="60" x2="60" y1="50" y2="90"></line>
+<rect fill="#0a0e1a" height="20" rx="3" stroke="#f59e0b" stroke-width="2" width="20" x="50" y="40"></rect>
+<text fill="#f59e0b" font-size="8" text-anchor="middle" x="60" y="54">HUB</text>
+<circle cx="20" cy="15" fill="#0a0e1a" r="7" stroke="#f59e0b" stroke-width="1.5"></circle>
+<circle cx="100" cy="15" fill="#0a0e1a" r="7" stroke="#f59e0b" stroke-width="1.5"></circle>
+<circle cx="10" cy="55" fill="#0a0e1a" r="7" stroke="#f59e0b" stroke-width="1.5"></circle>
+<circle cx="110" cy="55" fill="#0a0e1a" r="7" stroke="#f59e0b" stroke-width="1.5"></circle>
+<circle cx="60" cy="90" fill="#0a0e1a" r="7" stroke="#f59e0b" stroke-width="1.5"></circle>
+</svg>
+<div style="font-size:11px;color:var(--muted);">Central hub/switch<br/>Single point of failure</div>
+</div>
+<!-- Bus -->
+<div style="background:rgba(255,255,255,0.02);border-radius:8px;padding:16px;text-align:center;">
+<div style="font-weight:700;color:#10b981;margin-bottom:12px;">BUS</div>
+<svg height="100" viewbox="0 0 120 100" width="120">
+<line stroke="#10b981" stroke-width="2.5" x1="10" x2="110" y1="50" y2="50"></line>
+<line opacity="0.7" stroke="#10b981" stroke-width="1.5" x1="25" x2="25" y1="50" y2="25"></line>
+<line opacity="0.7" stroke="#10b981" stroke-width="1.5" x1="50" x2="50" y1="50" y2="25"></line>
+<line opacity="0.7" stroke="#10b981" stroke-width="1.5" x1="75" x2="75" y1="50" y2="25"></line>
+<line opacity="0.7" stroke="#10b981" stroke-width="1.5" x1="100" x2="100" y1="50" y2="25"></line>
+<circle cx="25" cy="20" fill="#0a0e1a" r="8" stroke="#10b981" stroke-width="1.5"></circle>
+<circle cx="50" cy="20" fill="#0a0e1a" r="8" stroke="#10b981" stroke-width="1.5"></circle>
+<circle cx="75" cy="20" fill="#0a0e1a" r="8" stroke="#10b981" stroke-width="1.5"></circle>
+<circle cx="100" cy="20" fill="#0a0e1a" r="8" stroke="#10b981" stroke-width="1.5"></circle>
+<rect fill="#10b981" height="10" rx="1" width="8" x="5" y="45"></rect>
+<rect fill="#10b981" height="10" rx="1" width="8" x="107" y="45"></rect>
+<text fill="#10b981" font-size="8" opacity="0.6" x="8" y="68">T</text>
+<text fill="#10b981" font-size="8" opacity="0.6" x="109" y="68">T</text>
+</svg>
+<div style="font-size:11px;color:var(--muted);">Single backbone<br/>Terminators at ends (T)</div>
+</div>
+<!-- Ring -->
+<div style="background:rgba(255,255,255,0.02);border-radius:8px;padding:16px;text-align:center;">
+<div style="font-weight:700;color:#7c3aed;margin-bottom:12px;">RING</div>
+<svg height="100" viewbox="0 0 120 100" width="120">
+<circle cx="60" cy="50" fill="none" opacity="0.3" r="35" stroke="#7c3aed" stroke-width="1.5"></circle>
+<circle cx="60" cy="15" fill="#0a0e1a" r="8" stroke="#7c3aed" stroke-width="2"></circle>
+<circle cx="95" cy="50" fill="#0a0e1a" r="8" stroke="#7c3aed" stroke-width="2"></circle>
+<circle cx="60" cy="85" fill="#0a0e1a" r="8" stroke="#7c3aed" stroke-width="2"></circle>
+<circle cx="25" cy="50" fill="#0a0e1a" r="8" stroke="#7c3aed" stroke-width="2"></circle>
+<path d="M65 16 A35 35 0 0 1 88 40" fill="none" marker-end="url(#arr)" stroke="#7c3aed" stroke-width="2"></path>
+<path d="M92 58 A35 35 0 0 1 68 83" fill="none" marker-end="url(#arr)" stroke="#7c3aed" stroke-width="2"></path>
+<path d="M55 84 A35 35 0 0 1 32 62" fill="none" marker-end="url(#arr)" stroke="#7c3aed" stroke-width="2"></path>
+<path d="M28 42 A35 35 0 0 1 55 17" fill="none" marker-end="url(#arr)" stroke="#7c3aed" stroke-width="2"></path>
+<defs><marker id="arr" markerheight="6" markerwidth="6" orient="auto" refx="3" refy="3"><path d="M0,0 L6,3 L0,6 Z" fill="#7c3aed"></path></marker></defs>
+</svg>
+<div style="font-size:11px;color:var(--muted);">Unidirectional signal<br/>Each node has repeater</div>
+</div>
+</div>
+</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODULE 2 ===== -->
+<div class="section" id="m2">
+  <div class="mod-header">
+    <div class="mod-num">MODULE 02</div>
+    <div class="mod-title">Physical Layer &amp; Data Link Layer</div>
+    <div class="mod-topics">
+      <span>Transmission Media</span><span>Flow/Error Control</span><span>MAC</span><span>ALOHA</span><span>CSMA</span><span>IEEE 802</span>
+    </div>
+  </div>
+
+  <!-- Transmission Impairment -->
+  <div class="topic-block">
+    <div class="topic-header">
+      <div class="topic-title">⚡ Transmission Impairment — Attenuation, Distortion, Noise</div>
+      <span class="hot-pill">HOT</span>
+      <span class="mark-badge mark-3">3M</span>
+    </div>
+    <div class="topic-body">
+      <div class="definition-box">
+        <strong>Definition:</strong> Transmission impairment occurs when the received signal is not identical to the transmitted signal. The quality of the signal gets destroyed, making it difficult to interpret at the receiver.
+      </div>
+      <ul class="study-list">
+        <li><strong>Attenuation</strong> — Loss of energy. The strength of the signal decreases as it travels a longer distance through the medium. Signal becomes weaker.</li>
+        <li><strong>Distortion</strong> — Change in the shape or form of the signal. Occurs in composite signals (made of different frequencies). Each frequency has its own propagation speed, so they arrive at different times → delay distortion.</li>
+        <li><strong>Noise</strong> — Unwanted signals added to the data during transmission. Types: Thermal noise (random electron motion), Induced noise (motors, appliances), Crosstalk (effect of one wire on another), Impulse noise (lightning, power lines).</li>
+      </ul>
+      <div class="eq-box">
+        <div class="eq-title">⭐ EXPECTED QUESTIONS</div>
+        <div class="eq-item"><span class="eq-mark m3">3M</span> Describe the causes of transmission impairment</div>
+        <div class="eq-item"><span class="eq-mark m1">1M</span> Define attenuation in data communication</div>
+        <div class="eq-item"><span class="eq-mark m1">1M</span> Define distortion in communication systems</div>
+      </div>
+    </div>
+    <div class="diagram-section">
+      <div class="diagram-label">VISUAL DIAGRAM</div>
+      <div class="dcard-full">
+<div class="dcard-title">Transmission Impairment <span class="hot-badge">HOT</span></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;">
+<div style="background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:6px;padding:16px;">
+<div style="color:#ef4444;font-weight:700;font-size:14px;margin-bottom:8px;">📉 Attenuation</div>
+<svg height="50" viewbox="0 0 200 50" width="100%">
+<path d="M5,25 Q50,5 100,20 Q150,35 195,40" fill="none" stroke="#ef4444" stroke-width="2.5"></path>
+<text fill="#ef4444" font-size="10" opacity="0.6" x="10" y="45">Sender</text>
+<text fill="#ef4444" font-size="10" opacity="0.6" x="160" y="45">Receiver</text>
+</svg>
+<div style="font-size:12px;color:var(--muted);">Loss of signal energy with distance</div>
+</div>
+<div style="background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:6px;padding:16px;">
+<div style="color:#f59e0b;font-weight:700;font-size:14px;margin-bottom:8px;">〰️ Distortion</div>
+<svg height="50" viewbox="0 0 200 50" width="100%">
+<path d="M5,25 Q30,10 55,25 Q80,40 105,25 Q130,10 155,25 Q175,38 195,28" fill="none" stroke="#f59e0b" stroke-width="2"></path>
+<path d="M5,25 Q30,8 55,25 Q80,42 105,25 Q130,8 155,25 Q178,42 195,30" fill="none" stroke="rgba(245,158,11,0.3)" stroke-dasharray="4,3" stroke-width="1.5"></path>
+</svg>
+<div style="font-size:12px;color:var(--muted);">Change in signal shape/form</div>
+</div>
+<div style="background:rgba(124,58,237,0.06);border:1px solid rgba(124,58,237,0.2);border-radius:6px;padding:16px;">
+<div style="color:#7c3aed;font-weight:700;font-size:14px;margin-bottom:8px;">⚡ Noise</div>
+<svg height="50" viewbox="0 0 200 50" width="100%">
+<path d="M5,25 Q30,10 55,25 Q80,40 105,25 Q130,10 155,25 Q180,40 195,25" fill="none" stroke="rgba(124,58,237,0.4)" stroke-dasharray="4,3" stroke-width="1.5"></path>
+<path d="M5,22 L20,28 L30,18 L45,32 L60,20 L75,30 L85,15 L100,35 L115,20 L130,28 L145,18 L160,32 L175,22 L195,28" fill="none" stroke="#7c3aed" stroke-width="2"></path>
+</svg>
+<div style="font-size:12px;color:var(--muted);">Thermal · Induced · Crosstalk · Impulse</div>
+</div>
+</div>
+</div>
+    </div>
+  </div>
+
+  <!-- Transmission Media -->
+  <div class="topic-block">
+    <div class="topic-header">
+      <div class="topic-title">🔌 Transmission Media — Guided &amp; Unguided</div>
+      <span class="hot-pill">HOT</span>
+      <span class="mark-badge mark-7">7M</span>
+    </div>
+    <div class="topic-body">
+      <div class="definition-box">
+        <strong>Definition:</strong> Transmission media is a communication channel that carries information from sender to receiver via electromagnetic signals. It is the physical path between transmitter and receiver. Available at Physical Layer (Layer 1) of OSI.
+      </div>
+      <div class="sub-heading">Guided (Wired) Media</div>
+      <ul class="study-list">
+        <li><strong>Twisted-Pair Cable</strong> — Two copper conductors twisted together. One wire carries signal; other is ground. Most common connector: RJ-45. Used in: telephone lines, LANs. Twisting reduces interference. Types: UTP (Unshielded) and STP (Shielded).</li>
+        <li><strong>Coaxial Cable</strong> — Central copper core conductor enclosed in insulating sheath, then outer metallic foil shield (against noise), then plastic cover. Most common connector: BNC. Used in: cable TV, Ethernet LANs.</li>
+        <li><strong>Fiber-Optic Cable</strong> — Made of glass or plastic. Transmits signals as light pulses. Uses principle of total internal reflection. Glass core surrounded by cladding of less dense material.</li>
+      </ul>
+      <div class="sub-heading">Fiber Optic — Advantages &amp; Disadvantages</div>
+      <table class="study-table">
+        <tr><th>Advantages</th><th>Disadvantages</th></tr>
+        <tr><td>Higher bandwidth</td><td>Expensive installation &amp; maintenance</td></tr>
+        <tr><td>Less signal attenuation</td><td>Unidirectional light propagation</td></tr>
+        <tr><td>Immune to electromagnetic interference</td><td>High cost</td></tr>
+        <tr><td>Resistant to corrosive materials</td><td>Fragile</td></tr>
+        <tr><td>Lightweight; secure (hard to tap)</td><td>Needs skilled technicians</td></tr>
+      </table>
+      <div class="sub-heading">Guided vs Unguided Comparison</div>
+      <table class="study-table">
+        <tr><th>Property</th><th>Guided (Wired)</th><th>Unguided (Wireless)</th></tr>
+        <tr><td>Type</td><td>Bounded/wired media</td><td>Unbounded/wireless media</td></tr>
+        <tr><td>Communication</td><td>Point-to-point</td><td>Broadcasting mostly</td></tr>
+        <tr><td>Signal travels</td><td>Through cables</td><td>Through air</td></tr>
+        <tr><td>Cost</td><td>Cost effective</td><td>Expensive</td></tr>
+        <tr><td>Coverage</td><td>Short distances</td><td>Wide coverage</td></tr>
+        <tr><td>Examples</td><td>Coaxial, Twisted Pair, Fiber Optic</td><td>Microwave, Infrared, Bluetooth, WiFi, WiMax</td></tr>
+      </table>
+      <div class="eq-box">
+        <div class="eq-title">⭐ EXPECTED QUESTIONS</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> List various guided transmission media. Describe features of any two with diagram.</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Write a note on optical fiber communication (advantages, disadvantages, diagram)</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Compare guided and unguided transmission media</div>
+        <div class="eq-item"><span class="eq-mark m1">1M</span> Name any two waves used for wireless transmission</div>
+      </div>
+    </div>
+    <div class="diagram-section">
+      <div class="diagram-label">VISUAL DIAGRAM</div>
+      <div class="dcard-full">
+<div class="dcard-title">Transmission Media — Guided vs Unguided <span class="hot-badge">HOT 7M</span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+<div>
+<div style="color:#00d4ff;font-weight:700;font-size:13px;margin-bottom:10px;text-align:center;">GUIDED (Wired)</div>
+<div style="display:flex;flex-direction:column;gap:10px;">
+<div style="border:1px solid rgba(0,212,255,0.3);border-radius:6px;padding:12px;">
+<div style="font-weight:600;color:#00d4ff;font-size:13px;margin-bottom:6px;">🔌 Twisted-Pair Cable</div>
+<svg height="32" viewbox="0 0 220 32" width="100%">
+<path d="M0,8 Q20,0 40,8 Q60,16 80,8 Q100,0 120,8 Q140,16 160,8 Q180,0 200,8 Q210,12 220,8" fill="none" stroke="#00d4ff" stroke-width="2"></path>
+<path d="M0,22 Q20,14 40,22 Q60,30 80,22 Q100,14 120,22 Q140,30 160,22 Q180,14 200,22 Q210,26 220,22" fill="none" stroke="#f59e0b" stroke-width="2"></path>
+</svg>
+<div style="font-size:11px;color:var(--muted);">Two copper wires twisted together · UTP/STP · RJ-45</div>
+</div>
+<div style="border:1px solid rgba(0,212,255,0.3);border-radius:6px;padding:12px;">
+<div style="font-weight:600;color:#00d4ff;font-size:13px;margin-bottom:6px;">📡 Coaxial Cable</div>
+<svg height="36" viewbox="0 0 220 36" width="100%">
+<rect fill="rgba(0,212,255,0.15)" height="6" rx="3" stroke="#00d4ff" stroke-width="1" width="220" x="0" y="15"></rect>
+<rect fill="none" height="10" rx="5" stroke="rgba(0,212,255,0.4)" stroke-width="1.5" width="220" x="0" y="13"></rect>
+<rect fill="none" height="20" rx="8" stroke="rgba(0,212,255,0.2)" stroke-width="1" width="220" x="0" y="8"></rect>
+</svg>
+<div style="font-size:11px;color:var(--muted);">Core → Insulation → Shield → Cover · BNC connector</div>
+</div>
+<div style="border:1px solid rgba(0,212,255,0.3);border-radius:6px;padding:12px;">
+<div style="font-weight:600;color:#00d4ff;font-size:13px;margin-bottom:6px;">💡 Fiber-Optic Cable</div>
+<svg height="28" viewbox="0 0 220 28" width="100%">
+<rect fill="rgba(245,158,11,0.1)" height="8" rx="4" stroke="rgba(245,158,11,0.3)" stroke-width="1.5" width="220" x="0" y="10"></rect>
+<line stroke="#f59e0b" stroke-dasharray="8,4" stroke-width="1" x1="10" x2="210" y1="14" y2="14"></line>
+<circle cx="5" cy="14" fill="#f59e0b" r="3"></circle>
+<circle cx="215" cy="14" fill="#10b981" r="3"></circle>
+</svg>
+<div style="font-size:11px;color:var(--muted);">Light pulses · Glass/plastic · Total internal reflection</div>
+</div>
+</div>
+</div>
+<div>
+<div style="color:#7c3aed;font-weight:700;font-size:13px;margin-bottom:10px;text-align:center;">UNGUIDED (Wireless)</div>
+<div style="display:flex;flex-direction:column;gap:10px;">
+<div style="border:1px solid rgba(124,58,237,0.3);border-radius:6px;padding:12px;">
+<div style="font-weight:600;color:#7c3aed;font-size:13px;margin-bottom:6px;">📻 Radio Waves</div>
+<div style="font-size:11px;color:var(--muted);">Omnidirectional · AM/FM radio · 3kHz–1GHz</div>
+</div>
+<div style="border:1px solid rgba(124,58,237,0.3);border-radius:6px;padding:12px;">
+<div style="font-weight:600;color:#7c3aed;font-size:13px;margin-bottom:6px;">🔭 Microwave</div>
+<div style="font-size:11px;color:var(--muted);">Unidirectional · Line of sight · Satellite, cell towers</div>
+</div>
+<div style="border:1px solid rgba(124,58,237,0.3);border-radius:6px;padding:12px;">
+<div style="font-weight:600;color:#7c3aed;font-size:13px;margin-bottom:6px;">🔴 Infrared</div>
+<div style="font-size:11px;color:var(--muted);">Short range · Cannot penetrate walls · TV remotes</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+    </div>
+  </div>
+
+  <!-- DLL -->
+  <div class="topic-block">
+    <div class="topic-header">
+      <div class="topic-title">🔗 Data Link Layer — Framing, Flow Control &amp; Error Control</div>
+      <span class="hot-pill">HOT</span>
+      <span class="mark-badge mark-7">7M</span>
+    </div>
+    <div class="topic-body">
+      <div class="sub-heading">Data Link Layer Services</div>
+      <ul class="study-list">
+        <li><strong>Framing</strong> — Breaks the bit stream into manageable data units called frames</li>
+        <li><strong>Physical Addressing</strong> — Adds MAC address to frame header</li>
+        <li><strong>Flow Control</strong> — Prevents fast sender from overwhelming slow receiver</li>
+        <li><strong>Error Control</strong> — Detects and corrects errors in frames</li>
+        <li><strong>Access Control</strong> — Determines which device has control of shared medium at any time</li>
+      </ul>
+      <div class="sub-heading">Framing — Parts of a Frame</div>
+      <ul class="study-list">
+        <li><strong>Frame Header</strong> — Contains source and destination MAC addresses</li>
+        <li><strong>Payload field</strong> — Contains the actual message to be delivered</li>
+        <li><strong>Trailer (CRC)</strong> — Contains error detection/correction bits</li>
+        <li><strong>Flag</strong> — Marks the beginning and end of the frame</li>
+      </ul>
+      <div class="sub-heading">Types of Framing</div>
+      <ul class="study-list">
+        <li><strong>Fixed-sized Framing</strong> — Frame size is fixed; length acts as delimiter. No extra bits needed to identify start/end.</li>
+        <li><strong>Variable-sized Framing</strong> — Frame size differs. Needs mechanisms to mark frame boundaries: Byte-Stuffing (Character-oriented): A special byte is stuffed in message to differentiate from delimiter; Bit-Stuffing (Bit-oriented): A pattern of bits stuffed in message.</li>
+      </ul>
+      <div class="sub-heading">Flow Control</div>
+      <div class="definition-box">
+        <strong>Definition:</strong> Flow control is the process of managing the rate of data transmission between two nodes to prevent a fast sender from overwhelming a slow receiver.
+      </div>
+      <ul class="study-list">
+        <li><strong>Stop and Wait</strong> — Sender transmits ONE frame, then STOPS and waits for ACK before sending the next. Simple but inefficient (sender is idle while waiting).</li>
+        <li><strong>Sliding Window</strong> — Both sender and receiver agree on a number of frames (window size). Sender can send multiple frames before waiting for ACK. More efficient, better resource utilization.</li>
+      </ul>
+      <div class="sub-heading">Stop and Wait Protocol (7 Mark Answer)</div>
+      <ul class="study-list">
+        <li>Sender sends one frame at a time and starts a timer</li>
+        <li>Each frame carries a CRC for error detection</li>
+        <li>Receiver sends ACK after receiving an uncorrupted frame</li>
+        <li>A corrupted frame is NOT acknowledged</li>
+        <li>If ACK received before timer → send next frame</li>
+        <li>If timer expires → retransmit the same frame (assumes frame was lost)</li>
+        <li>Provides both flow control AND error control</li>
+      </ul>
+      <div class="sub-heading">Error Control Requirements</div>
+      <ul class="study-list">
+        <li><strong>Error Detection</strong> — Sender/receiver must detect the error</li>
+        <li><strong>Positive ACK</strong> — Receiver sends ACK when it receives a correct frame</li>
+        <li><strong>Negative ACK (NACK)</strong> — Receiver sends NACK when it receives a damaged/duplicate frame</li>
+        <li><strong>Retransmission</strong> — If no ACK arrives before timeout, sender retransmits the frame</li>
+      </ul>
+      <div class="eq-box">
+        <div class="eq-title">⭐ EXPECTED QUESTIONS</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Describe stop and wait protocol with a neat diagram</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> List data link layer services and describe any two in detail</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Write a note on framing and various methods used in framing</div>
+        <div class="eq-item"><span class="eq-mark m3">3M</span> Define flow control</div>
+        <div class="eq-item"><span class="eq-mark m3">3M</span> Define framing and parts of a frame</div>
+        <div class="eq-item"><span class="eq-mark m1">1M</span> List any two data link layer services</div>
+      </div>
+    </div>
+    <div class="diagram-section">
+      <div class="diagram-label">VISUAL DIAGRAM</div>
+      <div class="dcard-full">
+<div class="dcard-title">Stop-and-Wait Protocol <span class="hot-badge">HOT 7M</span></div>
+<div style="display:flex;justify-content:center;padding:10px 0 20px;">
+<div style="position:relative;width:100%;max-width:500px;">
+<div style="display:flex;justify-content:space-between;margin-bottom:0;">
+<div style="text-align:center;">
+<div style="background:#7c3aed;color:white;padding:8px 28px;border-radius:4px;font-weight:700;font-size:13px;">SENDER</div>
+<div style="width:2px;height:300px;background:rgba(255,255,255,0.1);margin:0 auto;"></div>
+</div>
+<div style="text-align:center;">
+<div style="background:#10b981;color:white;padding:8px 28px;border-radius:4px;font-weight:700;font-size:13px;">RECEIVER</div>
+<div style="width:2px;height:300px;background:rgba(255,255,255,0.1);margin:0 auto;"></div>
+</div>
+</div>
+<svg style="position:absolute;top:36px;left:0;right:0;width:100%;height:280px;" viewbox="0 0 440 280">
+<!-- Frame 0 -->
+<line marker-end="url(#arrow-s)" stroke="#7c3aed" stroke-width="2" x1="20" x2="420" y1="20" y2="60"></line>
+<text fill="#7c3aed" font-size="11" font-weight="600" x="180" y="32">Frame 0</text>
+<!-- ACK 0 -->
+<line marker-end="url(#arrow-r)" stroke="#10b981" stroke-width="2" x1="420" x2="20" y1="80" y2="120"></line>
+<text fill="#10b981" font-size="11" font-weight="600" x="180" y="112">ACK 0</text>
+<!-- Frame 1 -->
+<line marker-end="url(#arrow-s)" stroke="#7c3aed" stroke-width="2" x1="20" x2="420" y1="140" y2="180"></line>
+<text fill="#7c3aed" font-size="11" font-weight="600" x="180" y="152">Frame 1</text>
+<!-- ACK 1 -->
+<line marker-end="url(#arrow-r)" stroke="#10b981" stroke-width="2" x1="420" x2="20" y1="200" y2="240"></line>
+<text fill="#10b981" font-size="11" font-weight="600" x="180" y="232">ACK 1</text>
+<!-- Timer label -->
+<text fill="#f59e0b" font-size="10" x="22" y="50">⏱ Timer</text>
+<text fill="#f59e0b" font-size="10" x="22" y="170">⏱ Timer</text>
+<!-- Defs -->
+<defs>
+<marker id="arrow-s" markerheight="8" markerwidth="8" orient="auto" refx="4" refy="4"><path d="M0,0 L8,4 L0,8 Z" fill="#7c3aed"></path></marker>
+<marker id="arrow-r" markerheight="8" markerwidth="8" orient="auto" refx="4" refy="4"><path d="M0,0 L8,4 L0,8 Z" fill="#10b981"></path></marker>
+</defs>
+</svg>
+</div>
+</div>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;">
+<div style="flex:1;min-width:200px;background:rgba(255,255,255,0.02);border-radius:6px;padding:12px;font-size:12px;">
+<div style="color:#7c3aed;font-weight:600;margin-bottom:6px;">Sender Steps</div>
+<div>1. Send one frame, start timer</div>
+<div>2. Wait for ACK</div>
+<div>3. If ACK received → send next</div>
+<div>4. If timer expires → retransmit</div>
+</div>
+<div style="flex:1;min-width:200px;background:rgba(255,255,255,0.02);border-radius:6px;padding:12px;font-size:12px;">
+<div style="color:#10b981;font-weight:600;margin-bottom:6px;">Receiver Steps</div>
+<div>1. Receive frame</div>
+<div>2. Check CRC for errors</div>
+<div>3. If correct → send ACK</div>
+<div>4. If corrupted → discard (no ACK)</div>
+</div>
+</div>
+</div>
+    </div>
+  </div>
+
+  <!-- MAC/ALOHA/CSMA -->
+  <div class="topic-block">
+    <div class="topic-header">
+      <div class="topic-title">📶 MAC Layer — ALOHA, CSMA, CSMA/CD, CSMA/CA</div>
+      <span class="hot-pill">HOT</span>
+      <span class="mark-badge mark-7">7M</span>
+    </div>
+    <div class="topic-body">
+      <div class="definition-box">
+        <strong>MAC — Media Access Control:</strong> A sublayer of the Data Link Layer. Responsible for flow control and multiplexing for the transmission medium. Controls how devices share and access the communication channel. It sends data over the network interface card (NIC).
+      </div>
+      <div class="sub-heading">ALOHA Protocol (7 Mark Answer)</div>
+      <div class="definition-box">
+        <strong>ALOHA:</strong> A random access protocol designed for wireless LAN. Any station can transmit data to a channel at any time without checking if the channel is busy. Does NOT require carrier sensing. Collisions may occur.
+      </div>
+      <table class="study-table">
+        <tr><th>Property</th><th>Pure ALOHA</th><th>Slotted ALOHA</th></tr>
+        <tr><td>Transmission time</td><td>Any time</td><td>Only at beginning of a time slot</td></tr>
+        <tr><td>Vulnerable time</td><td>2 × Tfr</td><td>Tfr (one slot only)</td></tr>
+        <tr><td>Max Throughput</td><td>18.4% (when G = 1/2)</td><td>37% (when G = 1)</td></tr>
+        <tr><td>Efficiency</td><td>Lower</td><td>Doubles Pure ALOHA</td></tr>
+      </table>
+      <ul class="study-list">
+        <li><strong>Pure ALOHA Rules:</strong> Any station transmits whenever data is ready. Waits for ACK. If no ACK → waits a random backoff time (Tb) → retransmits.</li>
+        <li><strong>Slotted ALOHA:</strong> Channel divided into fixed time slots. Station can ONLY send at the beginning of a slot. One frame per slot allowed. Reduces collision probability.</li>
+      </ul>
+      <div class="sub-heading">CSMA — Carrier Sense Multiple Access</div>
+      <div class="definition-box">
+        <strong>CSMA:</strong> A protocol that SENSES the channel before transmitting. If channel is idle → transmit. If channel is busy → wait. Reduces chances of collision compared to ALOHA.
+      </div>
+      <ul class="study-list">
+        <li><strong>1-Persistent</strong> — If idle → immediately send (probability = 1). If busy → continuously sense until idle, then send immediately.</li>
+        <li><strong>Non-Persistent</strong> — If idle → send. If busy → wait a RANDOM time, then sense again.</li>
+        <li><strong>P-Persistent</strong> — If idle → send with probability P, wait with probability (1-P). Combination of the above two.</li>
+      </ul>
+      <div class="sub-heading">CSMA/CD vs CSMA/CA (7 Mark Answer)</div>
+      <table class="study-table">
+        <tr><th>Property</th><th>CSMA/CD</th><th>CSMA/CA</th></tr>
+        <tr><td>Full Form</td><td>Collision Detection</td><td>Collision Avoidance</td></tr>
+        <tr><td>Usage</td><td>Wired networks</td><td>Wireless networks</td></tr>
+        <tr><td>IEEE Standard</td><td>IEEE 802.3 (Ethernet)</td><td>IEEE 802.11 (Wi-Fi)</td></tr>
+        <tr><td>Effective</td><td>After collision (detects &amp; recovers)</td><td>Before collision (avoids)</td></tr>
+        <tr><td>Method</td><td>Sends jam signal → waits random time → retransmits</td><td>Uses IFS, contention window, ACK</td></tr>
+      </table>
+      <div class="sub-heading">IEEE 802 Project</div>
+      <ul class="study-list">
+        <li>Started in 1985 by IEEE Computer Society. Standards for LAN, PAN, and MAN.</li>
+        <li>Maps to lower two layers (Physical + Data Link) of OSI.</li>
+        <li>Divides Data Link layer into LLC sublayer and MAC sublayer.</li>
+        <li><strong>IEEE 802.3</strong> — Ethernet (Active); <strong>IEEE 802.11</strong> — Wireless LAN/Wi-Fi (Active); <strong>IEEE 802.15</strong> — Wireless PAN (Active); <strong>IEEE 802.16</strong> — WiMAX (Hibernating)</li>
+      </ul>
+      <div class="eq-box">
+        <div class="eq-title">⭐ EXPECTED QUESTIONS</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Describe the random access protocol ALOHA (Pure and Slotted)</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Differentiate CSMA/CD and CSMA/CA with a table</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Summarize IEEE 802 project — describe the standards</div>
+        <div class="eq-item"><span class="eq-mark m3">3M</span> Explain CSMA protocol and its access modes</div>
+        <div class="eq-item"><span class="eq-mark m1">1M</span> List any two random media access control protocols</div>
+      </div>
+    </div>
+    <div class="diagram-section">
+      <div class="diagram-label">VISUAL DIAGRAMS</div>
+      <div class="dcard-full">
+<div class="dcard-title">ALOHA Protocol — Pure vs Slotted <span class="hot-badge">HOT 7M</span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+<div>
+<div style="color:#10b981;font-weight:700;font-size:13px;margin-bottom:10px;text-align:center;">PURE ALOHA</div>
+<div class="aloha-wrap">
+<div class="aloha-row">
+<div class="aloha-label">Station A</div>
+<div class="aloha-timeline">
+<div class="aloha-frame" style="left:5%;width:22%;background:#10b981;">F0</div>
+</div>
+</div>
+<div class="aloha-row">
+<div class="aloha-label">Station B</div>
+<div class="aloha-timeline">
+<div class="aloha-frame" style="left:20%;width:22%;background:#f59e0b;">F0</div>
+</div>
+</div>
+<div class="aloha-row">
+<div class="aloha-label" style="color:#ef4444;">Collision</div>
+<div class="aloha-timeline">
+<div class="collision-zone" style="left:20%;width:7%;">💥</div>
+</div>
+</div>
+<div class="aloha-row">
+<div class="aloha-label">Station A</div>
+<div class="aloha-timeline">
+<div class="aloha-frame" style="left:60%;width:22%;background:#10b981;opacity:0.7;">Retry</div>
+</div>
+</div>
+<div style="margin-top:10px;font-size:11px;color:var(--muted);">• Any time transmission · Max throughput: 18.4%<br/>• Vulnerable time = 2 × Tfr</div>
+</div>
+</div>
+<div>
+<div style="color:#00d4ff;font-weight:700;font-size:13px;margin-bottom:10px;text-align:center;">SLOTTED ALOHA</div>
+<div class="aloha-wrap">
+<div style="display:flex;margin-bottom:4px;gap:2px;margin-left:68px;">
+<div style="flex:1;text-align:center;font-size:9px;color:var(--muted);border-left:1px dashed rgba(255,255,255,0.1);padding:2px;">S1</div>
+<div style="flex:1;text-align:center;font-size:9px;color:var(--muted);border-left:1px dashed rgba(255,255,255,0.1);padding:2px;">S2</div>
+<div style="flex:1;text-align:center;font-size:9px;color:var(--muted);border-left:1px dashed rgba(255,255,255,0.1);padding:2px;">S3</div>
+<div style="flex:1;text-align:center;font-size:9px;color:var(--muted);border-left:1px dashed rgba(255,255,255,0.1);padding:2px;">S4</div>
+<div style="flex:1;text-align:center;font-size:9px;color:var(--muted);border-left:1px dashed rgba(255,255,255,0.1);padding:2px;">S5</div>
+</div>
+<div class="aloha-row">
+<div class="aloha-label">Station A</div>
+<div class="aloha-timeline">
+<div class="aloha-frame" style="left:0%;width:20%;background:#00d4ff;">S1</div>
+</div>
+</div>
+<div class="aloha-row">
+<div class="aloha-label">Station B</div>
+<div class="aloha-timeline">
+<div class="aloha-frame" style="left:40%;width:20%;background:#f59e0b;">S3</div>
+</div>
+</div>
+<div class="aloha-row">
+<div class="aloha-label">Station C</div>
+<div class="aloha-timeline">
+<div class="aloha-frame" style="left:80%;width:20%;background:#7c3aed;">S5</div>
+</div>
+</div>
+<div style="margin-top:10px;font-size:11px;color:var(--muted);">• Only at slot boundaries · Max throughput: 37%<br/>• Vulnerable time = Tfr (one slot)</div>
+</div>
+</div>
+</div>
+<table class="ctable">
+<tr><th>Property</th><th>Pure ALOHA</th><th>Slotted ALOHA</th></tr>
+<tr><td>Transmission</td><td>Any time</td><td>Only at slot boundaries</td></tr>
+<tr><td>Vulnerable time</td><td>2 × Tfr</td><td>Tfr (one slot)</td></tr>
+<tr><td>Max Throughput</td><td>18.4% (G=0.5)</td><td>37% (G=1)</td></tr>
+</table>
+</div>
+      <br>
+      <div class="dcard-full">
+<div class="dcard-title">CSMA/CD vs CSMA/CA <span class="hot-badge">HOT 7M</span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+<div style="border:1px solid rgba(0,212,255,0.3);border-radius:8px;overflow:hidden;">
+<div style="background:rgba(0,212,255,0.1);padding:12px;text-align:center;font-weight:700;color:#00d4ff;">CSMA/CD</div>
+<div style="padding:14px;font-size:12px;">
+<div style="margin-bottom:8px;"><span style="color:var(--muted);">Full form:</span> Collision Detection</div>
+<div style="margin-bottom:8px;"><span style="color:var(--muted);">Network:</span> Wired (Ethernet)</div>
+<div style="margin-bottom:8px;"><span style="color:var(--muted);">Standard:</span> IEEE 802.3</div>
+<div style="margin-bottom:8px;"><span style="color:var(--muted);">Method:</span> Detect collision → send JAM → wait random time → retransmit</div>
+<div style="display:flex;align-items:center;gap:8px;margin-top:12px;padding:8px;background:rgba(0,212,255,0.05);border-radius:4px;">
+<span>Sense</span><span style="color:#00d4ff;">→</span><span>Transmit</span><span style="color:#00d4ff;">→</span><span>Detect</span><span style="color:#00d4ff;">→</span><span>JAM</span>
+</div>
+</div>
+</div>
+<div style="border:1px solid rgba(245,158,11,0.3);border-radius:8px;overflow:hidden;">
+<div style="background:rgba(245,158,11,0.1);padding:12px;text-align:center;font-weight:700;color:#f59e0b;">CSMA/CA</div>
+<div style="padding:14px;font-size:12px;">
+<div style="margin-bottom:8px;"><span style="color:var(--muted);">Full form:</span> Collision Avoidance</div>
+<div style="margin-bottom:8px;"><span style="color:var(--muted);">Network:</span> Wireless (WiFi)</div>
+<div style="margin-bottom:8px;"><span style="color:var(--muted);">Standard:</span> IEEE 802.11</div>
+<div style="margin-bottom:8px;"><span style="color:var(--muted);">Method:</span> IFS wait → contention window → send → wait ACK</div>
+<div style="display:flex;align-items:center;gap:8px;margin-top:12px;padding:8px;background:rgba(245,158,11,0.05);border-radius:4px;">
+<span>Sense</span><span style="color:#f59e0b;">→</span><span>IFS</span><span style="color:#f59e0b;">→</span><span>Backoff</span><span style="color:#f59e0b;">→</span><span>Send</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODULE 3 ===== -->
+<div class="section" id="m3">
+  <div class="mod-header">
+    <div class="mod-num">MODULE 03</div>
+    <div class="mod-title">Network Layer &amp; Transport Layer</div>
+    <div class="mod-topics">
+      <span>IPv4/IPv6</span><span>Routing Algorithms</span><span>TCP</span><span>UDP</span><span>Subnetting</span>
+    </div>
+  </div>
+
+  <!-- Network Layer -->
+  <div class="topic-block">
+    <div class="topic-header">
+      <div class="topic-title">🌍 Network Layer — Services &amp; IP Addressing</div>
+      <span class="hot-pill">HOT</span>
+      <span class="mark-badge mark-7">7M</span>
+      <span class="mark-badge mark-3">3M</span>
+    </div>
+    <div class="topic-body">
+      <div class="sub-heading">Three Main Network Layer Services</div>
+      <ul class="study-list">
+        <li><strong>Packetizing</strong> — Encapsulating data received from upper layers into a network-layer packet at the source. Decapsulating at the destination. The source adds a header with source/destination address. Routers CANNOT change source or destination address.</li>
+        <li><strong>Routing</strong> — Process of moving data from one device to another. Network specifies strategies to find the best possible route. Multiple routes may exist from source to destination. Uses routing protocols like RIP.</li>
+        <li><strong>Forwarding</strong> — Action applied by each router when a packet arrives at one of its interfaces. Router checks the forwarding/routing table and decides where to send the packet next.</li>
+      </ul>
+      <div class="sub-heading">IPv4 Address Classes</div>
+      <table class="study-table">
+        <tr><th>Class</th><th>First Octet Range</th><th>Subnet Mask</th><th>Networks</th><th>Hosts/Network</th><th>Use</th></tr>
+        <tr><td><strong>A</strong></td><td>1 – 126</td><td>255.0.0.0</td><td>126</td><td>16,777,214</td><td>Large networks</td></tr>
+        <tr><td><strong>B</strong></td><td>128 – 191</td><td>255.255.0.0</td><td>16,384</td><td>65,534</td><td>Medium networks</td></tr>
+        <tr><td><strong>C</strong></td><td>192 – 223</td><td>255.255.255.0</td><td>2,097,152</td><td>254</td><td>Small networks</td></tr>
+        <tr><td><strong>D</strong></td><td>224 – 239</td><td>No mask</td><td>—</td><td>—</td><td>Multicasting</td></tr>
+        <tr><td><strong>E</strong></td><td>240 – 255</td><td>No mask</td><td>—</td><td>—</td><td>Experimental/R&amp;D</td></tr>
+      </table>
+      <div class="note-box">⚠️ <strong>Note:</strong> 127.x.x.x is reserved for loopback. First IP = network address, Last IP = broadcast address (both excluded from host count). Hosts/Network = 2^host_bits − 2</div>
+      <div class="sub-heading">IPv6 Header Fields Explained</div>
+      <ul class="study-list">
+        <li><strong>Version (4b)</strong> — Set to 6 for IPv6</li>
+        <li><strong>Traffic Class (8b)</strong> — Class/priority of packet. Similar to TOS in IPv4. Used in QoS control.</li>
+        <li><strong>Flow Label (20b)</strong> — NEW in IPv6. Differentiates traffic flows. Flow label + source IP = unique data flow.</li>
+        <li><strong>Payload Length (16b)</strong> — Length of IPv6 payload in bytes (max 65535)</li>
+        <li><strong>Next Header (8b)</strong> — Identifies the type of the first extension header or upper-layer protocol</li>
+        <li><strong>Hop Limit (8b)</strong> — Similar to TTL in IPv4. Decremented by 1 at each hop. Packet discarded when it reaches 0.</li>
+        <li><strong>Source Address (128b)</strong> — Address of the packet originator</li>
+        <li><strong>Destination Address (128b)</strong> — Address of the packet recipient</li>
+      </ul>
+      <div class="sub-heading">IPv4 vs IPv6 (7 Mark Answer)</div>
+      <table class="study-table">
+        <tr><th>Property</th><th>IPv4</th><th>IPv6</th></tr>
+        <tr><td>Address Size</td><td>32 bits</td><td>128 bits</td></tr>
+        <tr><td>Notation</td><td>Dotted decimal (e.g., 192.168.1.1)</td><td>Hexadecimal with colons</td></tr>
+        <tr><td>Address Space</td><td>~4 billion (2³²)</td><td>340 undecillion (3.4×10³⁸)</td></tr>
+        <tr><td>Classes</td><td>5 classes (A, B, C, D, E)</td><td>No classes</td></tr>
+        <tr><td>Checksum</td><td>Available in header</td><td>Not available</td></tr>
+        <tr><td>Security</td><td>Depends on application; no built-in encryption</td><td>IPSEC built-in; supports encryption &amp; authentication</td></tr>
+        <tr><td>Header Size</td><td>20–60 bytes (variable)</td><td>40 bytes (fixed)</td></tr>
+        <tr><td>Fragmentation</td><td>By routers and sending host</td><td>Only by sending host</td></tr>
+      </table>
+      <div class="eq-box">
+        <div class="eq-title">⭐ EXPECTED QUESTIONS</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Explain any three network layer services (packetizing, routing, forwarding)</div>
+        <div class="eq-item"><span class="eq-mark m3">3M</span> Draw the IPv4 datagram format</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Draw the IPv6 basic header format and explain each component</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Compare IPv4 and IPv6 addressing schemes</div>
+        <div class="eq-item"><span class="eq-mark m1">1M</span> What is the address space of IPv4?</div>
+        <div class="eq-item"><span class="eq-mark m1">1M</span> IPv6 is a ___ bit addressing scheme</div>
+      </div>
+    </div>
+    <div class="diagram-section">
+      <div class="diagram-label">VISUAL DIAGRAMS</div>
+      <div class="dcard-full">
+<div class="dcard-title">IPv4 Datagram Header Format <span class="hot-badge">HOT 3M</span></div>
+<div style="overflow-x:auto;">
+<div style="min-width:600px;">
+<!-- Bit ruler -->
+<div style="display:flex;margin-bottom:2px;margin-left:4px;">
+<div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);flex:4;text-align:left;">0</div>
+<div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);flex:4;text-align:center;">4</div>
+<div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);flex:8;text-align:center;">8</div>
+<div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);flex:16;text-align:right;">31</div>
+</div>
+<!-- Row 1 -->
+<div style="display:flex;gap:2px;margin-bottom:2px;">
+<div style="flex:4;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);padding:8px 4px;text-align:center;border-radius:3px;font-size:11px;">VER<br/><span style="font-size:9px;color:var(--muted);">4b</span></div>
+<div style="flex:4;background:rgba(249,115,22,0.15);border:1px solid rgba(249,115,22,0.3);padding:8px 4px;text-align:center;border-radius:3px;font-size:11px;">HLEN<br/><span style="font-size:9px;color:var(--muted);">4b</span></div>
+<div style="flex:8;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);padding:8px 4px;text-align:center;border-radius:3px;font-size:11px;">SERVICE TYPE<br/><span style="font-size:9px;color:var(--muted);">8 bits</span></div>
+<div style="flex:16;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);padding:8px 4px;text-align:center;border-radius:3px;font-size:11px;">TOTAL LENGTH<br/><span style="font-size:9px;color:var(--muted);">16 bits</span></div>
+</div>
+<!-- Row 2 -->
+<div style="display:flex;gap:2px;margin-bottom:2px;">
+<div style="flex:16;background:rgba(6,182,212,0.15);border:1px solid rgba(6,182,212,0.3);padding:8px 4px;text-align:center;border-radius:3px;font-size:11px;">IDENTIFICATION (16b)</div>
+<div style="flex:3;background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);padding:8px 4px;text-align:center;border-radius:3px;font-size:10px;">FLAGS<br/><span style="font-size:9px;color:var(--muted);">3b</span></div>
+<div style="flex:13;background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);padding:8px 4px;text-align:center;border-radius:3px;font-size:11px;">FRAG OFFSET (13b)</div>
+</div>
+<!-- Row 3 -->
+<div style="display:flex;gap:2px;margin-bottom:2px;">
+<div style="flex:8;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);padding:8px 4px;text-align:center;border-radius:3px;font-size:11px;">TTL (8b)</div>
+<div style="flex:8;background:rgba(249,115,22,0.15);border:1px solid rgba(249,115,22,0.3);padding:8px 4px;text-align:center;border-radius:3px;font-size:11px;">PROTOCOL (8b)</div>
+<div style="flex:16;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);padding:8px 4px;text-align:center;border-radius:3px;font-size:11px;">HEADER CHECKSUM (16b)</div>
+</div>
+<!-- Row 4 -->
+<div style="display:flex;gap:2px;margin-bottom:2px;">
+<div style="flex:32;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);padding:10px 4px;text-align:center;border-radius:3px;font-size:12px;font-weight:600;">SOURCE IP ADDRESS (32 bits)</div>
+</div>
+<!-- Row 5 -->
+<div style="display:flex;gap:2px;margin-bottom:2px;">
+<div style="flex:32;background:rgba(6,182,212,0.15);border:1px solid rgba(6,182,212,0.3);padding:10px 4px;text-align:center;border-radius:3px;font-size:12px;font-weight:600;">DESTINATION IP ADDRESS (32 bits)</div>
+</div>
+<!-- Row 6 -->
+<div style="display:flex;gap:2px;">
+<div style="flex:32;background:rgba(124,58,237,0.1);border:1px dashed rgba(124,58,237,0.3);padding:8px 4px;text-align:center;border-radius:3px;font-size:11px;color:var(--muted);">OPTIONS + PADDING (0–40 bytes, optional)</div>
+</div>
+</div>
+</div>
+</div>
+      <br>
+      <div class="dcard-full">
+<div class="dcard-title">IPv6 Basic Header Format <span class="hot-badge">HOT 7M</span></div>
+<div style="overflow-x:auto;">
+<div style="min-width:600px;">
+<div style="display:flex;gap:2px;margin-bottom:2px;">
+<div style="flex:4;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);padding:8px 4px;text-align:center;border-radius:3px;font-size:11px;">VER<br/><span style="font-size:9px;color:var(--muted);">4b</span></div>
+<div style="flex:8;background:rgba(249,115,22,0.15);border:1px solid rgba(249,115,22,0.3);padding:8px 4px;text-align:center;border-radius:3px;font-size:11px;">TRAFFIC CLASS<br/><span style="font-size:9px;color:var(--muted);">8b</span></div>
+<div style="flex:20;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);padding:8px 4px;text-align:center;border-radius:3px;font-size:11px;">FLOW LABEL (NEW in IPv6)<br/><span style="font-size:9px;color:var(--muted);">20 bits</span></div>
+</div>
+<div style="display:flex;gap:2px;margin-bottom:2px;">
+<div style="flex:16;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);padding:8px 4px;text-align:center;border-radius:3px;font-size:11px;">PAYLOAD LENGTH (16b)</div>
+<div style="flex:8;background:rgba(6,182,212,0.15);border:1px solid rgba(6,182,212,0.3);padding:8px 4px;text-align:center;border-radius:3px;font-size:11px;">NEXT HEADER (8b)</div>
+<div style="flex:8;background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);padding:8px 4px;text-align:center;border-radius:3px;font-size:11px;">HOP LIMIT (8b)</div>
+</div>
+<div style="display:flex;gap:2px;margin-bottom:2px;">
+<div style="flex:32;background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);padding:16px 4px;text-align:center;border-radius:3px;font-size:12px;font-weight:600;">SOURCE ADDRESS (128 bits = 16 bytes)</div>
+</div>
+<div style="display:flex;gap:2px;">
+<div style="flex:32;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);padding:16px 4px;text-align:center;border-radius:3px;font-size:12px;font-weight:600;">DESTINATION ADDRESS (128 bits = 16 bytes)</div>
+</div>
+<div style="margin-top:8px;font-family:'Space Mono',monospace;font-size:11px;color:var(--accent4);text-align:right;">Fixed Header Size = 40 bytes</div>
+</div>
+</div>
+</div>
+      <br>
+      <div class="dcard-full">
+<div class="dcard-title">IPv4 vs IPv6 — Comparison <span class="hot-badge">HOT 7M</span></div>
+<table class="ctable">
+<tr><th>Property</th><th>IPv4</th><th>IPv6</th></tr>
+<tr><td>Address Size</td><td>32 bits</td><td>128 bits</td></tr>
+<tr><td>Address Space</td><td>~4 billion (2³²)</td><td>340 undecillion (3.4×10³⁸)</td></tr>
+<tr><td>Notation</td><td>Dotted decimal (192.168.1.1)</td><td>Hexadecimal with colons</td></tr>
+<tr><td>Header Size</td><td>20–60 bytes (variable)</td><td>40 bytes (fixed)</td></tr>
+<tr><td>Checksum</td><td>✅ In header</td><td>❌ Not in header</td></tr>
+<tr><td>Security</td><td>Optional (depends on app)</td><td>IPSec built-in</td></tr>
+<tr><td>Fragmentation</td><td>By routers and host</td><td>Only by sending host</td></tr>
+<tr><td>Address Classes</td><td>5 classes (A,B,C,D,E)</td><td>No classes</td></tr>
+</table>
+</div>
+    </div>
+  </div>
+
+  <!-- Routing -->
+  <div class="topic-block">
+    <div class="topic-header">
+      <div class="topic-title">🗺️ Routing Algorithms — Distance Vector &amp; Link State</div>
+      <span class="hot-pill">HOT</span>
+      <span class="mark-badge mark-7">7M</span>
+    </div>
+    <div class="topic-body">
+      <div class="sub-heading">Distance Vector Routing</div>
+      <div class="definition-box">
+        <strong>Distance Vector Routing:</strong> A dynamic routing algorithm where each router computes the distance between itself and each possible destination (immediate neighbors). The router shares knowledge about the WHOLE NETWORK with its NEIGHBORS. Sharing happens at REGULAR INTERVALS. Based on LOCAL knowledge.
+      </div>
+      <ul class="study-list">
+        <li>Each router maintains a table of best-known distances to each destination</li>
+        <li>Tables updated based on information from neighbors</li>
+        <li>Uses Bellman-Ford algorithm</li>
+        <li><strong>Problems:</strong> Count-to-infinity problem (solved by split horizon); Good news spreads fast, bad news spreads slowly; Persistent looping</li>
+      </ul>
+      <div class="sub-heading">Link State Routing</div>
+      <div class="definition-box">
+        <strong>Link State Routing:</strong> A dynamic routing algorithm where each router shares knowledge of its NEIGHBORS with EVERY OTHER ROUTER in the network through flooding. Information sharing only when there is a CHANGE. Based on GLOBAL knowledge. Uses Dijkstra's algorithm.
+      </div>
+      <ul class="study-list">
+        <li>Each router builds a Link-State Packet (LSP) about its directly connected links</li>
+        <li>Floods LSP to all other routers; all routers store LSPs in a database (LSDB)</li>
+        <li>Each router constructs a complete map and computes best path using Dijkstra's algorithm</li>
+        <li><strong>Problems:</strong> Heavy traffic due to flooding; Flooding can cause infinite looping (solved by TTL field)</li>
+      </ul>
+      <div class="sub-heading">Distance Vector vs Link State (7 Mark Answer)</div>
+      <table class="study-table">
+        <tr><th>Property</th><th>Distance Vector</th><th>Link State</th></tr>
+        <tr><td>Bandwidth</td><td>Less (local sharing, no flooding)</td><td>More (flooding + large LSPs)</td></tr>
+        <tr><td>Knowledge base</td><td>Local (neighbor info only)</td><td>Global (entire network map)</td></tr>
+        <tr><td>Traffic</td><td>Less</td><td>More</td></tr>
+        <tr><td>Convergence</td><td>Slow</td><td>Fast</td></tr>
+        <tr><td>Count to infinity</td><td>Yes (a problem)</td><td>No</td></tr>
+        <tr><td>Loops</td><td>Persistent loops</td><td>Only transient loops</td></tr>
+        <tr><td>Algorithm</td><td>Bellman-Ford</td><td>Dijkstra</td></tr>
+      </table>
+      <div class="eq-box">
+        <div class="eq-title">⭐ EXPECTED QUESTIONS</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Describe link state routing algorithm with its advantages and disadvantages</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Describe the distance vector routing method with algorithm steps</div>
+        <div class="eq-item"><span class="eq-mark m3">3M</span> Write the need for routing in networks</div>
+      </div>
+    </div>
+    <div class="diagram-section">
+      <div class="diagram-label">VISUAL DIAGRAM</div>
+      <div class="dcard-full">
+<div class="dcard-title">Routing Algorithms — Distance Vector vs Link State <span class="hot-badge">HOT 7M</span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+<div style="border:1px solid rgba(0,212,255,0.3);border-radius:8px;padding:16px;">
+<div style="color:#00d4ff;font-weight:700;font-size:14px;margin-bottom:12px;text-align:center;">Distance Vector Routing</div>
+<div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:12px;">
+<div style="text-align:center;">
+<div style="width:44px;height:44px;border-radius:50%;border:2px solid #00d4ff;background:rgba(0,212,255,0.1);display:flex;align-items:center;justify-content:center;font-weight:700;margin:0 auto 4px;">A</div>
+<div style="font-size:10px;color:var(--muted);">knows<br/>neighbors</div>
+</div>
+<div style="display:flex;align-items:center;padding-bottom:20px;">
+<div style="font-size:22px;color:#00d4ff;">⇆</div>
+</div>
+<div style="text-align:center;">
+<div style="width:44px;height:44px;border-radius:50%;border:2px solid #00d4ff;background:rgba(0,212,255,0.1);display:flex;align-items:center;justify-content:center;font-weight:700;margin:0 auto 4px;">B</div>
+<div style="font-size:10px;color:var(--muted);">shares<br/>table</div>
+</div>
+</div>
+<div style="font-size:12px;display:flex;flex-direction:column;gap:4px;">
+<div>📊 Algorithm: <span style="color:#00d4ff;">Bellman-Ford</span></div>
+<div>📡 Shares: Whole network info with <strong>neighbors</strong></div>
+<div>⏰ When: Regular intervals</div>
+<div>⚠️ Problem: Count-to-infinity, slow convergence</div>
+</div>
+</div>
+<div style="border:1px solid rgba(245,158,11,0.3);border-radius:8px;padding:16px;">
+<div style="color:#f59e0b;font-weight:700;font-size:14px;margin-bottom:12px;text-align:center;">Link State Routing</div>
+<div style="display:flex;justify-content:center;margin-bottom:12px;">
+<svg height="90" viewbox="0 0 120 90" width="120">
+<line opacity="0.5" stroke="#f59e0b" stroke-width="1.5" x1="60" x2="20" y1="15" y2="55"></line>
+<line opacity="0.5" stroke="#f59e0b" stroke-width="1.5" x1="60" x2="100" y1="15" y2="55"></line>
+<line opacity="0.5" stroke="#f59e0b" stroke-width="1.5" x1="20" x2="60" y1="55" y2="80"></line>
+<line opacity="0.5" stroke="#f59e0b" stroke-width="1.5" x1="100" x2="60" y1="55" y2="80"></line>
+<line opacity="0.5" stroke="#f59e0b" stroke-width="1.5" x1="20" x2="100" y1="55" y2="55"></line>
+<circle cx="60" cy="15" fill="#0a0e1a" r="10" stroke="#f59e0b" stroke-width="2"></circle>
+<circle cx="20" cy="55" fill="#0a0e1a" r="10" stroke="#f59e0b" stroke-width="2"></circle>
+<circle cx="100" cy="55" fill="#0a0e1a" r="10" stroke="#f59e0b" stroke-width="2"></circle>
+<circle cx="60" cy="80" fill="#0a0e1a" r="10" stroke="#f59e0b" stroke-width="2"></circle>
+<text fill="#f59e0b" font-size="9" text-anchor="middle" x="60" y="19">A</text>
+<text fill="#f59e0b" font-size="9" text-anchor="middle" x="20" y="59">B</text>
+<text fill="#f59e0b" font-size="9" text-anchor="middle" x="100" y="59">C</text>
+<text fill="#f59e0b" font-size="9" text-anchor="middle" x="60" y="84">D</text>
+<text fill="#f59e0b" font-size="8" opacity="0.5" text-anchor="middle" x="60" y="7">FLOOD</text>
+</svg>
+</div>
+<div style="font-size:12px;display:flex;flex-direction:column;gap:4px;">
+<div>📊 Algorithm: <span style="color:#f59e0b;">Dijkstra's</span></div>
+<div>📡 Shares: Neighbor info with <strong>ALL routers</strong></div>
+<div>⏰ When: Only on change (flooding)</div>
+<div>✅ Fast convergence, no count-to-infinity</div>
+</div>
+</div>
+</div>
+<table class="ctable">
+<tr><th>Property</th><th>Distance Vector</th><th>Link State</th></tr>
+<tr><td>Algorithm</td><td>Bellman-Ford</td><td>Dijkstra</td></tr>
+<tr><td>Knowledge</td><td>Local (neighbors only)</td><td>Global (entire network)</td></tr>
+<tr><td>Convergence</td><td>Slow</td><td>Fast</td></tr>
+<tr><td>Count-to-infinity</td><td>Yes (problem)</td><td>No</td></tr>
+<tr><td>Bandwidth</td><td>Less (no flooding)</td><td>More (flooding)</td></tr>
+</table>
+</div>
+    </div>
+  </div>
+
+  <!-- Transport Layer -->
+  <div class="topic-block">
+    <div class="topic-header">
+      <div class="topic-title">🚚 Transport Layer — TCP, UDP &amp; Segment Format</div>
+      <span class="hot-pill">HOT</span>
+      <span class="mark-badge mark-7">7M</span>
+      <span class="mark-badge mark-3">3M</span>
+    </div>
+    <div class="topic-body">
+      <div class="sub-heading">Transport Layer Responsibilities</div>
+      <ul class="study-list">
+        <li><strong>Process-to-Process Delivery</strong> — Uses Port Numbers (16-bit) to identify which application program the data belongs to</li>
+        <li><strong>End-to-End Connection</strong> — Creates connection between hosts using TCP or UDP</li>
+        <li><strong>Multiplexing &amp; Demultiplexing</strong> — Mux: combines data from multiple processes into one packet. Demux: distributes received packet to correct process.</li>
+        <li><strong>Congestion Control</strong> — Prevents too much data from entering network. Uses AIMD and Leaky Bucket technique.</li>
+        <li><strong>Data Integrity &amp; Error Correction</strong> — Uses checksums, ACK/NACK services</li>
+        <li><strong>Flow Control</strong> — Uses sliding window protocol</li>
+      </ul>
+      <div class="sub-heading">TCP Segment Fields Explained</div>
+      <ul class="study-list">
+        <li><strong>Source/Destination Port</strong> — Port number of sending/receiving application</li>
+        <li><strong>Sequence Number</strong> — Byte number of first byte in this segment</li>
+        <li><strong>Acknowledgement Number</strong> — Sequence number of NEXT expected segment</li>
+        <li><strong>HLEN</strong> — Header length in 4-byte units</li>
+        <li><strong>Control Flags</strong> — 6 bits: URG, ACK, PSH, RST, SYN, FIN</li>
+        <li><strong>Window Size</strong> — Defines window size for flow control</li>
+        <li><strong>Checksum</strong> — 16-bit error detection field</li>
+        <li><strong>Urgent Pointer</strong> — Valid only when URG flag is set</li>
+      </ul>
+      <div class="sub-heading">TCP vs UDP (7 Mark Answer)</div>
+      <table class="study-table">
+        <tr><th>Property</th><th>TCP</th><th>UDP</th></tr>
+        <tr><td>Connection</td><td>Connection-oriented (handshake first)</td><td>Connectionless (no handshake)</td></tr>
+        <tr><td>Reliability</td><td>Reliable</td><td>Unreliable</td></tr>
+        <tr><td>Speed</td><td>Slow (overhead for reliability)</td><td>Fast (low overhead)</td></tr>
+        <tr><td>Header size</td><td>20 bytes</td><td>8 bytes (fixed)</td></tr>
+        <tr><td>Acknowledgement</td><td>Yes</td><td>No</td></tr>
+        <tr><td>Retransmission</td><td>Yes (if packet lost)</td><td>No</td></tr>
+        <tr><td>Flow Control</td><td>Yes (sliding window)</td><td>No</td></tr>
+        <tr><td>Order of data</td><td>Maintained</td><td>Not guaranteed</td></tr>
+        <tr><td>Use cases</td><td>HTTP, SMTP, FTP (need reliability)</td><td>Video streaming, Gaming, DNS, VoIP</td></tr>
+        <tr><td>PDU name</td><td>Segment</td><td>User Datagram</td></tr>
+      </table>
+      <div class="sub-heading">Applications of UDP</div>
+      <ul class="study-list">
+        <li>Simple request-response communication (small data, no need for flow/error control)</li>
+        <li>Multicasting (UDP supports packet switching)</li>
+        <li>Routing update protocols like RIP</li>
+        <li>Real-time applications: video/audio streaming, IPTV, online radio</li>
+        <li>Online gaming (low latency is critical)</li>
+        <li>VoIP — Skype, WhatsApp (real-time voice)</li>
+        <li>DNS queries (small, quick responses)</li>
+        <li>DHCP (small messages, delay not critical)</li>
+      </ul>
+      <div class="eq-box">
+        <div class="eq-title">⭐ EXPECTED QUESTIONS</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Outline the TCP segment format with a neat diagram and explain each field</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Differentiate TCP and UDP services with a comparison table</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Summarize transport layer services (explain each responsibility)</div>
+        <div class="eq-item"><span class="eq-mark m3">3M</span> Write any three applications of UDP</div>
+        <div class="eq-item"><span class="eq-mark m1">1M</span> In UDP, data packets are called ___</div>
+        <div class="eq-item"><span class="eq-mark m1">1M</span> The addressing scheme used in transport layer is called ___</div>
+      </div>
+    </div>
+    <div class="diagram-section">
+      <div class="diagram-label">VISUAL DIAGRAMS</div>
+      <div class="dcard-full">
+<div class="dcard-title">TCP Segment Format <span class="hot-badge">HOT 7M</span></div>
+<div style="overflow-x:auto;margin-bottom:16px;">
+<div style="min-width:550px;">
+<div style="display:flex;gap:2px;margin-bottom:2px;">
+<div style="flex:16;background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);padding:10px 4px;text-align:center;border-radius:3px;font-size:11px;">SOURCE PORT (16b)</div>
+<div style="flex:16;background:rgba(6,182,212,0.15);border:1px solid rgba(6,182,212,0.3);padding:10px 4px;text-align:center;border-radius:3px;font-size:11px;">DESTINATION PORT (16b)</div>
+</div>
+<div style="display:flex;gap:2px;margin-bottom:2px;">
+<div style="flex:32;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);padding:10px 4px;text-align:center;border-radius:3px;font-size:11px;">SEQUENCE NUMBER (32 bits)</div>
+</div>
+<div style="display:flex;gap:2px;margin-bottom:2px;">
+<div style="flex:32;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);padding:10px 4px;text-align:center;border-radius:3px;font-size:11px;">ACKNOWLEDGEMENT NUMBER (32 bits)</div>
+</div>
+<div style="display:flex;gap:2px;margin-bottom:2px;">
+<div style="flex:4;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);padding:8px 2px;text-align:center;border-radius:3px;font-size:10px;">HLEN<br/><span style="font-size:9px;color:var(--muted);">4b</span></div>
+<div style="flex:6;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);padding:8px 2px;text-align:center;border-radius:3px;font-size:10px;">RSVD<br/><span style="font-size:9px;color:var(--muted);">6b</span></div>
+<div style="flex:6;background:rgba(249,115,22,0.15);border:1px solid rgba(249,115,22,0.3);padding:8px 2px;text-align:center;border-radius:3px;font-size:10px;color:#f97316;font-weight:600;">URG ACK PSH RST SYN FIN</div>
+<div style="flex:16;background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);padding:8px 4px;text-align:center;border-radius:3px;font-size:11px;">WINDOW SIZE (16b)</div>
+</div>
+<div style="display:flex;gap:2px;margin-bottom:2px;">
+<div style="flex:16;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);padding:8px 4px;text-align:center;border-radius:3px;font-size:11px;">CHECKSUM (16b)</div>
+<div style="flex:16;background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);padding:8px 4px;text-align:center;border-radius:3px;font-size:11px;">URGENT POINTER (16b)</div>
+</div>
+<div style="display:flex;gap:2px;">
+<div style="flex:32;background:rgba(255,255,255,0.03);border:1px dashed rgba(255,255,255,0.15);padding:8px 4px;text-align:center;border-radius:3px;font-size:11px;color:var(--muted);">OPTIONS + PADDING (variable, 0–40 bytes)</div>
+</div>
+</div>
+</div>
+<div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--accent4);text-align:right;">Header: 20–60 bytes</div>
+</div>
+      <br>
+      <div class="dcard-full">
+<div class="dcard-title">TCP vs UDP <span class="hot-badge">HOT 7M</span></div>
+<table class="ctable">
+<tr><th>Property</th><th>TCP</th><th>UDP</th></tr>
+<tr><td>Connection</td><td>Connection-oriented (3-way handshake)</td><td>Connectionless</td></tr>
+<tr><td>Reliability</td><td>✅ Reliable</td><td>❌ Unreliable</td></tr>
+<tr><td>Speed</td><td>Slower (overhead)</td><td>Faster (low overhead)</td></tr>
+<tr><td>Header size</td><td>20 bytes (min)</td><td>8 bytes (fixed)</td></tr>
+<tr><td>Acknowledgement</td><td>Yes</td><td>No</td></tr>
+<tr><td>Flow Control</td><td>Yes (sliding window)</td><td>No</td></tr>
+<tr><td>Order</td><td>Maintained</td><td>Not guaranteed</td></tr>
+<tr><td>PDU name</td><td>Segment</td><td>User Datagram</td></tr>
+<tr><td>Use cases</td><td>HTTP, SMTP, FTP</td><td>DNS, VoIP, Video streaming, Gaming</td></tr>
+</table>
+</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODULE 4 ===== -->
+<div class="section" id="m4">
+  <div class="mod-header">
+    <div class="mod-num">MODULE 04</div>
+    <div class="mod-title">Application Layer</div>
+    <div class="mod-topics">
+      <span>HTTP</span><span>FTP</span><span>SMTP</span><span>DNS</span><span>WWW</span><span>SSH</span><span>Peer-to-Peer</span>
+    </div>
+  </div>
+
+  <!-- Port Numbers -->
+  <div class="topic-block">
+    <div class="topic-header">
+      <div class="topic-title">🔢 Protocol Port Numbers — Must Memorize</div>
+      <span class="hot-pill">HOT</span>
+      <span class="mark-badge mark-1">1M</span>
+    </div>
+    <div class="topic-body">
+    </div>
+    <div class="diagram-section">
+      <div class="diagram-label">QUICK REFERENCE</div>
+      <div class="dcard-full">
+<div class="dcard-title">Protocol Port Numbers — Memorize These! <span class="hot-badge">HOT 1M</span></div>
+<div class="port-grid">
+<div class="port-card"><span class="port-num">80</span><div class="port-name">HTTP</div></div>
+<div class="port-card"><span class="port-num">443</span><div class="port-name">HTTPS</div></div>
+<div class="port-card"><span class="port-num">21</span><div class="port-name">FTP Control</div></div>
+<div class="port-card"><span class="port-num">20</span><div class="port-name">FTP Data</div></div>
+<div class="port-card"><span class="port-num">25</span><div class="port-name">SMTP</div></div>
+<div class="port-card"><span class="port-num">22</span><div class="port-name">SSH</div></div>
+<div class="port-card"><span class="port-num">53</span><div class="port-name">DNS</div></div>
+<div class="port-card"><span class="port-num">23</span><div class="port-name">Telnet</div></div>
+</div>
+</div>
+    </div>
+  </div>
+
+  <!-- HTTP -->
+  <div class="topic-block">
+    <div class="topic-header">
+      <div class="topic-title">🌐 HTTP — Persistent &amp; Non-Persistent Connections</div>
+      <span class="hot-pill">HOT</span>
+      <span class="mark-badge mark-7">7M</span>
+    </div>
+    <div class="topic-body">
+      <div class="definition-box">
+        <strong>HTTP — HyperText Transfer Protocol:</strong> Used to access data on the World Wide Web. It is an Application Layer protocol. It is connectionless, media-independent, TCP/IP based, and stateless. Uses Port 80. Transfers data as plain text, hypertext, audio, video, HTML files. Versions: HTTP 1.0, 1.1, 2.0, 3.0.
+      </div>
+      <div class="sub-heading">Key HTTP Facts</div>
+      <ul class="study-list">
+        <li>HTTP uses only ONE connection (data connection only; unlike FTP which uses two)</li>
+        <li>HTTP delivers messages immediately (unlike SMTP which stores and forwards)</li>
+        <li>HTTP is simpler than FTP because there is no separate control connection</li>
+      </ul>
+      <div class="sub-heading">Persistent vs Non-Persistent HTTP (7 Mark Answer)</div>
+      <table class="study-table">
+        <tr><th>Property</th><th>Non-Persistent (HTTP 1.0)</th><th>Persistent (HTTP 1.1)</th></tr>
+        <tr><td>TCP connection</td><td>New TCP connection per request/response</td><td>Single TCP connection for multiple requests</td></tr>
+        <tr><td>Round Trip Time</td><td>2 RTT for every object</td><td>1 RTT for all objects</td></tr>
+        <tr><td>CPU usage</td><td>More (multiple TCPs opened)</td><td>Less (single TCP)</td></tr>
+        <tr><td>Default</td><td>Non-default mode</td><td>Default mode</td></tr>
+        <tr><td>Object downloading</td><td>Needs multiple connections</td><td>Single connection for all objects</td></tr>
+      </table>
+      <div class="sub-heading">Persistent HTTP — Pipelined vs Non-Pipelined</div>
+      <ul class="study-list">
+        <li><strong>Non-Pipelined</strong> — Client sends next request only AFTER receiving acknowledgement for previous request</li>
+        <li><strong>Pipelined</strong> — Client can send new request even if previous request NOT yet acknowledged. More efficient.</li>
+      </ul>
+      <div class="sub-heading">Advantages &amp; Disadvantages of Persistent HTTP</div>
+      <table class="study-table">
+        <tr><th>Advantages</th><th>Disadvantages</th></tr>
+        <tr><td>Saves CPU resources (connection opened only once)</td><td>Wastes resources when no data transmitted (connection stays open)</td></tr>
+        <tr><td>Less network congestion; lower latency</td><td>Less secure than non-persistent</td></tr>
+        <tr><td>Fast start — objects sent quickly</td><td>Server must keep connection open indefinitely</td></tr>
+      </table>
+      <div class="eq-box">
+        <div class="eq-title">⭐ EXPECTED QUESTIONS</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Explain different types of HTTP connections (persistent vs non-persistent, pipelined vs non-pipelined)</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Describe HTTP persistent connections with advantages and disadvantages</div>
+      </div>
+    </div>
+    <div class="diagram-section">
+      <div class="diagram-label">VISUAL DIAGRAM</div>
+      <div class="dcard-full">
+<div class="dcard-title">HTTP — Persistent vs Non-Persistent <span class="hot-badge">HOT 7M</span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+<!-- Non-Persistent -->
+<div style="border:1px solid rgba(239,68,68,0.3);border-radius:8px;padding:16px;">
+<div style="color:#ef4444;font-weight:700;text-align:center;margin-bottom:12px;">Non-Persistent (HTTP 1.0)</div>
+<div style="display:flex;flex-direction:column;gap:2px;font-size:11px;">
+<div style="display:flex;gap:8px;align-items:center;padding:6px;background:rgba(239,68,68,0.06);border-radius:4px;">
+<span style="color:#ef4444;font-weight:600;">TCP Open</span><span style="color:var(--muted);">→ Request obj1 → Response → TCP Close</span>
+</div>
+<div style="text-align:center;color:var(--muted);font-size:10px;padding:2px;">⬇ (new connection for each object)</div>
+<div style="display:flex;gap:8px;align-items:center;padding:6px;background:rgba(239,68,68,0.06);border-radius:4px;">
+<span style="color:#ef4444;font-weight:600;">TCP Open</span><span style="color:var(--muted);">→ Request obj2 → Response → TCP Close</span>
+</div>
+<div style="text-align:center;color:var(--muted);font-size:10px;padding:2px;">⬇</div>
+<div style="display:flex;gap:8px;align-items:center;padding:6px;background:rgba(239,68,68,0.06);border-radius:4px;">
+<span style="color:#ef4444;font-weight:600;">TCP Open</span><span style="color:var(--muted);">→ Request obj3 → Response → TCP Close</span>
+</div>
+</div>
+<div style="margin-top:10px;font-size:11px;color:var(--muted);">2 RTT per object · High CPU usage</div>
+</div>
+<!-- Persistent -->
+<div style="border:1px solid rgba(16,185,129,0.3);border-radius:8px;padding:16px;">
+<div style="color:#10b981;font-weight:700;text-align:center;margin-bottom:12px;">Persistent (HTTP 1.1) ← Default</div>
+<div style="border:1px solid rgba(16,185,129,0.2);border-radius:6px;padding:10px;display:flex;flex-direction:column;gap:4px;font-size:11px;">
+<div style="color:#10b981;font-weight:600;text-align:center;">Single TCP Connection</div>
+<div style="padding:4px 8px;background:rgba(16,185,129,0.06);border-radius:3px;color:var(--muted);">→ Request obj1 → Response</div>
+<div style="padding:4px 8px;background:rgba(16,185,129,0.06);border-radius:3px;color:var(--muted);">→ Request obj2 → Response</div>
+<div style="padding:4px 8px;background:rgba(16,185,129,0.06);border-radius:3px;color:var(--muted);">→ Request obj3 → Response</div>
+</div>
+<div style="margin-top:10px;font-size:11px;color:var(--muted);">1 RTT for all objects · Efficient</div>
+</div>
+</div>
+<table class="ctable">
+<tr><th>Property</th><th>Non-Persistent</th><th>Persistent</th></tr>
+<tr><td>TCP connections</td><td>New per object</td><td>One for all</td></tr>
+<tr><td>RTT per object</td><td>2 RTT</td><td>1 RTT (after 1st)</td></tr>
+<tr><td>CPU usage</td><td>High</td><td>Low</td></tr>
+<tr><td>Default</td><td>HTTP 1.0</td><td>HTTP 1.1 ✅</td></tr>
+</table>
+</div>
+    </div>
+  </div>
+
+  <!-- FTP -->
+  <div class="topic-block">
+    <div class="topic-header">
+      <div class="topic-title">📂 FTP — File Transfer Protocol</div>
+      <span class="hot-pill">HOT</span>
+      <span class="mark-badge mark-7">7M</span>
+    </div>
+    <div class="topic-body">
+      <div class="definition-box">
+        <strong>FTP — File Transfer Protocol:</strong> An application layer protocol used to exchange files over the internet. Transfers both text and binary files. Uses TCP at transport layer. Connection-oriented. Out-of-band protocol — data and control information flow over DIFFERENT connections.
+      </div>
+      <div class="sub-heading">Why FTP is Needed?</div>
+      <p style="font-size:14px;color:var(--text);line-height:1.7;margin-bottom:12px;">Different systems may have: different file naming conventions, different ways of representing text/data, different directory structures. FTP overcomes these by establishing TWO separate connections.</p>
+      <div class="sub-heading">Two Types of Connections in FTP</div>
+      <ul class="study-list">
+        <li><strong>Control Connection (Port 21)</strong> — Uses simple rules. Transfers one command/response at a time. Stays connected during the ENTIRE FTP session. Made between control processes.</li>
+        <li><strong>Data Connection (Port 20)</strong> — Uses complex rules (data types vary). Opens when a file transfer command comes. Closes when the file transfer is complete.</li>
+      </ul>
+      <div class="sub-heading">Merits &amp; Demerits of FTP</div>
+      <table class="study-table">
+        <tr><th>Merits of FTP</th><th>Demerits of FTP</th></tr>
+        <tr><td>Fastest way for file transfer</td><td>File size limit: 2 GB</td></tr>
+        <tr><td>Efficient — no need to complete all operations</td><td>Data is NOT encrypted (security issue)</td></tr>
+        <tr><td>Protected with user credentials</td><td>Multiple receiving not supported</td></tr>
+        <tr><td>Two-way (back and forth) transfer</td><td>FTP is complex due to two connections</td></tr>
+      </table>
+      <div class="eq-box">
+        <div class="eq-title">⭐ EXPECTED QUESTIONS</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Illustrate the FTP basic model and state its merits and demerits</div>
+        <div class="eq-item"><span class="eq-mark m1">1M</span> ___ is the data port number used in FTP</div>
+      </div>
+    </div>
+    <div class="diagram-section">
+      <div class="diagram-label">VISUAL DIAGRAM</div>
+      <div class="dcard-full">
+<div class="dcard-title">FTP — Basic Model <span class="hot-badge">HOT 7M</span></div>
+<div class="ftp-wrap">
+<!-- Client -->
+<div class="ftp-box" style="border-color:rgba(0,212,255,0.3);">
+<div class="ftp-header" style="background:rgba(0,212,255,0.1);color:#00d4ff;">CLIENT</div>
+<div class="ftp-component">User Interface</div>
+<div class="ftp-component" style="color:#00d4ff;">Control Process</div>
+<div class="ftp-component" style="color:#f59e0b;">Data Transfer Process</div>
+</div>
+<!-- Connections -->
+<div class="ftp-conn">
+<div class="ftp-port-line">
+<span class="port-tag" style="background:rgba(0,212,255,0.15);color:#00d4ff;border:1px solid rgba(0,212,255,0.3);">PORT 21</span>
+<div class="conn-line" style="background:linear-gradient(90deg,#00d4ff,#00d4ff);"></div>
+<span style="font-size:10px;color:var(--muted);">Control</span>
+</div>
+<div style="font-size:10px;color:var(--muted);text-align:center;">← Always open during session →</div>
+<div class="ftp-port-line">
+<span class="port-tag" style="background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.3);">PORT 20</span>
+<div class="conn-line" style="background:linear-gradient(90deg,#f59e0b,#f59e0b);"></div>
+<span style="font-size:10px;color:var(--muted);">Data</span>
+</div>
+<div style="font-size:10px;color:var(--muted);text-align:center;">← Opens/closes per transfer →</div>
+</div>
+<!-- Server -->
+<div class="ftp-box" style="border-color:rgba(245,158,11,0.3);">
+<div class="ftp-header" style="background:rgba(245,158,11,0.1);color:#f59e0b;">SERVER</div>
+<div class="ftp-component" style="color:var(--muted);">(no UI)</div>
+<div class="ftp-component" style="color:#00d4ff;">Control Process</div>
+<div class="ftp-component" style="color:#f59e0b;">Data Transfer Process</div>
+</div>
+</div>
+<div style="margin-top:16px;">
+<table class="ctable">
+<tr><th>Merits of FTP</th><th>Demerits of FTP</th></tr>
+<tr><td>Fastest way for file transfer</td><td>File size limit: 2 GB</td></tr>
+<tr><td>Two-way transfer</td><td>Data NOT encrypted (insecure)</td></tr>
+<tr><td>Protected with credentials</td><td>Complex (two connections)</td></tr>
+</table>
+</div>
+</div>
+    </div>
+  </div>
+
+  <!-- SMTP/Email -->
+  <div class="topic-block">
+    <div class="topic-header">
+      <div class="topic-title">📧 Email — SMTP &amp; Email Architecture</div>
+      <span class="hot-pill">HOT</span>
+      <span class="mark-badge mark-7">7M</span>
+      <span class="mark-badge mark-3">3M</span>
+    </div>
+    <div class="topic-body">
+      <div class="definition-box">
+        <strong>SMTP — Simple Mail Transfer Protocol:</strong> Mainly used for sending emails efficiently over the Internet. It is a push protocol. Uses TCP at transport layer. Uses persistent TCP connections. Connection-oriented, stateless, in-band protocol. Uses Port 25.
+      </div>
+      <div class="sub-heading">Key SMTP Facts</div>
+      <ul class="study-list">
+        <li>Pure text-based protocol — handles only 7-bit ASCII text</li>
+        <li>CANNOT directly transfer images, video, audio, or binary files</li>
+        <li><strong>MIME</strong> (Multipurpose Internet Mail Extensions) extends SMTP to handle multimedia (graphics, audio, video files)</li>
+        <li>MIME was specially designed for SMTP</li>
+      </ul>
+      <div class="sub-heading">Email Architecture — Components (3 Mark Answer)</div>
+      <ul class="study-list">
+        <li><strong>User Agent (UA)</strong> — Software package (e.g., Microsoft Outlook). Creates, reads, replies to, and forwards email messages. The user interacts through the UA.</li>
+        <li><strong>Message Transfer Agent (MTA)</strong> — Handles actual mail transfer across the internet. To send: MTA client needed. To receive: MTA server needed. SMTP is an MTA protocol.</li>
+        <li><strong>Message Access Agent (MAA)</strong> — Allows receiver to pull messages from the mail server. MAA client runs on receiver's machine; MAA server runs on mail server. Uses POP3 or IMAP protocols.</li>
+      </ul>
+      <div class="eq-box">
+        <div class="eq-title">⭐ EXPECTED QUESTIONS</div>
+        <div class="eq-item"><span class="eq-mark m3">3M</span> Describe the components in the Electronic Mail architecture (UA, MTA, MAA)</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Describe the electronic mail protocol SMTP with its merits and demerits</div>
+        <div class="eq-item"><span class="eq-mark m1">1M</span> SMTP stands for ___</div>
+      </div>
+    </div>
+    <div class="diagram-section">
+      <div class="diagram-label">VISUAL DIAGRAM</div>
+      <div class="dcard-full">
+<div class="dcard-title">Email Architecture — UA · MTA · MAA</div>
+<div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;align-items:center;padding:16px;">
+<div style="border:1px solid rgba(0,212,255,0.3);border-radius:8px;overflow:hidden;min-width:140px;text-align:center;">
+<div style="background:rgba(0,212,255,0.1);padding:10px;font-weight:700;color:#00d4ff;font-size:13px;">SENDER</div>
+<div style="padding:10px;font-size:12px;">
+<div style="margin-bottom:6px;">📧 User Agent (UA)</div>
+<div style="color:var(--muted);font-size:11px;">Outlook, Gmail<br/>Creates/sends email</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+<div style="font-family:'Space Mono',monospace;font-size:10px;color:#7c3aed;padding:4px 10px;border:1px solid rgba(124,58,237,0.3);border-radius:3px;">SMTP (Port 25)</div>
+<div style="color:#7c3aed;font-size:20px;">→</div>
+</div>
+<div style="border:1px solid rgba(124,58,237,0.3);border-radius:8px;overflow:hidden;min-width:140px;text-align:center;">
+<div style="background:rgba(124,58,237,0.1);padding:10px;font-weight:700;color:#7c3aed;font-size:13px;">MAIL SERVER</div>
+<div style="padding:10px;font-size:12px;">
+<div style="margin-bottom:6px;">⚙️ MTA Server</div>
+<div style="color:var(--muted);font-size:11px;">Stores &amp;<br/>forwards mail</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+<div style="font-family:'Space Mono',monospace;font-size:10px;color:#f59e0b;padding:4px 10px;border:1px solid rgba(245,158,11,0.3);border-radius:3px;">POP3 / IMAP</div>
+<div style="color:#f59e0b;font-size:20px;">→</div>
+</div>
+<div style="border:1px solid rgba(245,158,11,0.3);border-radius:8px;overflow:hidden;min-width:140px;text-align:center;">
+<div style="background:rgba(245,158,11,0.1);padding:10px;font-weight:700;color:#f59e0b;font-size:13px;">RECEIVER</div>
+<div style="padding:10px;font-size:12px;">
+<div style="margin-bottom:6px;">📬 MAA + UA</div>
+<div style="color:var(--muted);font-size:11px;">Pulls email from<br/>server, reads it</div>
+</div>
+</div>
+</div>
+</div>
+    </div>
+  </div>
+
+  <!-- DNS / WWW -->
+  <div class="topic-block">
+    <div class="topic-header">
+      <div class="topic-title">🔍 DNS, WWW &amp; Web Documents</div>
+      <span class="hot-pill">HOT</span>
+      <span class="mark-badge mark-7">7M</span>
+      <span class="mark-badge mark-3">3M</span>
+    </div>
+    <div class="topic-body">
+      <div class="definition-box">
+        <strong>DNS — Domain Name System:</strong> A directory service that provides a mapping between the name of a host (like www.google.com) and its numerical IP address. It allows users to use friendly names instead of remembering IP addresses. Uses UDP on Port 53.
+      </div>
+      <div class="sub-heading">DNS Resolution — Step by Step</div>
+      <ul class="study-list">
+        <li>User enters a domain name (e.g., www.example.com) in browser</li>
+        <li>Browser sends a recursive DNS query to find the IP address</li>
+        <li>Query goes to recursive DNS server (usually ISP's server). If it has the address → returns it directly.</li>
+        <li>If not found, queries in order: DNS Root Name Servers → TLD Name Servers (.com, .org) → Authoritative Name Servers</li>
+        <li>Authoritative server returns the IP address to the recursive server</li>
+        <li>Recursive server caches the A record. Returns IP to browser. Webpage loads.</li>
+        <li>If authoritative server cannot find info → returns error message</li>
+      </ul>
+      <div class="sub-heading">Three Types of Web Documents (3 Mark Answer)</div>
+      <table class="study-table">
+        <tr><th>Type</th><th>Description</th><th>Created Using</th></tr>
+        <tr><td><strong>Static</strong></td><td>Fixed content stored on server. Same response for every request. Contents determined when written.</td><td>HTML, XML, XHTML</td></tr>
+        <tr><td><strong>Dynamic</strong></td><td>Does NOT exist in predefined form. Server runs a program to create the document on each request. Content varies per request.</td><td>ASP, JSP, PHP</td></tr>
+        <tr><td><strong>Active</strong></td><td>A program sent from server to browser. Browser runs it locally. Can interact with user and change display continuously.</td><td>Java applets, JavaScript</td></tr>
+      </table>
+      <div class="sub-heading">URL — Uniform Resource Locator</div>
+      <div class="code-block">protocol :// host : port / path
+http     :// www.example.com : 80 / index.html</div>
+      <ul class="study-list">
+        <li><strong>Protocol</strong> — Client/server program used to retrieve document (e.g., HTTP)</li>
+        <li><strong>Host Computer</strong> — Computer where the information is located</li>
+        <li><strong>Port</strong> — Optional; inserted between host and path, separated by colon</li>
+        <li><strong>Path</strong> — Pathname of file where information is located</li>
+      </ul>
+      <div class="eq-box">
+        <div class="eq-title">⭐ EXPECTED QUESTIONS</div>
+        <div class="eq-item"><span class="eq-mark m3">3M</span> Write about the Domain Name System (definition + resolution process)</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Illustrate the working of DNS step by step with a diagram</div>
+        <div class="eq-item"><span class="eq-mark m3">3M</span> Describe static and dynamic web documents</div>
+        <div class="eq-item"><span class="eq-mark m3">3M</span> Define URL and list its components</div>
+        <div class="eq-item"><span class="eq-mark m1">1M</span> The application layer program which maps a name to address in the Internet is ___</div>
+        <div class="eq-item"><span class="eq-mark m1">1M</span> List the components of a URL address</div>
+      </div>
+    </div>
+    <div class="diagram-section">
+      <div class="diagram-label">VISUAL DIAGRAMS</div>
+      <div class="dcard-full">
+<div class="dcard-title">DNS Resolution — Step by Step <span class="hot-badge">HOT 7M</span></div>
+<div style="margin-bottom:16px;">
+<div class="dns-step">
+<div class="dns-num">1</div>
+<div class="dns-text">User types <strong>www.example.com</strong> in browser. Browser checks local cache first.</div>
+</div>
+<div class="dns-step">
+<div class="dns-num">2</div>
+<div class="dns-text">Query sent to <strong>Recursive DNS Resolver</strong> (usually ISP's server). If cached → returns immediately.</div>
+</div>
+<div class="dns-step">
+<div class="dns-num">3</div>
+<div class="dns-text">Recursive resolver queries <strong>Root Name Server</strong> → gets referral to TLD server (.com).</div>
+</div>
+<div class="dns-step">
+<div class="dns-num">4</div>
+<div class="dns-text">Queries <strong>TLD Name Server</strong> (.com) → gets referral to authoritative server for example.com.</div>
+</div>
+<div class="dns-step">
+<div class="dns-num">5</div>
+<div class="dns-text"><strong>Authoritative Name Server</strong> returns the actual IP address (A record) for www.example.com.</div>
+</div>
+<div class="dns-step">
+<div class="dns-num">6</div>
+<div class="dns-text">Recursive resolver <strong>caches the result</strong> and returns IP to browser. Webpage loads!</div>
+</div>
+</div>
+<div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;align-items:center;padding:14px;background:rgba(255,255,255,0.02);border-radius:6px;font-size:12px;">
+<div style="padding:8px 14px;border:1px solid rgba(16,185,129,0.3);border-radius:4px;text-align:center;">🖥️<br/>Browser</div>
+<div style="color:#10b981;font-size:16px;">⇆</div>
+<div style="padding:8px 14px;border:1px solid rgba(16,185,129,0.3);border-radius:4px;text-align:center;">🔄<br/>Recursive<br/>Resolver</div>
+<div style="color:#10b981;font-size:16px;">⇆</div>
+<div style="padding:8px 14px;border:1px solid rgba(16,185,129,0.3);border-radius:4px;text-align:center;">🌐<br/>Root<br/>Server</div>
+<div style="color:#10b981;font-size:16px;">⇆</div>
+<div style="padding:8px 14px;border:1px solid rgba(16,185,129,0.3);border-radius:4px;text-align:center;">📂<br/>TLD<br/>Server</div>
+<div style="color:#10b981;font-size:16px;">⇆</div>
+<div style="padding:8px 14px;border:1px solid rgba(16,185,129,0.3);border-radius:4px;text-align:center;">📋<br/>Auth.<br/>Server</div>
+</div>
+</div>
+      <br>
+      <div class="dcard-full">
+<div class="dcard-title">Three Types of Web Documents</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;">
+<div style="border:1px solid rgba(0,212,255,0.3);border-radius:8px;padding:16px;">
+<div style="color:#00d4ff;font-weight:700;font-size:14px;margin-bottom:8px;">📄 STATIC</div>
+<div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Fixed content on server. Same response for every request.</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;">
+<span class="proto-tag">HTML</span><span class="proto-tag">XML</span><span class="proto-tag">XHTML</span>
+</div>
+</div>
+<div style="border:1px solid rgba(245,158,11,0.3);border-radius:8px;padding:16px;">
+<div style="color:#f59e0b;font-weight:700;font-size:14px;margin-bottom:8px;">⚙️ DYNAMIC</div>
+<div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Does NOT exist in predefined form. Server runs program to create it on each request.</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;">
+<span class="proto-tag">ASP</span><span class="proto-tag">JSP</span><span class="proto-tag">PHP</span>
+</div>
+</div>
+<div style="border:1px solid rgba(124,58,237,0.3);border-radius:8px;padding:16px;">
+<div style="color:#7c3aed;font-weight:700;font-size:14px;margin-bottom:8px;">🎬 ACTIVE</div>
+<div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Program sent FROM server TO browser. Browser runs it locally. Interactive.</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;">
+<span class="proto-tag">JavaScript</span><span class="proto-tag">Java Applets</span>
+</div>
+</div>
+</div>
+</div>
+    </div>
+  </div>
+
+  <!-- SSH -->
+  <div class="topic-block">
+    <div class="topic-header">
+      <div class="topic-title">🔐 SSH — Secure Shell Protocol</div>
+      <span class="hot-pill">HOT</span>
+      <span class="mark-badge mark-7">7M</span>
+      <span class="mark-badge mark-3">3M</span>
+    </div>
+    <div class="topic-body">
+      <div class="definition-box">
+        <strong>SSH — Secure Shell:</strong> An application layer program used for remote logging and secure file transfer. Creates a secure encrypted connection between a client and server over TCP. Runs on Port 22. It is a secure alternative to Telnet.
+      </div>
+      <div class="sub-heading">SSH 4 Components (3M or 7M Answer)</div>
+      <ul class="study-list">
+        <li><strong>SSH-TRANS (Transport Layer Protocol)</strong> — Establishes secure connection between SSH client and server over TCP. Negotiates security parameters (encryption algorithm, HMAC). Creates secure tunnel. Provides: privacy, data integrity, server authentication, compression.</li>
+        <li><strong>SSH-AUTH (Authentication Protocol)</strong> — Authenticates the SSH client to the server. After secure channel is established, server needs to verify the client's identity.</li>
+        <li><strong>SSH-CONN (Connection Protocol)</strong> — Allows multiple logical channels to run over the single secure connection. Each channel can be used for a different purpose.</li>
+        <li><strong>SSH Applications</strong> — Once secure connection is established, SSH allows different application programs to use it. Examples: Remote console login, SFTP (Secure File Transfer Protocol).</li>
+      </ul>
+      <div class="eq-box">
+        <div class="eq-title">⭐ EXPECTED QUESTIONS</div>
+        <div class="eq-item"><span class="eq-mark m7">7M</span> Describe SSH protocol with its four components and diagram</div>
+        <div class="eq-item"><span class="eq-mark m3">3M</span> List the SSH components (SSH-TRANS, SSH-AUTH, SSH-CONN, Applications)</div>
+        <div class="eq-item"><span class="eq-mark m1">1M</span> SSH stands for ___</div>
+        <div class="eq-item"><span class="eq-mark m1">1M</span> List two remote logging protocols</div>
+      </div>
+    </div>
+    <div class="diagram-section">
+      <div class="diagram-label">VISUAL DIAGRAM</div>
+      <div class="dcard-full">
+<div class="dcard-title">SSH — 4 Components &amp; Stack <span class="hot-badge">HOT 7M</span></div>
+<div style="display:grid;grid-template-columns:1fr 1.4fr;gap:16px;">
+<div>
+<div class="ssh-stack">
+<div class="ssh-layer" style="background:rgba(239,68,68,0.08);">
+<div class="ssh-icon">🖥️</div>
+<div>
+<div class="ssh-layer-name" style="color:#ef4444;">SSH Applications</div>
+<div class="ssh-layer-desc">Remote login, SFTP</div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;">
+<div class="ssh-layer" style="background:rgba(245,158,11,0.08);border-right:1px solid var(--border);">
+<div>
+<div class="ssh-layer-name" style="color:#f59e0b;font-size:12px;">SSH-CONN</div>
+<div class="ssh-layer-desc">Multiple channels</div>
+</div>
+</div>
+<div class="ssh-layer" style="background:rgba(16,185,129,0.08);">
+<div>
+<div class="ssh-layer-name" style="color:#10b981;font-size:12px;">SSH-AUTH</div>
+<div class="ssh-layer-desc">Authentication</div>
+</div>
+</div>
+</div>
+<div class="ssh-layer" style="background:rgba(6,182,212,0.08);">
+<div class="ssh-icon">🔒</div>
+<div>
+<div class="ssh-layer-name" style="color:#06b6d4;">SSH-TRANS</div>
+<div class="ssh-layer-desc">Secure channel, encryption, integrity</div>
+</div>
+</div>
+<div class="ssh-layer" style="background:rgba(124,58,237,0.08);">
+<div class="ssh-icon">🔌</div>
+<div>
+<div class="ssh-layer-name" style="color:#7c3aed;">TCP (Port 22)</div>
+<div class="ssh-layer-desc">Transport Layer</div>
+</div>
+</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px;font-size:12px;">
+<div style="padding:12px;background:rgba(6,182,212,0.06);border-left:3px solid #06b6d4;border-radius:4px;">
+<div style="font-weight:600;color:#06b6d4;margin-bottom:4px;">SSH-TRANS</div>
+          Establishes secure connection over TCP. Negotiates encryption. Creates secure tunnel. Provides: privacy, integrity, compression.
+        </div>
+<div style="padding:12px;background:rgba(16,185,129,0.06);border-left:3px solid #10b981;border-radius:4px;">
+<div style="font-weight:600;color:#10b981;margin-bottom:4px;">SSH-AUTH</div>
+          Authenticates the SSH client to the server after secure channel is set up.
+        </div>
+<div style="padding:12px;background:rgba(245,158,11,0.06);border-left:3px solid #f59e0b;border-radius:4px;">
+<div style="font-weight:600;color:#f59e0b;margin-bottom:4px;">SSH-CONN</div>
+          Allows multiple logical channels over the single secure connection for different purposes.
+        </div>
+<div style="padding:12px;background:rgba(239,68,68,0.06);border-left:3px solid #ef4444;border-radius:4px;">
+<div style="font-weight:600;color:#ef4444;margin-bottom:4px;">SSH Applications</div>
+          Remote console login, SFTP (Secure File Transfer Protocol), port forwarding.
+        </div>
+</div>
+</div>
+</div>
+    </div>
+  </div>
+
+  <!-- P2P -->
+  <div class="topic-block">
+    <div class="topic-header">
+      <div class="topic-title">🔄 Peer-to-Peer Architecture</div>
+      <span class="mark-badge mark-3">3M</span>
+    </div>
+    <div class="topic-body">
+      <div class="definition-box">
+        <strong>Peer-to-Peer (P2P) Architecture:</strong> Each workstation has the same capabilities and responsibilities. Each station can act as BOTH client AND server. Responsibility is shared among peers. No centralized server needed.
+      </div>
+      <div class="sub-heading">Client-Server vs Peer-to-Peer</div>
+      <table class="study-table">
+        <tr><th>Property</th><th>Client-Server</th><th>Peer-to-Peer</th></tr>
+        <tr><td>Differentiation</td><td>Clients and servers are differentiated</td><td>No differentiation — every node is equal</td></tr>
+        <tr><td>Focus</td><td>Information sharing</td><td>Connectivity</td></tr>
+        <tr><td>Data storage</td><td>Centralized server</td><td>Each peer has its own data</td></tr>
+        <tr><td>Service</td><td>Server responds to client requests</td><td>Every node can request AND respond</td></tr>
+        <tr><td>Cost</td><td>More expensive</td><td>Less expensive</td></tr>
+        <tr><td>Stability</td><td>More stable</td><td>Less stable</td></tr>
+        <tr><td>Network size</td><td>Small and large networks</td><td>Generally &lt;10 computers</td></tr>
+      </table>
+      <div class="eq-box">
+        <div class="eq-title">⭐ EXPECTED QUESTIONS</div>
+        <div class="eq-item"><span class="eq-mark m3">3M</span> Explain the peer-to-peer paradigm with its characteristics</div>
+        <div class="eq-item"><span class="eq-mark m3">3M</span> Write about the peer-to-peer network paradigm</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== QUICK REF ===== -->
+<div class="section" id="qref">
+  <div>
+<div class="section-title">⚡ Quick Reference — All 1-Mark Answers</div>
+<div class="dcard-full">
+<div class="dcard-title">Part A — Complete 1-Mark Answers <span class="hot-badge">EXAM READY</span></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;">
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">Define protocol</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">Set of rules that govern data communications</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">What is multipoint connection?</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">More than two devices share a single link</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">OSI stands for</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">Open Systems Interconnection</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">SSH stands for</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">Secure Shell</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">SMTP stands for</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">Simple Mail Transfer Protocol</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">FTP Data port number</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">Port 20 (Control: Port 21)</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">DNS maps</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">Domain name → IP address</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">UDP data packets called</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">User Datagrams</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">IPv4 address space</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">2³² = ~4.3 billion addresses</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">IPv6 addressing scheme</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">128-bit addressing</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">Video chat uses TCP? True/False</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">False (uses UDP)</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">Reliable transfer uses TCP? T/F</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">True</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">Define attenuation</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">Loss of signal energy/strength with distance</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">Define distortion</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">Change in shape/form of signal during transmission</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">Two random access protocols</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">ALOHA, CSMA (or CSMA/CD, CSMA/CA)</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">Two remote logging protocols</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">SSH, TELNET</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">Two application layer protocols</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">HTTP, FTP (also: SMTP, DNS)</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">Two unguided transmission waves</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">Radio waves, Microwaves</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">Transport layer addressing called</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">Port addressing / Service point addressing</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">Two data link layer services</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">Framing, Flow control</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">URL stands for</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">Uniform Resource Locator</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">URL components</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">Protocol, Host, Port, Path</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">Mesh topology links formula</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">n(n-1)/2 duplex links</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">Application layer name→address</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">DNS (Domain Name System)</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">SSH components (list)</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">SSH-TRANS, SSH-AUTH, SSH-CONN, SSH Applications</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">HTTP port</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">Port 80</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">HTTPS port</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">Port 443</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">DNS port</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">Port 53</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">SSH port</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">Port 22</div></div>
+<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px;"><div style="background:rgba(0,212,255,0.08);padding:10px 12px;color:var(--muted);min-width:170px;border-right:1px solid var(--border);">Telnet port</div><div style="padding:10px 12px;color:var(--text);font-weight:600;">Port 23</div></div>
+</div>
+</div>
+<div class="dcard-full" style="margin-top:16px;">
+<div class="dcard-title">IPv4 Address Classes — Quick Table</div>
+<table class="ctable">
+<tr><th>Class</th><th>First Octet</th><th>Subnet Mask</th><th>Use</th></tr>
+<tr><td>A</td><td>1 – 126</td><td>255.0.0.0</td><td>Large networks</td></tr>
+<tr><td>B</td><td>128 – 191</td><td>255.255.0.0</td><td>Medium networks</td></tr>
+<tr><td>C</td><td>192 – 223</td><td>255.255.255.0</td><td>Small networks</td></tr>
+<tr><td>D</td><td>224 – 239</td><td>No mask</td><td>Multicasting</td></tr>
+<tr><td>E</td><td>240 – 255</td><td>No mask</td><td>Experimental</td></tr>
+</table>
+<div style="margin-top:10px;font-size:12px;color:var(--muted);">⚠️ 127.x.x.x = Loopback | Hosts = 2^host_bits − 2 (subtract network + broadcast)</div>
+</div>
+</div>
+</div>
+
+<script>
+  function showSection(id, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+</script>
+
+</body>
+</html>
