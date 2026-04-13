@@ -1,0 +1,2016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCN Complete Study Material</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:wght@300;400;600&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #0f0f13;
+    --surface: #16161f;
+    --surface2: #1e1e2a;
+    --border: #2a2a3d;
+    --accent: #6c63ff;
+    --accent2: #ff6b6b;
+    --accent3: #43e97b;
+    --accent4: #f7971e;
+    --text: #e8e8f0;
+    --text2: #9999bb;
+    --text3: #6666aa;
+    --m1: #6c63ff;
+    --m2: #ff6b6b;
+    --m3: #43e97b;
+    --m4: #f7971e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* HEADER */
+  .hero {
+    background: linear-gradient(135deg, #0f0f13 0%, #1a1035 50%, #0f0f13 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 40px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(108,99,255,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8em;
+    font-weight: 900;
+    background: linear-gradient(90deg, #6c63ff, #a78bfa, #ff6b6b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+  }
+  .hero p {
+    color: var(--text2);
+    font-size: 1.05em;
+    letter-spacing: 0.05em;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(108,99,255,0.15);
+    border: 1px solid rgba(108,99,255,0.3);
+    color: #a78bfa;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    margin: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* NAV */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(15,15,19,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a {
+    text-decoration: none;
+    color: var(--text2);
+    padding: 14px 22px;
+    font-size: 0.85em;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    font-weight: 600;
+  }
+  .nav a:hover { color: var(--text); border-bottom-color: var(--accent); }
+  .nav a.m1 { color: #a78bfa; }
+  .nav a.m2 { color: #ff8888; }
+  .nav a.m3 { color: #43e97b; }
+  .nav a.m4 { color: #ffa94d; }
+
+  /* CONTAINER */
+  .container { max-width: 900px; margin: 0 auto; padding: 20px 24px 60px; }
+
+  /* MODULE HEADER */
+  .module-header {
+    margin: 50px 0 30px;
+    padding: 28px 32px;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .module-header.m1 { background: linear-gradient(135deg, rgba(108,99,255,0.12), rgba(108,99,255,0.04)); border: 1px solid rgba(108,99,255,0.25); }
+  .module-header.m2 { background: linear-gradient(135deg, rgba(255,107,107,0.12), rgba(255,107,107,0.04)); border: 1px solid rgba(255,107,107,0.25); }
+  .module-header.m3 { background: linear-gradient(135deg, rgba(67,233,123,0.12), rgba(67,233,123,0.04)); border: 1px solid rgba(67,233,123,0.25); }
+  .module-header.m4 { background: linear-gradient(135deg, rgba(247,151,30,0.12), rgba(247,151,30,0.04)); border: 1px solid rgba(247,151,30,0.25); }
+
+  .module-header .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75em;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .m1 .num { color: #a78bfa; }
+  .m2 .num { color: #ff8888; }
+  .m3 .num { color: #43e97b; }
+  .m4 .num { color: #ffa94d; }
+
+  .module-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9em;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .module-header p { color: var(--text2); margin-top: 6px; font-size: 0.9em; }
+
+  /* SECTION */
+  .section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 18px;
+    overflow: hidden;
+  }
+  .section-head {
+    padding: 16px 22px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
+  .section-head:hover { background: var(--surface2); }
+  .section-head .icon { font-size: 1.2em; }
+  .section-head h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05em;
+    font-weight: 700;
+    flex: 1;
+  }
+  .section-head .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .tag-pyq { background: rgba(255,107,107,0.15); color: #ff8888; border: 1px solid rgba(255,107,107,0.25); }
+  .tag-imp { background: rgba(247,151,30,0.15); color: #ffa94d; border: 1px solid rgba(247,151,30,0.25); }
+  .tag-def { background: rgba(108,99,255,0.15); color: #a78bfa; border: 1px solid rgba(108,99,255,0.25); }
+  .tag-dia { background: rgba(67,233,123,0.15); color: #43e97b; border: 1px solid rgba(67,233,123,0.25); }
+  .chevron { color: var(--text3); font-size: 0.9em; transition: transform 0.2s; }
+  .section-head.open .chevron { transform: rotate(180deg); }
+
+  .section-body { padding: 0 22px 22px; display: none; }
+  .section-body.show { display: block; }
+
+  /* CONTENT STYLES */
+  .def-box {
+    background: var(--surface2);
+    border-left: 3px solid var(--accent);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 12px 0;
+  }
+  .def-box.green { border-left-color: var(--accent3); }
+  .def-box.red { border-left-color: var(--accent2); }
+  .def-box.orange { border-left-color: var(--accent4); }
+  .def-box strong { color: #a78bfa; display: block; margin-bottom: 4px; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; }
+  .def-box.green strong { color: #43e97b; }
+  .def-box.red strong { color: #ff8888; }
+  .def-box.orange strong { color: #ffa94d; }
+
+  p { margin: 10px 0; color: var(--text); }
+
+  ul, ol { margin: 10px 0 10px 22px; }
+  li { margin: 5px 0; color: var(--text); }
+  li strong { color: var(--accent); }
+
+  h4 {
+    font-family: 'Playfair Display', serif;
+    color: var(--text);
+    margin: 18px 0 8px;
+    font-size: 1.0em;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 5px;
+  }
+
+  /* TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 0.88em;
+  }
+  th {
+    background: var(--surface2);
+    color: var(--text2);
+    padding: 10px 14px;
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85em;
+    border: 1px solid var(--border);
+    font-weight: 600;
+  }
+  td {
+    padding: 9px 14px;
+    border: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+  /* DIAGRAM */
+  .diagram {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 14px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78em;
+    overflow-x: auto;
+    white-space: pre;
+    color: #c8c8e8;
+    line-height: 1.5;
+  }
+
+  /* PYQ BOX */
+  .pyq-box {
+    background: rgba(255,107,107,0.05);
+    border: 1px solid rgba(255,107,107,0.2);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+  }
+  .pyq-box .pyq-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7em;
+    color: #ff8888;
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: 0.1em;
+  }
+  .pyq-box p { color: var(--text2); font-size: 0.9em; margin: 3px 0; }
+
+  /* MEMORY AID */
+  .memory {
+    background: rgba(247,151,30,0.06);
+    border: 1px solid rgba(247,151,30,0.2);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+  }
+  .memory .mem-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7em;
+    color: #ffa94d;
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: 0.1em;
+  }
+
+  /* FORMULA */
+  .formula {
+    background: rgba(108,99,255,0.08);
+    border: 1px solid rgba(108,99,255,0.2);
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9em;
+    color: #c4b5fd;
+    margin: 10px 0;
+    text-align: center;
+  }
+
+  .port-badge {
+    display: inline-block;
+    background: rgba(67,233,123,0.1);
+    border: 1px solid rgba(67,233,123,0.25);
+    color: #43e97b;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8em;
+    font-weight: 600;
+    margin: 2px;
+  }
+
+  .highlight { color: #a78bfa; font-weight: 600; }
+  .green-text { color: #43e97b; font-weight: 600; }
+  .red-text { color: #ff8888; font-weight: 600; }
+  .orange-text { color: #ffa94d; font-weight: 600; }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--text3);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75em;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  /* SCROLL INDICATOR */
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 30px;
+  }
+  .toc h3 { font-family: 'Playfair Display', serif; margin-bottom: 12px; color: var(--text2); font-size: 0.9em; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .toc-item { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text2); font-size: 0.85em; padding: 6px 10px; border-radius: 6px; transition: all 0.2s; }
+  .toc-item:hover { background: var(--surface2); color: var(--text); }
+  .toc-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .toc-dot.m1 { background: #6c63ff; }
+  .toc-dot.m2 { background: #ff6b6b; }
+  .toc-dot.m3 { background: #43e97b; }
+  .toc-dot.m4 { background: #f7971e; }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 1.9em; }
+    .container { padding: 14px 14px 50px; }
+    .toc-grid { grid-template-columns: 1fr; }
+    table { font-size: 0.78em; }
+    .diagram { font-size: 0.68em; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Computer Communication &amp; Networks</h1>
+  <p>Complete Study Material — All 4 Modules</p>
+  <br>
+  <span class="badge">TED 21-4132</span>
+  <span class="badge">Revision 2021</span>
+  <span class="badge">75 Marks</span>
+  <span class="badge">PYQ Mapped</span>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#m1" class="m1">▶ Module 1</a>
+  <a href="#m2" class="m2">▶ Module 2</a>
+  <a href="#m3" class="m3">▶ Module 3</a>
+  <a href="#m4" class="m4">▶ Module 4</a>
+</nav>
+
+<div class="container">
+
+<!-- TOC -->
+<div class="toc">
+  <h3>📋 QUICK INDEX</h3>
+  <div class="toc-grid">
+    <a class="toc-item" href="#m1-proto"><span class="toc-dot m1"></span>Protocol & Data Communication</a>
+    <a class="toc-item" href="#m1-osi"><span class="toc-dot m1"></span>OSI Model (7 Layers)</a>
+    <a class="toc-item" href="#m1-tcp"><span class="toc-dot m1"></span>TCP/IP Protocol Suite</a>
+    <a class="toc-item" href="#m1-net"><span class="toc-dot m1"></span>LAN, WAN & Topologies</a>
+    <a class="toc-item" href="#m2-phy"><span class="toc-dot m2"></span>Physical Layer</a>
+    <a class="toc-item" href="#m2-media"><span class="toc-dot m2"></span>Transmission Media</a>
+    <a class="toc-item" href="#m2-dll"><span class="toc-dot m2"></span>Data Link Layer</a>
+    <a class="toc-item" href="#m2-mac"><span class="toc-dot m2"></span>MAC & ALOHA/CSMA</a>
+    <a class="toc-item" href="#m3-net"><span class="toc-dot m3"></span>Network Layer & IP</a>
+    <a class="toc-item" href="#m3-routing"><span class="toc-dot m3"></span>Routing Algorithms</a>
+    <a class="toc-item" href="#m3-trans"><span class="toc-dot m3"></span>Transport Layer TCP/UDP</a>
+    <a class="toc-item" href="#m4-app"><span class="toc-dot m4"></span>Application Layer</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODULE 1
+═══════════════════════════════════════════ -->
+<div class="module-header m1" id="m1">
+  <div class="num">MODULE 01</div>
+  <h2>Data Communication &amp; Network Basics</h2>
+  <p>OSI Model · TCP/IP · Topologies · LAN/WAN · Data Flow</p>
+</div>
+
+<!-- Data Communication -->
+<div class="section" id="m1-proto">
+  <div class="section-head open" onclick="toggle(this)">
+    <span class="icon">📡</span>
+    <h3>Data Communication — Definition &amp; Components</h3>
+    <span class="tag tag-def">DEF</span><span class="tag tag-pyq">PYQ</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="section-body show">
+    <div class="def-box">
+      <strong>DEFINITION</strong>
+      Data communication is the exchange of data between two devices via some form of transmission medium (e.g., wire/cable). The communicating devices must be part of a communication system made of hardware and software.
+    </div>
+
+    <h4>Five Characteristics of Effective Data Communication</h4>
+    <ul>
+      <li><strong>Delivery</strong> — Data must reach the correct destination only</li>
+      <li><strong>Accuracy</strong> — Data must be delivered without alteration</li>
+      <li><strong>Timeliness</strong> — Data must be delivered on time (real-time for audio/video)</li>
+      <li><strong>Jitter</strong> — Variation in packet arrival time (uneven delay in audio/video)</li>
+    </ul>
+
+    <h4>Five Components of a Data Communication System</h4>
+    <div class="diagram">
+ ┌─────────┐    Protocol    ┌──────────────┐    Protocol    ┌──────────┐
+ │ SENDER  │ ─────────────▶ │    MEDIUM    │ ─────────────▶ │ RECEIVER │
+ └─────────┘                │(Twisted Pair │                └──────────┘
+                            │  Coax, Fiber │
+                            │  Radio waves)│
+                            └──────────────┘
+           ◀─────────────── MESSAGE (text/audio/video/image) ──────────────▶
+    </div>
+    <ul>
+      <li><strong>Message</strong> — The information to be communicated (text, numbers, images, audio, video)</li>
+      <li><strong>Sender</strong> — Device that sends the data (computer, phone, camera)</li>
+      <li><strong>Receiver</strong> — Device that receives the message (computer, TV, phone)</li>
+      <li><strong>Transmission Medium</strong> — Physical path (twisted-pair, coaxial, fiber-optic, radio waves)</li>
+      <li><strong>Protocol</strong> — Set of rules that govern data communications</li>
+    </ul>
+
+    <div class="def-box green">
+      <strong>PROTOCOL (Most Asked — 1 Mark)</strong>
+      A protocol is a set of rules that govern data communications. It represents an agreement between the communicating devices. Without a protocol, two devices may be connected but not communicating.
+    </div>
+
+    <h4>Data Representation Forms</h4>
+    <ul>
+      <li><strong>Text</strong> — Represented as bit patterns (ASCII uses 7-bit; Unicode uses 32-bit)</li>
+      <li><strong>Numbers</strong> — Directly converted to binary (not ASCII-coded)</li>
+      <li><strong>Images</strong> — Matrix of pixels; each pixel assigned a bit pattern (RGB for color)</li>
+      <li><strong>Audio</strong> — Continuous signal; converted from sound via microphone</li>
+      <li><strong>Video</strong> — Continuous or combination of discrete images (frames)</li>
+    </ul>
+
+    <div class="pyq-box">
+      <div class="pyq-label">📌 PYQ — Part A (1 Mark)</div>
+      <p>• "List the components in a data communication system" → Sender, Receiver, Message, Medium, Protocol</p>
+      <p>• "List different data representation forms" → Text, Numbers, Images, Audio, Video</p>
+      <p>• "Define protocol" → A set of rules governing data communication</p>
+    </div>
+  </div>
+</div>
+
+<!-- Data Flow -->
+<div class="section">
+  <div class="section-head" onclick="toggle(this)">
+    <span class="icon">↔️</span>
+    <h3>Data Flow — Simplex, Half-Duplex, Full-Duplex</h3>
+    <span class="tag tag-imp">IMP 7M</span><span class="tag tag-pyq">PYQ</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="diagram">
+  SIMPLEX         ──────────────────────────────────────────▶
+  (One direction)   Mainframe ──────────────────────── Monitor
+
+  HALF-DUPLEX     ──────────────────────────────────────────▶
+  (Both, not same)  Station ◀──────────────────────── Station
+  (Time 1 / Time 2)               (Walkie-Talkie)
+
+  FULL-DUPLEX     ◀─────────────────────────────────────────▶
+  (Both, same time) Station ◀────────────────────────▶ Station
+                               (Telephone Network)
+    </div>
+
+    <table>
+      <tr><th>Mode</th><th>Direction</th><th>Same Time?</th><th>Example</th></tr>
+      <tr><td><strong>Simplex</strong></td><td>One direction only</td><td>N/A</td><td>Keyboard → Monitor, Radio broadcast</td></tr>
+      <tr><td><strong>Half-Duplex</strong></td><td>Both directions</td><td>NO</td><td>Walkie-talkie, CB radio</td></tr>
+      <tr><td><strong>Full-Duplex</strong></td><td>Both directions</td><td>YES</td><td>Telephone, Mobile phone</td></tr>
+    </table>
+
+    <div class="def-box">
+      <strong>SIMPLEX</strong>
+      Communication is unidirectional. Only one device on a link can transmit; the other can only receive. Uses entire channel capacity for one direction.
+    </div>
+    <div class="def-box green">
+      <strong>HALF-DUPLEX</strong>
+      Each station can both transmit and receive, but NOT at the same time. When one device sends, other can only receive. Entire capacity taken over by transmitting device.
+    </div>
+    <div class="def-box orange">
+      <strong>FULL-DUPLEX (Duplex)</strong>
+      Both stations can transmit and receive simultaneously. Signals share the link capacity in both directions. Channel capacity divided between two directions.
+    </div>
+
+    <div class="pyq-box">
+      <div class="pyq-label">📌 PYQ — Part C (7 Marks)</div>
+      <p>• "Distinguish between simplex and duplex communication" — Apr 2025, Apr 2024, Apr 2023</p>
+      <p>Answer: Draw all three diagrams + explain with definition and example = 7 marks</p>
+    </div>
+  </div>
+</div>
+
+<!-- OSI Model -->
+<div class="section" id="m1-osi">
+  <div class="section-head" onclick="toggle(this)">
+    <span class="icon">🏛️</span>
+    <h3>OSI Model — 7 Layers (Full Diagram &amp; Explanation)</h3>
+    <span class="tag tag-imp">IMP 7M</span><span class="tag tag-pyq">PYQ</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="def-box">
+      <strong>OSI = Open Systems Interconnection</strong>
+      Developed by ISO (International Organization for Standardization). A layered framework for the design of network systems that allows communication between all types of computer systems. It is NOT a protocol — it is a MODEL. Has 7 separate but related layers.
+    </div>
+
+    <div class="diagram">
+  ┌─────────────────────────────────────────────────────────┐
+  │  LAYER 7 │ APPLICATION  │ User interface to network     │
+  ├──────────┼──────────────┼───────────────────────────────┤
+  │  LAYER 6 │ PRESENTATION │ Translation, Encryption,      │
+  │          │              │ Compression                   │
+  ├──────────┼──────────────┼───────────────────────────────┤
+  │  LAYER 5 │ SESSION      │ Dialog control, Sync          │
+  ├──────────┼──────────────┼───────────────────────────────┤
+  │  LAYER 4 │ TRANSPORT    │ Process-to-process, Flow ctrl │
+  ├──────────┼──────────────┼───────────────────────────────┤
+  │  LAYER 3 │ NETWORK      │ Logical addressing, Routing   │
+  ├──────────┼──────────────┼───────────────────────────────┤
+  │  LAYER 2 │ DATA LINK    │ Framing, Physical addressing, │
+  │          │              │ Error & Flow control          │
+  ├──────────┼──────────────┼───────────────────────────────┤
+  │  LAYER 1 │ PHYSICAL     │ Bit representation, Data rate │
+  └─────────────────────────────────────────────────────────┘
+    </div>
+
+    <div class="memory">
+      <div class="mem-label">💡 MEMORY AID (Bottom to Top)</div>
+      <p><strong>"Please Do Not Throw Sausage Pizza Away"</strong></p>
+      <p>Physical · Data Link · Network · Transport · Session · Presentation · Application</p>
+    </div>
+
+    <h4>Layer-by-Layer Explanation</h4>
+
+    <div class="def-box">
+      <strong>LAYER 1 — PHYSICAL</strong>
+      Deals with physical/electrical/mechanical specifications. Responsible for bit transmission (0s and 1s) over medium. Defines data rate, synchronization, topology, transmission mode. Devices: Hub, Repeater, Ethernet cable. PDU: Bit.
+    </div>
+    <div class="def-box green">
+      <strong>LAYER 2 — DATA LINK</strong>
+      Node-to-node frame delivery. Handles framing, physical (MAC) addressing, flow control, error control, access control. Divided into LLC and MAC sublayers. Devices: Switch, Bridge. PDU: Frame.
+    </div>
+    <div class="def-box orange">
+      <strong>LAYER 3 — NETWORK</strong>
+      Source-to-destination packet delivery. Provides logical (IP) addressing, routing, packetization. Devices: Router. PDU: Packet/Datagram.
+    </div>
+    <div class="def-box">
+      <strong>LAYER 4 — TRANSPORT</strong>
+      Process-to-process message delivery. Service point (port) addressing, segmentation, reassembly, flow & error control, connection control. Protocols: TCP, UDP. PDU: Segment.
+    </div>
+    <div class="def-box green">
+      <strong>LAYER 5 — SESSION</strong>
+      Establishes, controls, maintains user sessions. Dialogue control and synchronization. Ensures sessions are properly opened/closed.
+    </div>
+    <div class="def-box orange">
+      <strong>LAYER 6 — PRESENTATION</strong>
+      Translation (converts data formats), Encryption/Decryption, Compression. Acts as a translator between network and application.
+    </div>
+    <div class="def-box">
+      <strong>LAYER 7 — APPLICATION</strong>
+      Provides user interface to access network services. Protocols: HTTP, FTP, SMTP, DNS, Telnet, SNMP. Process-to-process communication.
+    </div>
+
+    <div class="pyq-box">
+      <div class="pyq-label">📌 PYQ — Part B &amp; C</div>
+      <p>• "List the layers in ISO OSI networking model" (3 marks) — list all 7</p>
+      <p>• "Describe the layered concept of OSI model with neat diagram" (7 marks) — Apr 2024</p>
+      <p>• "OSI stands for ___" → Open Systems Interconnection</p>
+    </div>
+  </div>
+</div>
+
+<!-- TCP/IP -->
+<div class="section" id="m1-tcp">
+  <div class="section-head" onclick="toggle(this)">
+    <span class="icon">🌐</span>
+    <h3>TCP/IP Protocol Suite — Diagram &amp; All Protocols</h3>
+    <span class="tag tag-imp">IMP 7M</span><span class="tag tag-pyq">PYQ</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="def-box">
+      <strong>TCP/IP</strong>
+      A protocol suite (set of protocols organized in layers) used in the Internet. Hierarchical protocol — each upper-level protocol supported by one or more lower-level protocols. Today considered a 5-layer model.
+    </div>
+
+    <div class="diagram">
+  ┌──────────────────────────────────────────────────────────────────┐
+  │ APPLICATION  │  HTTP  │  FTP  │  SMTP  │  DNS  │  SNMP  │ TELNET│
+  │ LAYER        │                                                   │
+  ├──────────────┼────────────────────────────────────────────────── ┤
+  │ TRANSPORT    │           TCP            │          UDP           │
+  │ LAYER        │                                                   │
+  ├──────────────┼───────────────────────────────────────────────────┤
+  │ NETWORK      │  ICMP  │  IGMP  │       IP       │  ARP  │ RARP  │
+  │ LAYER        │                                                   │
+  ├──────────────┼───────────────────────────────────────────────────┤
+  │ DATA LINK    │    Ethernet  │  Token Ring  │  Frame Relay  │ ATM │
+  │ LAYER        │                                                   │
+  ├──────────────┼───────────────────────────────────────────────────┤
+  │ PHYSICAL     │         Cables, Connectors, Signals               │
+  │ LAYER        │                                                   │
+  └──────────────────────────────────────────────────────────────────┘
+    </div>
+
+    <h4>TCP/IP Layer Descriptions</h4>
+    <ul>
+      <li><strong>Physical Layer</strong> — Carries individual bits across the link; electrical/optical signals</li>
+      <li><strong>Data Link Layer</strong> — Takes datagram and moves it across a link; encapsulates in frame; supports all standard protocols</li>
+      <li><strong>Network Layer</strong> — Host-to-host communication; IP defines packet format and routing</li>
+      <li><strong>Transport Layer</strong> — End-to-end logical connection; TCP (reliable, connection-oriented) or UDP (unreliable, connectionless)</li>
+      <li><strong>Application Layer</strong> — Process-to-process communication; HTTP, FTP, SMTP, DNS, Telnet</li>
+    </ul>
+
+    <h4>TCP/IP vs OSI Comparison (PYQ 7 Marks)</h4>
+    <table>
+      <tr><th>Property</th><th>OSI Model</th><th>TCP/IP Model</th></tr>
+      <tr><td>Layers</td><td>7 layers</td><td>4 or 5 layers</td></tr>
+      <tr><td>Full Form</td><td>Open Systems Interconnection</td><td>Transmission Control Protocol/Internet Protocol</td></tr>
+      <tr><td>Developed by</td><td>ISO</td><td>ARPANET / US Dept. of Defense</td></tr>
+      <tr><td>Approach</td><td>Vertical</td><td>Horizontal</td></tr>
+      <tr><td>Transport layer</td><td>Connection-oriented only</td><td>Both connection-oriented (TCP) and connectionless (UDP)</td></tr>
+      <tr><td>Session & Presentation</td><td>Separate layers exist</td><td>Merged into Application layer</td></tr>
+      <tr><td>Protocol dependency</td><td>Protocol independent</td><td>Protocol dependent</td></tr>
+      <tr><td>Header size</td><td>5 bytes</td><td>20 bytes (TCP)</td></tr>
+      <tr><td>Usage</td><td>Reference model</td><td>Used in actual Internet</td></tr>
+    </table>
+
+    <div class="pyq-box">
+      <div class="pyq-label">📌 PYQ</div>
+      <p>• "Draw the TCP/IP protocol suite" (3 marks) — draw diagram with protocols in each layer</p>
+      <p>• "Compare TCP/IP and OSI models" (7 marks) — use table above</p>
+      <p>• "Summarize protocols in TCP/IP protocol suite" (7 marks) — Apr 2024</p>
+    </div>
+  </div>
+</div>
+
+<!-- LAN, WAN, Topologies -->
+<div class="section" id="m1-net">
+  <div class="section-head" onclick="toggle(this)">
+    <span class="icon">🗺️</span>
+    <h3>LAN, WAN &amp; Network Topologies</h3>
+    <span class="tag tag-imp">IMP</span><span class="tag tag-pyq">PYQ</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="section-body">
+
+    <h4>Network Criteria</h4>
+    <ul>
+      <li><strong>Performance</strong> — Measured by throughput and delay (transit time, response time)</li>
+      <li><strong>Reliability</strong> — Frequency of failure, recovery time, robustness</li>
+      <li><strong>Security</strong> — Protecting data from unauthorized access and damage</li>
+    </ul>
+
+    <h4>Types of Connection</h4>
+    <ul>
+      <li><strong>Point-to-Point</strong> — Dedicated link between two devices; entire capacity reserved for those two</li>
+      <li><strong>Multipoint (Multidrop)</strong> — More than two devices share a single link; capacity shared spatially or temporally</li>
+    </ul>
+
+    <h4>LAN vs WAN Comparison (PYQ 3 Marks)</h4>
+    <table>
+      <tr><th>Property</th><th>LAN (Local Area Network)</th><th>WAN (Wide Area Network)</th></tr>
+      <tr><td>Full Form</td><td>Local Area Network</td><td>Wide Area Network</td></tr>
+      <tr><td>Geographic Area</td><td>Small — office, building, campus</td><td>Large — town, country, world</td></tr>
+      <tr><td>Ownership</td><td>Privately owned</td><td>Owned by communication companies</td></tr>
+      <tr><td>Connects</td><td>Hosts (computers)</td><td>Connecting devices (switches, routers)</td></tr>
+      <tr><td>Cost</td><td>Low cost setup</td><td>High cost (leased lines needed)</td></tr>
+      <tr><td>Speed</td><td>High speed</td><td>Lower speed</td></tr>
+      <tr><td>Technology</td><td>Ethernet, Wi-Fi</td><td>Frame Relay, ATM, MPLS</td></tr>
+    </table>
+
+    <h4>LAN vs MAN (Apr 2024 PYQ)</h4>
+    <table>
+      <tr><th>LAN</th><th>MAN (Metropolitan Area Network)</th></tr>
+      <tr><td>Group of computers within a small area</td><td>Group of computers within a wider area (usually a city)</td></tr>
+      <tr><td>High speed, low cost</td><td>Low speed, high cost</td></tr>
+      <tr><td>Single building or campus</td><td>City-wide network</td></tr>
+    </table>
+
+    <h4>Network Topologies (PYQ 7 Marks)</h4>
+
+    <div class="def-box">
+      <strong>MESH TOPOLOGY</strong>
+      Every device has a dedicated point-to-point link to every other device. For n nodes: n(n-1)/2 duplex links needed.
+      Advantages: Dedicated links (no traffic issues), robust (if one link fails, system continues), privacy, easy fault isolation.
+      Disadvantages: Expensive (lots of cabling), difficult installation.
+    </div>
+
+    <div class="diagram">
+  MESH (5 nodes)        STAR              BUS                 RING
+    A—B—C             [DEV1][DEV2]     Node1  Node2  Node3    [S1]
+    |\ |\ |                \  /       |      |      |          |
+    | \| \|               [HUB]     ──●──────●──────●──       [S2]
+    D—E—F             [DEV3][DEV4]  Cable end      Cable end   |
+                                                              [S3]
+    </div>
+
+    <div class="def-box green">
+      <strong>STAR TOPOLOGY</strong>
+      Each device has dedicated link only to a central controller (HUB). No direct device-to-device links. Hub acts as exchange.
+      Advantages: Less expensive, easy install/reconfigure, fault isolation easy, one link failure only affects that link.
+      Disadvantages: If hub fails, whole system fails; more cabling than ring.
+    </div>
+
+    <div class="def-box orange">
+      <strong>BUS TOPOLOGY</strong>
+      Multipoint topology. One long cable (backbone) connects all devices via drop lines and taps.
+      Advantages: Easy installation, less cabling than mesh/star.
+      Disadvantages: Difficult reconnection/fault isolation, hard to add new devices, signal reflection at taps.
+    </div>
+
+    <div class="def-box red">
+      <strong>RING TOPOLOGY</strong>
+      Each device has point-to-point connection with only TWO adjacent devices. Signal passes in one direction. Each device has a repeater.
+      Advantages: Easy install/reconfigure (only 2 connections to change), fault isolation easy.
+      Disadvantages: Unidirectional traffic, break in ring disables entire network.
+    </div>
+
+    <div class="pyq-box">
+      <div class="pyq-label">📌 PYQ — Part C (7 Marks)</div>
+      <p>• "List the different networking topologies. Describe features of any two." — Apr 2025</p>
+      <p>• "Describe various network topologies" — Apr 2023</p>
+      <p>Answer format: Draw diagram for each + advantages + disadvantages</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODULE 2
+═══════════════════════════════════════════ -->
+<div class="module-header m2" id="m2">
+  <div class="num">MODULE 02</div>
+  <h2>Physical Layer &amp; Data Link Layer</h2>
+  <p>Transmission Media · MAC · ALOHA · CSMA · Error &amp; Flow Control · IEEE 802</p>
+</div>
+
+<!-- Physical Layer -->
+<div class="section" id="m2-phy">
+  <div class="section-head open" onclick="toggle(this)">
+    <span class="icon">⚡</span>
+    <h3>Physical Layer — Concept &amp; Functions</h3>
+    <span class="tag tag-def">DEF</span><span class="tag tag-pyq">PYQ</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="section-body show">
+    <div class="def-box">
+      <strong>PHYSICAL LAYER</strong>
+      The bottom-most layer in the OSI Model. A physical and electrical representation of the system. Responsible for communication of unstructured raw data streams over a physical medium. PDU: Bit.
+    </div>
+
+    <h4>Functions of Physical Layer</h4>
+    <ul>
+      <li><strong>Data Rate</strong> — Maintains how many bits/second a sender can send</li>
+      <li><strong>Synchronization</strong> — Synchronizes bits between sender and receiver</li>
+      <li><strong>Transmission Medium Decision</strong> — Direction of data transfer</li>
+      <li><strong>Physical Topology</strong> — Decides network layout (Mesh, Star, Bus, Ring)</li>
+      <li><strong>Physical Medium &amp; Interface</strong> — Provides physical medium and interface decisions</li>
+      <li><strong>Configuration</strong> — Point-to-Point and Multi-Point configuration</li>
+      <li><strong>Modulation</strong> — Converting data into radio waves (electrical/optical signal)</li>
+      <li><strong>Switching</strong> — Data packets forwarded from sender port to destination port</li>
+      <li>Devices used: Hubs, Ethernet cables, Repeaters</li>
+    </ul>
+
+    <h4>Transmission Impairment &amp; Its Causes (PYQ)</h4>
+    <div class="diagram">
+  ┌─────────────────────────┐
+  │  TRANSMISSION IMPAIRMENT│
+  └────────────┬────────────┘
+               │
+    ┌──────────┼──────────┐
+    ▼          ▼          ▼
+ ATTENUATION DISTORTION  NOISE
+    </div>
+
+    <div class="def-box red">
+      <strong>ATTENUATION</strong>
+      Loss of energy — the strength of the signal decreases with increasing distance which causes loss of energy. (Signal weakens as it travels.)
+    </div>
+    <div class="def-box orange">
+      <strong>DISTORTION</strong>
+      Change in the shape/form of the signal. Occurs in composite signals made of different frequencies. Each frequency component has its own propagation speed → reaches at different times → delay distortion.
+    </div>
+    <div class="def-box green">
+      <strong>NOISE</strong>
+      Unwanted signal added to data during transmission. Types: Thermal noise (random motion of electrons), Induced noise (motors/appliances), Crosstalk (effect of one wire on another), Impulse noise (power lines/lightning).
+    </div>
+
+    <h4>Analog vs Digital Data (PYQ 3 Marks)</h4>
+    <table>
+      <tr><th>Analog Data</th><th>Digital Data</th></tr>
+      <tr><td>Continuous data, takes continuous values</td><td>Discrete states, takes discrete values</td></tr>
+      <tr><td>Examples: voice, temperature</td><td>Examples: text, integers, binary files</td></tr>
+      <tr><td>Represented by continuous signal</td><td>In binary: only 2 levels (0 and 1)</td></tr>
+    </table>
+
+    <div class="pyq-box">
+      <div class="pyq-label">📌 PYQ</div>
+      <p>• "Describe the causes for transmission impairment" (3 marks) — Apr 2025, Apr 2024, Apr 2023</p>
+      <p>• "Define the term attenuation in data communication" (1 mark)</p>
+      <p>• "Define the term distortion in communication systems" (1 mark)</p>
+    </div>
+  </div>
+</div>
+
+<!-- Transmission Media -->
+<div class="section" id="m2-media">
+  <div class="section-head" onclick="toggle(this)">
+    <span class="icon">🔌</span>
+    <h3>Transmission Media — Guided &amp; Unguided</h3>
+    <span class="tag tag-imp">IMP 7M</span><span class="tag tag-pyq">PYQ</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="def-box">
+      <strong>TRANSMISSION MEDIA</strong>
+      A communication channel that carries information from sender to receiver. Data transmitted through electromagnetic signals. It is a physical path between transmitter and receiver. Available at Physical Layer (Layer 1) of OSI.
+    </div>
+
+    <div class="diagram">
+  ┌──────────────────────────┐
+  │    TRANSMISSION MEDIA    │
+  └────────────┬─────────────┘
+               │
+    ┌──────────┴──────────┐
+    ▼                     ▼
+ GUIDED              UNGUIDED
+ (Wired)             (Wireless)
+    │                     │
+ ┌──┴──────────┐       ┌──┴──────────┐
+ │Coaxial      │       │Radio waves  │
+ │Fiber Optic  │       │Microwaves   │
+ │Twisted Pair │       │Infrared     │
+ └─────────────┘       └─────────────┘
+    </div>
+
+    <h4>1. Twisted-Pair Cable</h4>
+    <ul>
+      <li>Uses metallic (copper) conductors</li>
+      <li>Two conductors twisted together (each with plastic insulation)</li>
+      <li>One wire carries signal; other used as ground reference</li>
+      <li>Most common connector: <strong>RJ-45</strong></li>
+      <li>Used in: telephone lines, Local Area Networks</li>
+      <li>Twisting reduces interference with adjacent pairs</li>
+      <li>Types: UTP (Unshielded) and STP (Shielded)</li>
+    </ul>
+
+    <h4>2. Coaxial Cable</h4>
+    <ul>
+      <li>Uses metallic (copper) conductors; accepts electrical signals</li>
+      <li>Central core conductor of solid wire (copper) enclosed in insulating sheath</li>
+      <li>Encased in outer conductor of metal foil (shield against noise)</li>
+      <li>Protected by plastic cover</li>
+      <li>Most common connector: <strong>BNC (Bayonet Neill-Concelman)</strong></li>
+      <li>Used in: telephone lines, cable TV networks, Ethernet LANs</li>
+    </ul>
+
+    <h4>3. Fiber-Optic Cable (PYQ 7 Marks)</h4>
+    <ul>
+      <li>Made of glass or plastic; transmits signals in the form of <strong>light</strong></li>
+      <li>Uses principle of <strong>total internal reflection</strong></li>
+      <li>Glass/plastic core surrounded by cladding of less dense glass/plastic</li>
+    </ul>
+    <p><strong>Advantages:</strong></p>
+    <ul>
+      <li>Higher bandwidth</li>
+      <li>Less signal attenuation</li>
+      <li>Immunity to electromagnetic interference</li>
+      <li>Resistance to corrosive materials</li>
+      <li>Lightweight</li>
+      <li>Greater immunity to tapping (more secure)</li>
+    </ul>
+    <p><strong>Disadvantages:</strong></p>
+    <ul>
+      <li>Expensive installation and maintenance</li>
+      <li>Unidirectional light propagation (need two cables for full-duplex)</li>
+      <li>High cost</li>
+    </ul>
+
+    <h4>Guided vs Unguided Media Comparison (PYQ 7 Marks)</h4>
+    <table>
+      <tr><th>Property</th><th>Guided (Wired)</th><th>Unguided (Wireless)</th></tr>
+      <tr><td>Type</td><td>Wired/bounded transmission media</td><td>Wireless/unbounded</td></tr>
+      <tr><td>Communication</td><td>Point to point</td><td>Broadcasting mostly</td></tr>
+      <tr><td>Signal propagation</td><td>Through cables</td><td>Through air</td></tr>
+      <tr><td>Cost</td><td>Cost effective</td><td>Expensive</td></tr>
+      <tr><td>Signal form</td><td>Light, voltage, etc.</td><td>Electromagnetic radiations</td></tr>
+      <tr><td>Distance</td><td>Short distances</td><td>Wide coverage preferred</td></tr>
+      <tr><td>Examples</td><td>Co-axial, Twisted Pair, Fiber Optic</td><td>Microwave, Infrared, Bluetooth, WiFi, WiMax</td></tr>
+    </table>
+
+    <div class="pyq-box">
+      <div class="pyq-label">📌 PYQ</div>
+      <p>• "List various guided transmission media. Describe features of any two." (7 marks) — Apr 2025</p>
+      <p>• "Write a note on optical fiber communication" (7 marks) — Apr 2024, Apr 2023</p>
+      <p>• "Compare guided and unguided transmission" (7 marks) — Apr 2023</p>
+      <p>• "Name any two waves used for wireless transmission" → Radio waves, Microwaves</p>
+    </div>
+  </div>
+</div>
+
+<!-- Data Link Layer -->
+<div class="section" id="m2-dll">
+  <div class="section-head" onclick="toggle(this)">
+    <span class="icon">🔗</span>
+    <h3>Data Link Layer — Services, Framing, Flow &amp; Error Control</h3>
+    <span class="tag tag-imp">IMP 7M</span><span class="tag tag-pyq">PYQ</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="section-body">
+
+    <h4>Data Link Layer Services (PYQ)</h4>
+    <ul>
+      <li><strong>Framing</strong> — Breaking bit stream into manageable frames</li>
+      <li><strong>Physical Addressing</strong> — MAC address added to frame header</li>
+      <li><strong>Flow Control</strong> — Prevents fast sender from overwhelming slow receiver</li>
+      <li><strong>Error Control</strong> — Detection and retransmission of damaged/lost frames</li>
+      <li><strong>Access Control</strong> — Determines which device has control at any time</li>
+    </ul>
+
+    <h4>Framing (PYQ 3 Marks &amp; 7 Marks)</h4>
+    <div class="def-box">
+      <strong>FRAMING</strong>
+      Data link layer receives raw bit stream from physical layer. To ensure reliable transfer to network layer, it breaks the bit stream into frames, computes checksum for each frame, and transmits frame with checksum.
+    </div>
+    <p><strong>Parts of a Frame:</strong></p>
+    <ul>
+      <li><strong>Frame Header</strong> — Contains source and destination addresses</li>
+      <li><strong>Payload field</strong> — Contains the message to be delivered</li>
+      <li><strong>Trailer</strong> — Contains error detection/correction bits (CRC)</li>
+      <li><strong>Flag</strong> — Marks beginning and end of frame</li>
+    </ul>
+
+    <p><strong>Types of Framing:</strong></p>
+    <ul>
+      <li><strong>Fixed-sized Framing</strong> — Frame size is fixed; length acts as delimiter; no extra bits needed for start/end identification</li>
+      <li><strong>Variable-sized Framing</strong> — Size differs; needs mechanisms to mark end of one frame and beginning of next
+        <ul>
+          <li>Byte-Stuffing (Character-oriented) — A special byte stuffed in message to differentiate from delimiter</li>
+          <li>Bit-Stuffing (Bit-oriented) — A pattern of bits of arbitrary length stuffed in message</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h4>Flow Control (PYQ 1 Mark &amp; 3 Marks)</h4>
+    <div class="def-box green">
+      <strong>FLOW CONTROL</strong>
+      The process of managing the rate of data transmission between two nodes to prevent a fast sender from overwhelming a slow receiver. If sender sends too fast, receiver may be overloaded and data may be lost.
+    </div>
+    <p><strong>Two Mechanisms:</strong></p>
+    <ul>
+      <li><strong>Stop and Wait</strong> — Sender transmits one frame, then stops and waits for acknowledgement before sending next frame. Simple but wastes resources (sender idle while waiting).</li>
+      <li><strong>Sliding Window</strong> — Both sender and receiver agree on a number of frames. Sender can send multiple frames before waiting for ACK. More efficient, uses underlying resources better.</li>
+    </ul>
+
+    <h4>Error Control (PYQ)</h4>
+    <div class="def-box orange">
+      <strong>ERROR CONTROL</strong>
+      Mechanism to detect and correct errors in data frames. Used when data-frame may be lost in transit or received corrupted.
+    </div>
+    <p><strong>Requirements:</strong></p>
+    <ul>
+      <li><strong>Error Detection</strong> — Sender/receiver must detect error</li>
+      <li><strong>Positive ACK</strong> — When receiver gets correct frame, it acknowledges</li>
+      <li><strong>Negative ACK (NACK)</strong> — When receiver gets damaged frame, sends NACK</li>
+      <li><strong>Retransmission</strong> — Sender sets timeout; if no ACK arrives before timeout, retransmits</li>
+    </ul>
+    <p><strong>ARQ Techniques:</strong></p>
+    <ul>
+      <li><strong>Stop-and-Wait ARQ</strong> — Send one frame, wait for ACK; if timeout expires or NACK received, retransmit</li>
+      <li><strong>Go-Back-N ARQ</strong> — Both sender and receiver maintain a window; sender can send N frames without waiting; if error in frame i, retransmit from frame i</li>
+    </ul>
+
+    <h4>Stop and Wait Protocol (PYQ 7 Marks)</h4>
+    <div class="diagram">
+  Sender                           Receiver
+    │                                  │
+    │──── Frame 0 ────────────────────▶│
+    │◀─── ACK 0 ──────────────────────│
+    │                                  │
+    │──── Frame 1 ────────────────────▶│
+    │◀─── ACK 1 ──────────────────────│
+    │                                  │
+  [Timer]  ◀── Flow Control ──────────│
+    │             (After Consumption)  │
+    </div>
+    <ul>
+      <li>Sender sends one frame at a time and starts a timer</li>
+      <li>Waits for acknowledgement before sending next frame</li>
+      <li>Each frame carries a CRC for error detection</li>
+      <li>Receiver sends ACK after receiving uncorrupted frame</li>
+      <li>A corrupted frame is NOT acknowledged</li>
+      <li>If ACK arrives before timer expires → send next frame</li>
+      <li>If timer expires → retransmit previous frame</li>
+      <li>Offers both flow control and error control</li>
+    </ul>
+
+    <div class="pyq-box">
+      <div class="pyq-label">📌 PYQ — Part C (7 Marks)</div>
+      <p>• "Describe stop and wait protocol with neat diagram" — Apr 2025, Apr 2024, Apr 2023</p>
+      <p>• "List data link layer services and describe any two" — Apr 2025</p>
+      <p>• "Write a note on framing and various methods" — Apr 2024</p>
+      <p>• "Define flow control" (1 mark &amp; 3 marks)</p>
+    </div>
+  </div>
+</div>
+
+<!-- MAC and ALOHA -->
+<div class="section" id="m2-mac">
+  <div class="section-head" onclick="toggle(this)">
+    <span class="icon">📶</span>
+    <h3>MAC Layer — ALOHA, CSMA, CSMA/CD, CSMA/CA</h3>
+    <span class="tag tag-imp">IMP 7M</span><span class="tag tag-pyq">PYQ</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="def-box">
+      <strong>MAC (Media Access Control)</strong>
+      A sublayer of the data link layer. Responsible for flow control and multiplexing for transmission medium. Controls transmission of data packets via remotely shared channels. Sends data over the network interface card (NIC).
+    </div>
+
+    <h4>MAC Layer Position in OSI</h4>
+    <div class="diagram">
+  Data Link Layer is divided into:
+  ┌─────────────────────────────┐
+  │   LLC (Logical Link Control) │  ← handles flow control, error control, framing
+  ├─────────────────────────────┤
+  │  MAC (Media Access Control)  │  ← defines specific access method for each LAN
+  └─────────────────────────────┘
+    </div>
+
+    <h4>Functions of MAC Layer</h4>
+    <ul>
+      <li>Provides abstraction of physical layer to LLC and upper layers</li>
+      <li>Encapsulates frames for transmission via physical medium</li>
+      <li>Resolves addressing of source and destination stations</li>
+      <li>Performs multiple access resolution (determines channel access method)</li>
+      <li>Performs collision resolution; initiates retransmission</li>
+      <li>Generates frame check sequences (protection against errors)</li>
+    </ul>
+
+    <h4>MAC Address</h4>
+    <p>A unique identifier allotted to a NIC. Used as network address within a segment (Ethernet, Wi-Fi, Bluetooth). Hardwired/hardcoded in NIC. Format: 6 groups of 2 hexadecimal digits separated by colons.</p>
+    <p>Example: <span class="highlight">00:0A:89:5B:F0:11</span></p>
+
+    <h4>Multiple Access Protocols</h4>
+    <div class="diagram">
+  ┌──────────────────────────────────────┐
+  │       MULTIPLE ACCESS PROTOCOLS      │
+  └────────────────┬─────────────────────┘
+          ┌────────┴────────┐─────────────────────┐
+          ▼                 ▼                     ▼
+   RANDOM ACCESS      CONTROLLED ACCESS    CHANNELIZATION
+   • ALOHA            • Reservation        • FDMA
+   • CSMA             • Polling            • TDMA
+   • CSMA/CD          • Token Passing      • CDMA
+   • CSMA/CA
+    </div>
+
+    <h4>A. ALOHA (PYQ 7 Marks)</h4>
+    <div class="def-box">
+      <strong>ALOHA</strong>
+      Designed for wireless LAN. Any station can transmit data simultaneously when a data frameset is available. Does not require carrier sensing.
+    </div>
+    <p><strong>ALOHA Rules:</strong></p>
+    <ol>
+      <li>Any station can transmit to a channel at any time</li>
+      <li>Does NOT require carrier sensing</li>
+      <li>Collision and data frames may be lost</li>
+      <li>Acknowledgement of frames exists (no collision detection)</li>
+      <li>Requires retransmission after random backoff time</li>
+    </ol>
+
+    <table>
+      <tr><th>Property</th><th>Pure ALOHA</th><th>Slotted ALOHA</th></tr>
+      <tr><td>Transmission</td><td>Any time</td><td>Only at beginning of slot</td></tr>
+      <tr><td>Vulnerable time</td><td>2 × Tfr</td><td>Tfr (one slot)</td></tr>
+      <tr><td>Max throughput</td><td>18.4% (when G=1/2)</td><td>37% (when G=1)</td></tr>
+      <tr><td>Efficiency</td><td>Lower</td><td>Higher (doubles Pure ALOHA)</td></tr>
+      <tr><td>Formula</td><td>S = G × e^(-2G)</td><td>S = G × e^(-G)</td></tr>
+    </table>
+
+    <div class="def-box green">
+      <strong>PURE ALOHA</strong>
+      When data available, station transmits without checking if channel is idle. Waits for ACK. If no ACK within specified time, waits backoff time (Tb) then retransmits.
+    </div>
+    <div class="def-box orange">
+      <strong>SLOTTED ALOHA</strong>
+      Channel divided into fixed time slots. Station can ONLY send at beginning of a slot. Only one frame per slot allowed. Doubles efficiency of Pure ALOHA.
+    </div>
+
+    <h4>B. CSMA (Carrier Sense Multiple Access)</h4>
+    <div class="def-box">
+      <strong>CSMA</strong>
+      A protocol that SENSES the traffic on a channel (idle or busy) before transmitting. If channel is idle → transmit. If busy → wait until idle. Reduces chances of collision.
+    </div>
+    <p><strong>CSMA Access Modes:</strong></p>
+    <ul>
+      <li><strong>1-Persistent</strong> — If channel idle → immediately send (probability 1). If busy → wait and continuously sense; transmit as soon as idle.</li>
+      <li><strong>Non-Persistent</strong> — If idle → immediately send. If busy → wait RANDOM time (not continuously), then sense again.</li>
+      <li><strong>P-Persistent</strong> — Combination of 1-persistent and non-persistent. If idle → send with probability P; wait with probability (1-P). If busy → wait for next slot.</li>
+      <li><strong>O-Persistent</strong> — Each station assigned a superiority order. If idle, each station waits for its turn to retransmit.</li>
+    </ul>
+
+    <h4>C. CSMA/CD vs CSMA/CA (PYQ 7 Marks)</h4>
+    <table>
+      <tr><th>Property</th><th>CSMA/CD</th><th>CSMA/CA</th></tr>
+      <tr><td>Full Form</td><td>Collision Detection</td><td>Collision Avoidance</td></tr>
+      <tr><td>Usage</td><td>Wired networks</td><td>Wireless networks</td></tr>
+      <tr><td>Standard</td><td>IEEE 802.3</td><td>IEEE 802.11 (Wi-Fi)</td></tr>
+      <tr><td>When effective</td><td>After collision (detects)</td><td>Before collision (avoids)</td></tr>
+      <tr><td>Method</td><td>Sends jam signal if collision detected; waits random time then retransmits</td><td>Sends intent to transmit; waits for ACK; uses IFS, contention window</td></tr>
+    </table>
+
+    <div class="def-box red">
+      <strong>CSMA/CD (Collision Detection)</strong>
+      Senses channel before transmitting. If collision detected → sends jam/stop signal → waits random time → retransmits.
+    </div>
+    <div class="def-box green">
+      <strong>CSMA/CA (Collision Avoidance)</strong>
+      Sends data; receives ACK to check channel is clear. Uses: Interframe Space (IFS) — wait time after channel idle; Contention Window — random slot wait; Acknowledgement — if ACK received, transmission successful.
+    </div>
+
+    <h4>IEEE 802 Project (PYQ 7 Marks)</h4>
+    <p>Started in 1985 by IEEE Computer Society. A family of standards for LAN, PAN, and MAN. Maps to lower two layers (Physical + Data Link) of OSI. Divides Data Link layer into LLC and MAC sublayers.</p>
+
+    <table>
+      <tr><th>Standard</th><th>Description</th><th>Status</th></tr>
+      <tr><td>IEEE 802.1</td><td>Higher Layer LAN Protocols</td><td>Active</td></tr>
+      <tr><td>IEEE 802.3</td><td>Ethernet</td><td>Active</td></tr>
+      <tr><td>IEEE 802.11</td><td>Wireless LAN (WLAN) / Wi-Fi</td><td>Active</td></tr>
+      <tr><td>IEEE 802.15</td><td>Wireless PAN</td><td>Active</td></tr>
+      <tr><td>IEEE 802.15.1</td><td>Bluetooth certification</td><td>Disbanded</td></tr>
+      <tr><td>IEEE 802.16</td><td>Broadband Wireless / WiMAX</td><td>Hibernating</td></tr>
+      <tr><td>IEEE 802.4</td><td>Token bus</td><td>Disbanded</td></tr>
+      <tr><td>IEEE 802.5</td><td>Token Ring MAC layer</td><td>Disbanded</td></tr>
+    </table>
+
+    <div class="pyq-box">
+      <div class="pyq-label">📌 PYQ</div>
+      <p>• "Explain CSMA protocol" (3 marks) — Apr 2025</p>
+      <p>• "Describe the random access protocol, ALOHA" (7 marks) — Apr 2023</p>
+      <p>• "Differentiate CSMA/CD and CSMA/CA" (7 marks) — Apr 2024, Apr 2023</p>
+      <p>• "Summarize IEEE 802 project" (7 marks) — Apr 2025</p>
+      <p>• "List any two random media access control protocols" → ALOHA, CSMA (1 mark)</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODULE 3
+═══════════════════════════════════════════ -->
+<div class="module-header m3" id="m3">
+  <div class="num">MODULE 03</div>
+  <h2>Network Layer &amp; Transport Layer</h2>
+  <p>IPv4/IPv6 · Routing · TCP · UDP · Subnetting</p>
+</div>
+
+<!-- Network Layer -->
+<div class="section" id="m3-net">
+  <div class="section-head open" onclick="toggle(this)">
+    <span class="icon">🌍</span>
+    <h3>Network Layer — Services &amp; IP Addressing</h3>
+    <span class="tag tag-imp">IMP</span><span class="tag tag-pyq">PYQ</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="section-body show">
+    <h4>Network Layer Services (PYQ 7 Marks)</h4>
+    <ul>
+      <li><strong>Packetizing</strong> — Encapsulating data from upper layers in network layer packet at source; decapsulating at destination. Source adds header with source/destination address. Routers cannot change source/destination address.</li>
+      <li><strong>Routing</strong> — Process of moving data from one device to another. Network specifies strategies to find best route. Multiple routes available from source to destination.</li>
+      <li><strong>Forwarding</strong> — Action applied by each router when a packet arrives at one of its interfaces. Router uses forwarding table to decide where to send packet.</li>
+    </ul>
+
+    <table>
+      <tr><th>Routing</th><th>Forwarding</th></tr>
+      <tr><td>Process of moving data from one device to another</td><td>Action applied by each router when packet arrives</td></tr>
+      <tr><td>Works based on Forwarding Table</td><td>Checks forwarding table and works accordingly</td></tr>
+      <tr><td>Protocol: RIP (Routing Information Protocol)</td><td>Protocol: UDP Encapsulating Security Payloads</td></tr>
+      <tr><td>Both operate at Network Layer</td><td>Both operate at Network Layer</td></tr>
+    </table>
+
+    <h4>IPv4 Address Classes (PYQ)</h4>
+    <div class="formula">Number of Networks = 2^(network_bits) | Number of Hosts/Network = 2^(host_bits) − 2</div>
+
+    <table>
+      <tr><th>Class</th><th>First Octet Range</th><th>Default Subnet Mask</th><th>Networks</th><th>Hosts/Network</th><th>Use</th></tr>
+      <tr><td><strong>A</strong></td><td>1 – 126</td><td>255.0.0.0</td><td>126 (2⁷-2)</td><td>16,777,214 (2²⁴-2)</td><td>Large networks</td></tr>
+      <tr><td><strong>B</strong></td><td>128 – 191</td><td>255.255.0.0</td><td>16,384 (2¹⁴)</td><td>65,534 (2¹⁶-2)</td><td>Medium networks</td></tr>
+      <tr><td><strong>C</strong></td><td>192 – 223</td><td>255.255.255.0</td><td>2,097,152 (2²¹)</td><td>254 (2⁸-2)</td><td>Small networks</td></tr>
+      <tr><td><strong>D</strong></td><td>224 – 239</td><td>No subnet mask</td><td>—</td><td>—</td><td>Multicasting</td></tr>
+      <tr><td><strong>E</strong></td><td>240 – 255</td><td>No subnet mask</td><td>—</td><td>—</td><td>Experimental/R&amp;D</td></tr>
+    </table>
+
+    <p>Note: <span class="highlight">127.x.x.x</span> is reserved for loopback. First IP = network number, Last IP = broadcast address (both excluded from host count).</p>
+
+    <h4>IPv4 Datagram Format (PYQ 3 Marks — Draw Diagram)</h4>
+    <div class="diagram">
+  ┌─────────┬──────────┬────────────────────────────────────┐
+  │ VERSION │  HLEN   │         SERVICE TYPE               │
+  │ (4 bits)│ (4 bits)│           (8 bits)                 │ ─── TOTAL LENGTH (16 bits)
+  ├─────────┴──────────┴────────────────────────────────────┤
+  │         IDENTIFICATION (16 bits)          │FLAGS│FRAG.OFFSET│
+  ├───────────────────────────────────────────┴─────┴───────┤
+  │  TIME-TO-LIVE (8 bits) │  PROTOCOL (8 bits)  │HEADER CHECKSUM│
+  ├───────────────────────────────────────────────────────────┤
+  │                SOURCE IP ADDRESS (32 bits)               │
+  ├───────────────────────────────────────────────────────────┤
+  │              DESTINATION IP ADDRESS (32 bits)            │
+  ├───────────────────────────────────────────────────────────┤
+  │                  OPTIONS + PADDING (0-40 bytes)           │
+  └───────────────────────────────────────────────────────────┘
+    </div>
+
+    <h4>IPv6 Basic Header Format (PYQ 7 Marks)</h4>
+    <div class="diagram">
+  ┌─────────┬──────────────┬─────────────────────────────────┐
+  │ VERSION │ TRAFFIC CLASS│          FLOW LABEL             │
+  │ (4 bits)│   (8 bits)  │          (20 bits)              │
+  ├─────────┴──────────────┼─────────────────┬───────────────┤
+  │  PAYLOAD LENGTH (16b)  │ NEXT HEADER(8b) │ HOP LIMIT(8b) │
+  ├─────────────────────────┴─────────────────┴───────────────┤
+  │                  SOURCE ADDRESS (128 bits)                │
+  │                    (16 bytes / 4 rows)                    │
+  ├────────────────────────────────────────────────────────────┤
+  │                DESTINATION ADDRESS (128 bits)             │
+  │                    (16 bytes / 4 rows)                    │
+  └────────────────────────────────────────────────────────────┘
+  Total: 40 bytes fixed
+    </div>
+
+    <h4>IPv6 Header Fields Explained</h4>
+    <ul>
+      <li><strong>Version</strong> (4 bits) — Set to 6 for IPv6</li>
+      <li><strong>Traffic Class</strong> (8 bits) — Class or priority of packet; similar to TOS in IPv4; used in QoS</li>
+      <li><strong>Flow Label</strong> (20 bits) — New in IPv6; differentiates traffic flows; flow label + source IP = unique data flow</li>
+      <li><strong>Payload Length</strong> (16 bits) — Length of IPv6 payload in bytes (max 65535)</li>
+      <li><strong>Next Header</strong> (8 bits) — Identifies type of first extension header or upper-layer protocol</li>
+      <li><strong>Hop Limit</strong> (8 bits) — Same as TTL in IPv4; decremented by 1 at each hop; discarded at 0</li>
+      <li><strong>Source Address</strong> (128 bits) — Address of packet originator</li>
+      <li><strong>Destination Address</strong> (128 bits) — Address of packet recipient</li>
+    </ul>
+
+    <h4>IPv4 vs IPv6 Comparison (PYQ 7 Marks)</h4>
+    <table>
+      <tr><th>Property</th><th>IPv4</th><th>IPv6</th></tr>
+      <tr><td>Address size</td><td>32 bits</td><td>128 bits</td></tr>
+      <tr><td>Notation</td><td>Dotted decimal (e.g., 192.168.1.1)</td><td>Hexadecimal with colons</td></tr>
+      <tr><td>Address space</td><td>~4 billion (2³²)</td><td>340 undecillion (3.4×10³⁸)</td></tr>
+      <tr><td>Classes</td><td>5 classes (A, B, C, D, E)</td><td>No classes</td></tr>
+      <tr><td>Checksum</td><td>Available in header</td><td>Not available</td></tr>
+      <tr><td>Security</td><td>Depends on application; encryption not supported</td><td>IPSEC built-in; supports encryption &amp; authentication</td></tr>
+      <tr><td>Address config</td><td>Manual and DHCP</td><td>Manual, DHCP, auto-configuration, renumbering</td></tr>
+      <tr><td>Header size</td><td>20-60 bytes (variable)</td><td>40 bytes (fixed)</td></tr>
+      <tr><td>Fragmentation</td><td>By routers and sending host</td><td>Only by sending host</td></tr>
+    </table>
+
+    <div class="pyq-box">
+      <div class="pyq-label">📌 PYQ</div>
+      <p>• "Explain any three network layer services" (7 marks) — Apr 2025, Apr 2023</p>
+      <p>• "Draw the IPv4 datagram format" (3 marks) — Apr 2025</p>
+      <p>• "Draw the IPv6 basic header format and explain components" (7 marks) — Apr 2024</p>
+      <p>• "Compare IPv6 and IPv4 addressing schemes" (7 marks) — Apr 2024, Apr 2023</p>
+      <p>• "What is the address space of IPv4?" → 2³² = 4,294,967,296</p>
+    </div>
+  </div>
+</div>
+
+<!-- Routing -->
+<div class="section" id="m3-routing">
+  <div class="section-head" onclick="toggle(this)">
+    <span class="icon">🗺️</span>
+    <h3>Routing Algorithms — Distance Vector &amp; Link State</h3>
+    <span class="tag tag-imp">IMP 7M</span><span class="tag tag-pyq">PYQ</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="section-body">
+
+    <div class="def-box">
+      <strong>DISTANCE VECTOR ROUTING</strong>
+      A dynamic routing algorithm. Each router computes distance between itself and each possible destination (immediate neighbors). Shares knowledge of whole network to its neighbors. Sharing at regular intervals. Based on local knowledge.
+    </div>
+    <p><strong>Problems with Distance Vector:</strong></p>
+    <ul>
+      <li>Count to infinity problem (solved by splitting horizon)</li>
+      <li>Good news spreads fast, bad news spreads slowly</li>
+      <li>Persistent looping problem</li>
+    </ul>
+
+    <p><strong>Algorithm Steps:</strong></p>
+    <ol>
+      <li>A router transmits its distance vector to each neighbor in a routing packet</li>
+      <li>Each router receives and saves most recently received distance vector from each neighbor</li>
+      <li>A router recalculates its distance vector when it receives a distance vector from a neighbor containing different information, or discovers a link has gone down</li>
+      <li>DV calculation is based on minimizing the cost to each destination</li>
+    </ol>
+
+    <div class="def-box green">
+      <strong>LINK STATE ROUTING</strong>
+      A dynamic routing algorithm. Each router shares knowledge of its NEIGHBORS (not whole network) with EVERY other router through flooding. Sharing only when there is a CHANGE. Based on global knowledge. Uses Dijkstra's algorithm.
+    </div>
+    <p><strong>Problems with Link State:</strong></p>
+    <ul>
+      <li>Heavy traffic due to flooding of packets</li>
+      <li>Flooding can result in infinite looping (solved by TTL field)</li>
+    </ul>
+
+    <p><strong>Link State Process:</strong></p>
+    <ol>
+      <li>Each router learns about its own links (directly connected networks)</li>
+      <li>Each router builds a Link-State Packet (LSP) containing state of each directly connected link</li>
+      <li>Each router floods LSP to all neighbors; they store all LSPs in a database (LSDB)</li>
+      <li>Each router uses database to construct complete map of topology</li>
+      <li>Computes best path to each destination using Dijkstra's algorithm</li>
+    </ol>
+
+    <h4>Distance Vector vs Link State (PYQ 7 Marks)</h4>
+    <table>
+      <tr><th>Property</th><th>Distance Vector</th><th>Link State</th></tr>
+      <tr><td>Bandwidth</td><td>Less (local sharing, no flooding)</td><td>More (flooding, large LSPs)</td></tr>
+      <tr><td>Knowledge</td><td>Local (neighbor info only)</td><td>Global (entire network map)</td></tr>
+      <tr><td>Traffic</td><td>Less</td><td>More</td></tr>
+      <tr><td>Convergence</td><td>Slow (good news fast, bad news slow)</td><td>Fast</td></tr>
+      <tr><td>Count to infinity</td><td>Yes (problem)</td><td>No</td></tr>
+      <tr><td>Loops</td><td>Persistent loops</td><td>Only transient loops</td></tr>
+      <tr><td>Algorithm</td><td>Bellman-Ford</td><td>Dijkstra</td></tr>
+    </table>
+
+    <div class="pyq-box">
+      <div class="pyq-label">📌 PYQ</div>
+      <p>• "Describe link state routing algorithm" (7 marks) — Apr 2025</p>
+      <p>• "Describe the distance vector routing method" (7 marks) — Apr 2024, Apr 2023</p>
+      <p>• "Compare IPv6 and IPv4" — also appeared with routing in same section</p>
+    </div>
+  </div>
+</div>
+
+<!-- Transport Layer -->
+<div class="section" id="m3-trans">
+  <div class="section-head" onclick="toggle(this)">
+    <span class="icon">🚚</span>
+    <h3>Transport Layer — TCP vs UDP</h3>
+    <span class="tag tag-imp">IMP 7M</span><span class="tag tag-pyq">PYQ</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="section-body">
+    <h4>Transport Layer Responsibilities (PYQ 7 Marks)</h4>
+    <ul>
+      <li><strong>Process-to-Process Delivery</strong> — Uses Port Numbers (16-bit address) to identify client-server programs uniquely</li>
+      <li><strong>End-to-End Connection</strong> — Creates connection between hosts using TCP or UDP</li>
+      <li><strong>Multiplexing &amp; Demultiplexing</strong> — Mux: multiple processes → one packet; Demux: one packet → multiple processes</li>
+      <li><strong>Congestion Control</strong> — Open-loop (prevent) and closed-loop (remove); AIMD; Leaky bucket technique</li>
+      <li><strong>Data Integrity &amp; Error Correction</strong> — Error detection codes, checksums, ACK/NACK</li>
+      <li><strong>Flow Control</strong> — Sliding window protocol; receiver sends window size to sender</li>
+    </ul>
+
+    <h4>Leaky Bucket Technique</h4>
+    <p>Input rate can vary but output rate remains constant. Bursty chunks stored in bucket and sent out at average rate. Like a bucket with hole — water exits at fixed rate regardless of input rate.</p>
+
+    <h4>TCP — Transmission Control Protocol</h4>
+    <div class="def-box">
+      <strong>TCP</strong>
+      Connection-oriented protocol. Establishes logical connection (handshake) before transferring data. Provides reliable delivery, flow control, error control, and congestion control.
+    </div>
+    <p><strong>Features of TCP:</strong></p>
+    <ul>
+      <li><strong>Segment Numbering</strong> — Assigns byte numbers to data bytes, sequence numbers to segments</li>
+      <li><strong>Connection-Oriented</strong> — Sender and receiver connected throughout; data order maintained</li>
+      <li><strong>Full Duplex</strong> — Data can be sent in both directions simultaneously</li>
+      <li><strong>Flow Control</strong> — Sliding window; limits rate of data transfer</li>
+      <li><strong>Error Control</strong> — Byte-oriented; handles corrupted, lost, out-of-order, duplicate segments</li>
+      <li><strong>Congestion Control</strong> — Takes into account congestion level in network</li>
+    </ul>
+
+    <h4>TCP Segment Format (PYQ 7 Marks)</h4>
+    <div class="diagram">
+  ┌─────────────────────────────────────────────────────────────┐
+  │    SOURCE PORT (16 bits)      │  DESTINATION PORT (16 bits) │
+  ├─────────────────────────────────────────────────────────────┤
+  │                   SEQUENCE NUMBER (32 bits)                 │
+  ├─────────────────────────────────────────────────────────────┤
+  │                 ACKNOWLEDGEMENT NUMBER (32 bits)            │
+  ├──────────┬────────────────────┬─────────────────────────────┤
+  │HLEN(4b)  │   RESERVED (6b)   │URG│ACK│PSH│RST│SYN│FIN│
+  ├──────────┴────────────────────┼─────────────────────────────┤
+  │      WINDOW SIZE (16 bits)    │    CHECKSUM (16 bits)       │
+  ├──────────────────────────────────────────────────────────────┤
+  │      URGENT POINTER (16 bits) │    OPTIONS + PADDING        │
+  └──────────────────────────────────────────────────────────────┘
+  Header: 20 to 60 bytes
+    </div>
+    <ul>
+      <li><strong>Source Port</strong> — Port number of application program in sending host</li>
+      <li><strong>Destination Port</strong> — Port number of application program in receiving host</li>
+      <li><strong>Sequence Number</strong> — Byte number of first byte of data in segment</li>
+      <li><strong>Acknowledgement Number</strong> — Sequence number of next expected segment</li>
+      <li><strong>HLEN</strong> — Header length in 4-byte units</li>
+      <li><strong>Control Flags</strong> — 6 bits: URG, ACK, PSH, RST, SYN, FIN</li>
+      <li><strong>Window Size</strong> — Defines window size of sending TCP (flow control)</li>
+      <li><strong>Checksum</strong> — 16-bit checksum for error detection</li>
+      <li><strong>Urgent Pointer</strong> — Valid only if URG flag is set</li>
+    </ul>
+
+    <h4>UDP — User Datagram Protocol</h4>
+    <div class="def-box orange">
+      <strong>UDP</strong>
+      Connectionless, unreliable protocol. No connection establishment prior to data transfer. Low-latency, loss-tolerating. No error checking. Faster than TCP.
+    </div>
+
+    <h4>UDP Header Format</h4>
+    <div class="diagram">
+  ┌──────────────────────────────────────────────┐
+  │  SOURCE PORT (16 bits) │ DEST. PORT (16 bits)│
+  ├──────────────────────────────────────────────┤
+  │    LENGTH (16 bits)    │  CHECKSUM (16 bits) │
+  └──────────────────────────────────────────────┘
+  Header: Fixed 8 bytes
+    </div>
+
+    <h4>TCP vs UDP (PYQ 7 Marks)</h4>
+    <table>
+      <tr><th>Property</th><th>TCP</th><th>UDP</th></tr>
+      <tr><td>Connection</td><td>Connection-oriented</td><td>Connectionless</td></tr>
+      <tr><td>Reliability</td><td>Reliable</td><td>Unreliable</td></tr>
+      <tr><td>Speed</td><td>Slow</td><td>Fast</td></tr>
+      <tr><td>Header size</td><td>20 bytes</td><td>8 bytes</td></tr>
+      <tr><td>Acknowledgement</td><td>Yes</td><td>No</td></tr>
+      <tr><td>Retransmission</td><td>Yes</td><td>No</td></tr>
+      <tr><td>Flow control</td><td>Yes (sliding window)</td><td>No</td></tr>
+      <tr><td>Error control</td><td>Yes</td><td>Minimal (checksum only)</td></tr>
+      <tr><td>Ordering</td><td>Data arrives in order</td><td>No ordering guarantee</td></tr>
+      <tr><td>Use cases</td><td>Web (HTTP), Email (SMTP), File transfer (FTP)</td><td>Video streaming, Gaming, DNS, VoIP, DHCP</td></tr>
+      <tr><td>PDU</td><td>Segment</td><td>User Datagram</td></tr>
+    </table>
+
+    <h4>Applications of UDP (PYQ 3 Marks)</h4>
+    <ul>
+      <li>Simple request-response communication (small data)</li>
+      <li>Multicasting (UDP supports packet switching)</li>
+      <li>Routing update protocols like RIP</li>
+      <li>Real-time applications (video/audio streaming, IPTV)</li>
+      <li>Online gaming (low latency critical)</li>
+      <li>VoIP (Skype, WhatsApp)</li>
+      <li>DNS (small, quick queries)</li>
+      <li>DHCP</li>
+      <li>Also: NTP, BOOTP, NNP, TFTP, RTSP</li>
+    </ul>
+
+    <div class="pyq-box">
+      <div class="pyq-label">📌 PYQ</div>
+      <p>• "Outline TCP segment format with neat diagram" (7 marks) — Apr 2025</p>
+      <p>• "Differentiate TCP and UDP services" (7 marks) — Apr 2024, Apr 2023</p>
+      <p>• "In UDP, data packets are called ___" → User Datagrams</p>
+      <p>• "Write any three applications of UDP" (3 marks) — Apr 2025</p>
+      <p>• "Summarize transport layer services" (7 marks) — Apr 2023</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODULE 4
+═══════════════════════════════════════════ -->
+<div class="module-header m4" id="m4">
+  <div class="num">MODULE 04</div>
+  <h2>Application Layer</h2>
+  <p>HTTP · FTP · SMTP · DNS · WWW · SSH · Peer-to-Peer</p>
+</div>
+
+<!-- Application Layer -->
+<div class="section" id="m4-app">
+  <div class="section-head open" onclick="toggle(this)">
+    <span class="icon">🌐</span>
+    <h3>Application Layer — Functions &amp; All Protocols</h3>
+    <span class="tag tag-imp">IMP</span><span class="tag tag-pyq">PYQ</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="section-body show">
+    <h4>Functions of Application Layer</h4>
+    <ul>
+      <li><strong>User Interface</strong> — Interface between user and network through an application</li>
+      <li><strong>Security</strong> — Execution of security tests at user entity points</li>
+      <li><strong>File Transfer</strong> — FTAM (File Transfer Access and Management); create, retrieve, manage remote files</li>
+      <li><strong>E-mail</strong> — Basis for email forwarding and storage</li>
+      <li><strong>Database Access</strong> — Distributed database sources and global data</li>
+      <li><strong>Addressing</strong> — Connection between user and server</li>
+      <li><strong>Directory Services</strong> — Distributed database supporting global data</li>
+    </ul>
+
+    <h4>Protocol Port Numbers (Must Memorize)</h4>
+    <p>
+      <span class="port-badge">HTTP — Port 80</span>
+      <span class="port-badge">FTP Control — Port 21</span>
+      <span class="port-badge">FTP Data — Port 20</span>
+      <span class="port-badge">SMTP — Port 25</span>
+      <span class="port-badge">SSH — Port 22</span>
+      <span class="port-badge">DNS — Port 53</span>
+      <span class="port-badge">Telnet — Port 23</span>
+    </p>
+  </div>
+</div>
+
+<!-- HTTP -->
+<div class="section">
+  <div class="section-head" onclick="toggle(this)">
+    <span class="icon">🔗</span>
+    <h3>HTTP — Hyper Text Transfer Protocol &amp; Persistent/Non-Persistent</h3>
+    <span class="tag tag-imp">IMP 7M</span><span class="tag tag-pyq">PYQ</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="def-box">
+      <strong>HTTP</strong>
+      Used to access data on the World Wide Web (www). Application layer protocol. Connectionless, media-independent, TCP/IP based, stateless protocol. Uses port 80. Transfers data as plain text, hypertext, audio, video, HTML files.
+    </div>
+
+    <ul>
+      <li>HTTP is simpler than FTP — uses only ONE connection (data connection; no control connection)</li>
+      <li>Similar to SMTP in terms of data transferred, but HTTP delivers messages immediately (SMTP stores and forwards)</li>
+      <li>Versions: HTTP 1.0, HTTP 1.1, HTTP 2.0, HTTP 3.0</li>
+    </ul>
+
+    <h4>HTTP Persistent vs Non-Persistent (PYQ 7 Marks)</h4>
+    <table>
+      <tr><th>Property</th><th>Non-Persistent (HTTP 1.0)</th><th>Persistent (HTTP 1.1)</th></tr>
+      <tr><td>TCP connection</td><td>One TCP connection per request/response</td><td>Single TCP connection for multiple requests/responses</td></tr>
+      <tr><td>Round Trip Time</td><td>2 RTT for every object</td><td>Only 1 RTT for all objects</td></tr>
+      <tr><td>CPU usage</td><td>More (multiple TCPs)</td><td>Less (single TCP)</td></tr>
+      <tr><td>Mode</td><td>Non-default</td><td>Default mode</td></tr>
+      <tr><td>Request methods</td><td>HEAD, POST</td><td>GET, HEAD, POST, PUT, DELETE</td></tr>
+      <tr><td>Objects</td><td>Multiple connections needed</td><td>Single connection for all objects</td></tr>
+    </table>
+
+    <p><strong>Non-Persistent HTTP Steps:</strong></p>
+    <ol>
+      <li>Client opens TCP connection and sends request</li>
+      <li>Server sends response and closes connection</li>
+      <li>Client reads data till end of file; closes connection</li>
+    </ol>
+
+    <p><strong>Persistent HTTP Steps:</strong></p>
+    <ol>
+      <li>Client opens TCP connection and sends request</li>
+      <li>Server sends response and leaves connection open</li>
+      <li>Client can send any number of requests and get responses</li>
+      <li>Server closes connection at client request or timeout</li>
+    </ol>
+
+    <p><strong>Persistent Pipelined vs Non-Pipelined:</strong></p>
+    <ul>
+      <li><strong>Non-Pipelined</strong> — Client sends next request only after previous request acknowledged</li>
+      <li><strong>Pipelined</strong> — Client can send new request even if previous request not yet acknowledged</li>
+    </ul>
+
+    <p><strong>Advantages of Persistent HTTP:</strong></p>
+    <ul>
+      <li>Saves CPU resources and time (connection opened only once)</li>
+      <li>Fast start for sending objects; less network congestion</li>
+    </ul>
+    <p><strong>Disadvantages of Persistent HTTP:</strong></p>
+    <ul>
+      <li>Wastes resources when no data being transmitted (connection stays open)</li>
+      <li>Less secure than non-persistent (connection always open)</li>
+    </ul>
+
+    <div class="pyq-box">
+      <div class="pyq-label">📌 PYQ</div>
+      <p>• "Explain different types of HTTP connections" (7 marks) — Apr 2025</p>
+      <p>• "Describe HTTP persistent connections" (7 marks) — Apr 2024</p>
+    </div>
+  </div>
+</div>
+
+<!-- FTP -->
+<div class="section">
+  <div class="section-head" onclick="toggle(this)">
+    <span class="icon">📂</span>
+    <h3>FTP — File Transfer Protocol</h3>
+    <span class="tag tag-imp">IMP 7M</span><span class="tag tag-pyq">PYQ</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="def-box">
+      <strong>FTP (File Transfer Protocol)</strong>
+      Application layer protocol. Used to exchange files over the internet. Transfers both text and binary files. Uses TCP at transport layer. Connection-oriented. Out-of-band protocol (data and control info flow over different connections).
+    </div>
+
+    <p><strong>Why FTP?</strong> Systems may have different: file conventions, ways of representing text/data, directory structures. FTP overcomes these by establishing TWO connections between hosts.</p>
+
+    <h4>FTP Basic Model (PYQ 7 Marks)</h4>
+    <div class="diagram">
+  ┌─────────────────────────────────────────────────────┐
+  │ USER                                                │
+  │  │                                                  │
+  │  ▼                                                  │
+  │ USER INTERFACE                                      │
+  │  │                                                  │
+  │  ▼               Control Connection (Port 21)       │
+  │ CONTROL PROCESS ──────────────────────────▶ CONTROL │
+  │  │                                         PROCESS │
+  │  ▼               Data Connection (Port 20)          │
+  │  DATA TRANSFER ◀──────────────────────────▶  DATA  │
+  │  PROCESS        TCP/IP                    TRANSFER  │
+  │                                            PROCESS  │
+  │   CLIENT                                  SERVER   │
+  └─────────────────────────────────────────────────────┘
+    </div>
+
+    <h4>Two Types of Connections in FTP</h4>
+    <ul>
+      <li><strong>Control Connection (Port 21)</strong> — Simple rules; transfers one line of command/response at a time; remains connected during entire FTP session</li>
+      <li><strong>Data Connection (Port 20)</strong> — Complex rules (data types vary); opens when command for file transfer comes; closes when file is transferred</li>
+    </ul>
+
+    <p><strong>FTP Client Components:</strong> User Interface, Control Process, Data Transfer Process</p>
+    <p><strong>FTP Server Components:</strong> Server Control Process, Server Data Transfer Process</p>
+
+    <p><strong>Merits of FTP:</strong></p>
+    <ul>
+      <li>Speed — fastest way for file transfer</li>
+      <li>Efficient — does not need to complete all operations to get entire file</li>
+      <li>Security — protected with user credentials</li>
+      <li>Two-way transfer — back and forth movement of files</li>
+    </ul>
+    <p><strong>Demerits of FTP:</strong></p>
+    <ul>
+      <li>File size limit — 2 GB limit</li>
+      <li>Security — data is not encrypted</li>
+      <li>Multiple receiving not supported</li>
+    </ul>
+
+    <div class="pyq-box">
+      <div class="pyq-label">📌 PYQ</div>
+      <p>• "Illustrate FTP basic model and state its merits and demerits" (7 marks) — Apr 2024, Apr 2023</p>
+      <p>• "…is the data port number used in FTP" → Port 20 (1 mark)</p>
+    </div>
+  </div>
+</div>
+
+<!-- SMTP and Email -->
+<div class="section">
+  <div class="section-head" onclick="toggle(this)">
+    <span class="icon">📧</span>
+    <h3>Email — SMTP &amp; Electronic Mail Architecture</h3>
+    <span class="tag tag-imp">IMP</span><span class="tag tag-pyq">PYQ</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="def-box">
+      <strong>SMTP — Simple Mail Transfer Protocol</strong>
+      Mainly used for sending emails efficiently over the internet. Push protocol. Uses TCP at transport layer. Uses persistent TCP connections (can send multiple emails at once). Connection-oriented, stateless, in-band protocol. Port 25.
+    </div>
+
+    <p><strong>SMTP Characteristics:</strong></p>
+    <ul>
+      <li>Pure text-based protocol — handles only 7-bit ASCII text</li>
+      <li>Cannot transfer images, video, audio directly</li>
+      <li>Cannot transfer executable files and binary objects</li>
+      <li><strong>MIME</strong> (Multipurpose Internet Mail Extension) extends SMTP to handle graphics, audio, video</li>
+      <li><strong>SMTP Auth</strong> — SMTP Authentication for authentication purposes</li>
+    </ul>
+
+    <h4>Email Message Components</h4>
+    <ul>
+      <li><strong>Message Envelope</strong> — Email's electronic format</li>
+      <li><strong>Message Header</strong> — Email subject line and sender/recipient information</li>
+      <li><strong>Message Body</strong> — Images, text, and other file attachments</li>
+    </ul>
+
+    <h4>Electronic Mail Architecture (PYQ 3 Marks)</h4>
+    <div class="diagram">
+  User A                                             User B
+    │                                                   │
+  [UA]  ←User Agent→                                 [UA]
+    │    (Outlook, etc.)                                │
+    │                                                   │
+  [MTA] ──SMTP──▶ [Relay MTA] ──SMTP──▶ [MTA] [Server]
+  Client                                              │
+                                                   [MDA]
+                                                      │
+                                              ◀─POP3/IMAP─
+                                                   User B retrieves
+    </div>
+
+    <ul>
+      <li><strong>User Agent (UA)</strong> — Software package (e.g., Outlook). Creates, reads, replies to, forwards messages.</li>
+      <li><strong>Message Transfer Agent (MTA)</strong> — Actual mail transfer. MTA client needed to send; MTA server needed to receive. SMTP is a MTA.</li>
+      <li><strong>Message Access Agent (MAA)</strong> — To receive mail, MAA needed. Receiver pulls message from mail server. MAA client runs on receiver; MAA server on mail server.</li>
+    </ul>
+
+    <p><strong>Working of SMTP:</strong></p>
+    <ol>
+      <li><strong>Composition</strong> — User prepares mail through MUA</li>
+      <li><strong>Submission</strong> — MUA submits email to SMTP server using SMTP on port 25</li>
+      <li><strong>Delivery</strong> — MTA transfers email to appropriate server</li>
+      <li><strong>Storage</strong> — Server stores received mail in Mail Delivery Agent (MDA)</li>
+      <li><strong>Retrieval</strong> — Stored email in MDA retrieved by MUA (using POP3/IMAP)</li>
+    </ol>
+
+    <div class="pyq-box">
+      <div class="pyq-label">📌 PYQ</div>
+      <p>• "Describe components in Electronic Mail architecture" (3 marks) — Apr 2025</p>
+      <p>• "Describe electronic mail protocol SMTP with merits and demerits" (7 marks) — Apr 2023</p>
+      <p>• "SMTP stands for ___" → Simple Mail Transfer Protocol (1 mark)</p>
+    </div>
+  </div>
+</div>
+
+<!-- DNS and WWW -->
+<div class="section">
+  <div class="section-head" onclick="toggle(this)">
+    <span class="icon">🔍</span>
+    <h3>DNS, WWW &amp; Web Documents</h3>
+    <span class="tag tag-imp">IMP</span><span class="tag tag-pyq">PYQ</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="def-box">
+      <strong>DNS — Domain Name System</strong>
+      A directory service that provides mapping between the name of a host on the network and its numerical (IP) address. Allows users to use friendly names instead of remembering IP addresses. Application layer protocol. Uses UDP (Port 53).
+    </div>
+
+    <h4>DNS Resolution Process</h4>
+    <ol>
+      <li>User enters domain name in browser</li>
+      <li>Browser sends recursive DNS query to find IP address</li>
+      <li>Query goes to recursive DNS server (usually managed by ISP); if it has address → returns it</li>
+      <li>If not, queries: DNS root name servers → TLD name servers → authoritative name servers</li>
+      <li>These servers redirect until DNS record with queried IP is retrieved</li>
+      <li>Recursive server caches the A record for domain name (future queries answered directly)</li>
+      <li>If authoritative server can't find info → returns error message</li>
+    </ol>
+
+    <h4>DNS Namespace</h4>
+    <p>Set of all domain names registered in DNS. Organized into tree-like structure. Root domain at top. Below: Top-Level Domains (.com, .net, .org). Below TLDs: Second-level domains. Can have subdomains (e.g., www.example.com, mail.example.com). Managed by ICANN.</p>
+
+    <h4>World Wide Web (WWW)</h4>
+    <div class="def-box green">
+      <strong>WWW (World Wide Web)</strong>
+      A collection of information linked together from points all over the world. A way of exchanging information between computers on the Internet. Network of pages consisting of images, text, and sounds. Invented by Tim Berners-Lee at CERN.
+    </div>
+
+    <p><strong>Architecture of WWW:</strong> Distributed client/server service. Each website holds web pages. Each web page contains links to other pages.</p>
+
+    <p><strong>Components of WWW:</strong></p>
+    <ol>
+      <li><strong>Structural:</strong> Clients/Browsers, Servers, Caches, Internet</li>
+      <li><strong>Semantic:</strong> HTTP, HTML, XML, URL</li>
+    </ol>
+
+    <h4>Three Types of Web Documents (PYQ 3 Marks)</h4>
+    <div class="def-box">
+      <strong>STATIC WEB DOCUMENT</strong>
+      Resides in a file associated with a web server. Contents determined at time of writing. Each request results in exactly the same response. Created using HTML, XML, XHTML.
+    </div>
+    <div class="def-box green">
+      <strong>DYNAMIC WEB DOCUMENT</strong>
+      Does NOT exist in predefined form. When request arrives, web server runs application program that creates the document. Contents can vary from one request to another. Created using ASP, JSP, PHP scripting languages.
+    </div>
+    <div class="def-box orange">
+      <strong>ACTIVE WEB DOCUMENT</strong>
+      Consists of a computer program that the server sends to the browser, which the browser must run locally. Can interact with user and change display continuously. Example: Java applets, JavaScript.
+    </div>
+
+    <h4>URL — Uniform Resource Locator</h4>
+    <div class="diagram">
+  Protocol :// Host : Port / Path
+  http    ://www.example.com:80/index.html
+    </div>
+    <ul>
+      <li><strong>Protocol</strong> — Client/server program used to retrieve document (e.g., HTTP)</li>
+      <li><strong>Host Computer</strong> — Computer on which information is located</li>
+      <li><strong>Port</strong> — Optional; inserted between host and path, separated by colon</li>
+      <li><strong>Path</strong> — Pathname of file where information is located</li>
+    </ul>
+
+    <div class="pyq-box">
+      <div class="pyq-label">📌 PYQ</div>
+      <p>• "Write about the Domain Name System" (3 marks) — Apr 2025, Apr 2024</p>
+      <p>• "Describe about static and dynamic web documents" (3 marks) — Apr 2025</p>
+      <p>• "Illustrate the working of DNS" (7 marks) — Apr 2023</p>
+      <p>• "Define URL and components of URL" (3 marks) — Apr 2023</p>
+      <p>• "The application layer program which maps name to address is ___" → DNS</p>
+    </div>
+  </div>
+</div>
+
+<!-- SSH -->
+<div class="section">
+  <div class="section-head" onclick="toggle(this)">
+    <span class="icon">🔐</span>
+    <h3>SSH — Secure Shell Protocol</h3>
+    <span class="tag tag-imp">IMP 7M</span><span class="tag tag-pyq">PYQ</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="def-box">
+      <strong>SSH — Secure Shell</strong>
+      An application layer program used for remote logging and secure file transfer. Creates secure encrypted connection between client and server. Runs on TCP Port 22.
+    </div>
+
+    <h4>SSH Components (PYQ 3 Marks)</h4>
+    <div class="diagram">
+  ┌─────────────────────────────────────────────────┐
+  │              SSH APPLICATIONS                   │   Application Layer
+  ├──────────────────────────┬──────────────────────┤
+  │  SSH-CONN               │      SSH-AUTH         │
+  ├─────────────────────────────────────────────────┤
+  │              SSH-TRANS                          │
+  ├─────────────────────────────────────────────────┤
+  │          TCP (Transport Layer, Port 22)         │
+  └─────────────────────────────────────────────────┘
+    </div>
+
+    <ol>
+      <li><strong>SSH-TRANS (SSH Transport Layer Protocol)</strong>
+        <ul>
+          <li>Establishes secure connection between SSH client and server over TCP</li>
+          <li>Negotiates security parameters: encryption algorithm, HMAC algorithm</li>
+          <li>Creates secure tunnel between client and server</li>
+          <li>Services: Privacy/confidentiality, Data integrity, Server authentication, Compression of messages</li>
+        </ul>
+      </li>
+      <li><strong>SSH-AUTH (SSH Authentication Protocol)</strong>
+        <ul>
+          <li>Authenticates SSH client for the server</li>
+          <li>After establishing secure channel, server needs to be authenticated for client</li>
+        </ul>
+      </li>
+      <li><strong>SSH-CONN (SSH Connection Protocol)</strong>
+        <ul>
+          <li>Allows multiple channels to run over the secure connection</li>
+          <li>Each channel can be used for different purpose</li>
+        </ul>
+      </li>
+      <li><strong>SSH Applications</strong>
+        <ul>
+          <li>Remote console login, SFTP (Secure File Transfer Protocol)</li>
+        </ul>
+      </li>
+    </ol>
+
+    <div class="pyq-box">
+      <div class="pyq-label">📌 PYQ</div>
+      <p>• "Describe SSH protocol" (7 marks) — Apr 2025</p>
+      <p>• "List the SSH components" (3 marks) — Apr 2023</p>
+      <p>• "List two remote logging protocols" → SSH, TELNET</p>
+      <p>• "SSH stands for ___" → Secure Shell</p>
+    </div>
+  </div>
+</div>
+
+<!-- Peer to Peer -->
+<div class="section">
+  <div class="section-head" onclick="toggle(this)">
+    <span class="icon">🔄</span>
+    <h3>Peer-to-Peer Architecture vs Client-Server</h3>
+    <span class="tag tag-pyq">PYQ</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="def-box">
+      <strong>PEER-TO-PEER (P2P) ARCHITECTURE</strong>
+      Each workstation has the same capabilities and responsibilities. Each station can act as BOTH client and server. Responsibility is shared among peers. All peers contribute and consume resources. No centralized server needed.
+    </div>
+
+    <p><strong>Characteristics of P2P:</strong></p>
+    <ul>
+      <li>Often created by collections of 12 or fewer machines</li>
+      <li>Nodes both consume and produce resources — as nodes grow, capability grows (unlike client-server where server gets overloaded)</li>
+      <li>Difficult to provide security (nodes act as both client and server — risk of denial of service attack)</li>
+      <li>Easily scalable and cost effective</li>
+      <li>Each computer manages itself — easy to set up and maintain</li>
+    </ul>
+
+    <h4>Client-Server vs Peer-to-Peer</h4>
+    <table>
+      <tr><th>Property</th><th>Client-Server</th><th>Peer-to-Peer</th></tr>
+      <tr><td>Differentiation</td><td>Clients and servers differentiated</td><td>No differentiation</td></tr>
+      <tr><td>Focus</td><td>Information sharing</td><td>Connectivity</td></tr>
+      <tr><td>Data storage</td><td>Centralized server</td><td>Each peer has its own data</td></tr>
+      <tr><td>Service</td><td>Server responds to client requests</td><td>Every node can both request and respond</td></tr>
+      <tr><td>Cost</td><td>More expensive</td><td>Less expensive</td></tr>
+      <tr><td>Stability</td><td>More stable</td><td>Less stable</td></tr>
+      <tr><td>Network size</td><td>Both small and large networks</td><td>Generally &lt;10 computers</td></tr>
+    </table>
+
+    <div class="pyq-box">
+      <div class="pyq-label">📌 PYQ</div>
+      <p>• "Explain the peer-to-peer paradigm" (3 marks) — Apr 2025</p>
+      <p>• "Write about the peer-to-peer network paradigm" (3 marks) — Apr 2024</p>
+    </div>
+  </div>
+</div>
+
+<!-- Telnet -->
+<div class="section">
+  <div class="section-head" onclick="toggle(this)">
+    <span class="icon">💻</span>
+    <h3>Telnet &amp; Serial/Parallel Communication</h3>
+    <span class="tag tag-pyq">PYQ</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="def-box">
+      <strong>TELNET</strong>
+      A network protocol used to virtually access a computer and provide two-way, collaborative, text-based communication between two machines. Uses TCP/IP protocol. Allows users to log on as regular user with given privileges. Insecure (no encryption) — SSH is the secure alternative.
+    </div>
+
+    <h4>Serial vs Parallel Communication (PYQ 3 Marks)</h4>
+    <table>
+      <tr><th>Property</th><th>Serial Communication</th><th>Parallel Communication</th></tr>
+      <tr><td>Channels</td><td>Single channel</td><td>Multiple channels</td></tr>
+      <tr><td>Transmission</td><td>Bit-by-bit</td><td>Block of data at once</td></tr>
+      <tr><td>Distance</td><td>Long distance</td><td>Short distance</td></tr>
+      <tr><td>Cost &amp; Speed</td><td>Low cost, slow speed</td><td>High speed, low cost</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- Quick Reference -->
+<div class="section">
+  <div class="section-head" onclick="toggle(this)">
+    <span class="icon">⚡</span>
+    <h3>Quick Reference — All One-Mark Answers</h3>
+    <span class="tag tag-imp">EXAM READY</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="section-body">
+    <table>
+      <tr><th>Question</th><th>Answer</th></tr>
+      <tr><td>Define protocol</td><td>A set of rules that govern data communications</td></tr>
+      <tr><td>What is multipoint connection?</td><td>Connection where more than two specific devices share a single link</td></tr>
+      <tr><td>OSI stands for</td><td>Open Systems Interconnection</td></tr>
+      <tr><td>SSH stands for</td><td>Secure Shell</td></tr>
+      <tr><td>SMTP stands for</td><td>Simple Mail Transfer Protocol</td></tr>
+      <tr><td>Data port number in FTP</td><td>Port 20 (Control: Port 21)</td></tr>
+      <tr><td>DNS maps</td><td>Domain name to IP address</td></tr>
+      <tr><td>UDP data packets are called</td><td>User Datagrams</td></tr>
+      <tr><td>IPv4 address space</td><td>2³² = 4,294,967,296 addresses</td></tr>
+      <tr><td>IPv6 addressing scheme</td><td>128 bits (hexadecimal)</td></tr>
+      <tr><td>Video chat uses</td><td>UDP (False — it uses UDP, so the statement "uses TCP" is False)</td></tr>
+      <tr><td>Reliable file transfer uses</td><td>TCP (True)</td></tr>
+      <tr><td>Attenuation is</td><td>Loss of signal strength/energy with distance</td></tr>
+      <tr><td>Two random access protocols</td><td>ALOHA, CSMA (or CSMA/CD, CSMA/CA)</td></tr>
+      <tr><td>Remote logging protocols</td><td>SSH, TELNET</td></tr>
+      <tr><td>Two application layer protocols</td><td>HTTP, FTP (or SMTP, DNS, Telnet)</td></tr>
+      <tr><td>Unguided transmission waves</td><td>Radio waves, Microwaves (or Infrared, Bluetooth, WiFi, WiMax)</td></tr>
+      <tr><td>Data refers to discrete states</td><td>Digital data</td></tr>
+      <tr><td>IPv4 address has</td><td>Network part and host part</td></tr>
+      <tr><td>Transport layer addressing is called</td><td>Service point addressing / Port addressing</td></tr>
+      <tr><td>Data link layer services</td><td>Framing, flow control, error control, connection control</td></tr>
+      <tr><td>Distortion is</td><td>Change in the shape of a signal</td></tr>
+      <tr><td>URL means</td><td>Uniform Resource Locator</td></tr>
+      <tr><td>URL components</td><td>Protocol, domain name, resource address within domain</td></tr>
+      <tr><td>Mesh links formula</td><td>n(n-1)/2 duplex links</td></tr>
+    </table>
+  </div>
+</div>
+
+</div><!-- end container -->
+
+<footer>
+  CCN Complete Study Material · TED (21) 4132 · All Modules Covered · PYQ Mapped (2023–2025)
+</footer>
+
+<script>
+function toggle(head) {
+  head.classList.toggle('open');
+  const body = head.nextElementSibling;
+  body.classList.toggle('show');
+}
+// Open all on load for printing convenience
+// Auto-open first sections already handled by class
+</script>
+
+</body>
+</html>
